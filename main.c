@@ -2,123 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-
-typedef struct
-{
-    int id;
-    char nome[100];
-    char endereco[100];
-    char cpf[12];
-    char telefone[12];
-    char email[100];
-    char sexo;
-    char estado_civil[20];
-    char data_nasc[11];
-} TipoHospede;
-
-typedef struct listaHospedes
-{
-    TipoHospede Hospedes;
-    struct listaHospedes *prox;
-} ListaHospede;
-
-int escolheId(ListaHospede *lista)
-{
-    int cont = 0;
-    lista = lista->prox;
-
-    while (lista != NULL)
-    {
-        cont++;
-        lista = lista->prox;
-    }
-
-    return cont + 1;
-}
-
-ListaHospede *iniciaListaHospede()
-{
-    ListaHospede *Lista = malloc(sizeof(ListaHospede));
-
-    Lista->Hospedes.id = 0;
-    Lista->prox = NULL;
-
-    return Lista;
-}
-
-int inserirHospede(ListaHospede **lista, TipoHospede hospede)
-{
-    ListaHospede *aux, *novoHospede = malloc(sizeof(ListaHospede));
-    if (novoHospede)
-    {
-        aux = *lista;
-        novoHospede->Hospedes = hospede;
-        novoHospede->prox = NULL;
-
-        while (aux->prox != NULL)
-            aux = aux->prox;
-
-        aux->prox = novoHospede;
-        return 0;
-    }
-    printf("Erro ao inserir...\n");
-    return 1;
-}
-
-int buscarHospede(ListaHospede **lista, TipoHospede *hospede, int id, ListaHospede **pos)
-{
-    if ((*lista)->prox == NULL)
-        return 1;
-
-    ListaHospede *aux = (*lista)->prox;
-
-    while (aux->Hospedes.id != id && aux != NULL)
-        aux = aux->prox;
-
-    if (aux == NULL)
-        return 1;
-
-    if (aux->Hospedes.id == id)
-    {
-        *hospede = aux->Hospedes;
-        *pos = aux;
-        return 0;
-    }
-
-    return 1;
-}
-
-void alterarHospede(ListaHospede *pos, TipoHospede hospede)
-{
-    pos->Hospedes = hospede;
-    return;
-}
-
-void apagarHospede(ListaHospede *pos)
-{
-    pos->Hospedes.id = 0;
-    return;
-}
-
-void listarHospedes(ListaHospede *lista)
-{
-    if (lista->prox == NULL)
-    {
-        printf("Nenhum hospede cadastrado");
-        return;
-    }
-    else
-    {
-        lista = lista->prox;
-        printf("\nHospedes ---------\n");
-        while (lista != NULL)
-        {
-            printf("Id   : %d\n", lista->Hospedes.id);
-            printf("Nome : %s\n\n", lista->Hospedes.nome);
-            lista = lista->prox;
-        }
-    }
-}
+#include "bib\hospedes.h"
 
 int main()
 {
@@ -126,10 +10,11 @@ int main()
     TipoHospede hospede;
     int res = 0;
 
+    // Cadastro e GestÃ£o de Hospedes
     do
     {
         system("cls");
-        printf("Cadastro e gestÆo de Hospedes!\n");
+        printf("Cadastro e gestÃ£o de Hospedes!\n");
         printf("1 - Inserir hospede\n");
         printf("2 - Buscar hospede\n");
         printf("3 - Alterar hospede\n");
@@ -145,7 +30,7 @@ int main()
         {
             printf("\nTem certeza que deseja sair?\n");
             printf("1 - sim\n");
-            printf("2 - nÆo\n");
+            printf("2 - nï¿½o\n");
             printf("=> ");
             scanf("%d", &res);
             fflush(stdin);
@@ -163,7 +48,7 @@ int main()
             scanf("%[^\n]", hospede.nome);
             fflush(stdin);
 
-            printf("Insira seu endere‡o        : ");
+            printf("Insira seu endereï¿½o        : ");
             scanf("%[^\n]", hospede.endereco);
             fflush(stdin);
 
@@ -201,7 +86,7 @@ int main()
                 }
                 else
                 {
-                    printf("Op‡Æo inv lida");
+                    printf("Opï¿½ï¿½o invï¿½lida");
                     system("pause");
                     fflush(stdin);
                 }
@@ -226,7 +111,7 @@ int main()
             if (res == 0)
             {
                 printf("\nHospede inserido com sucesso!\n");
-                printf("O ID do hospede %s ‚ : %d\n", hospede.nome, hospede.id);
+                printf("O ID do hospede %s ï¿½ : %d\n", hospede.nome, hospede.id);
                 system("pause");
             }
             else
@@ -247,7 +132,7 @@ int main()
                 printf("\nHospede encontrado!! -------------\n");
                 printf("ID              : %d\n", hospede.id);
                 printf("nome            : %s\n", hospede.nome);
-                printf("endere‡o        : %s\n", hospede.endereco);
+                printf("endereï¿½o        : %s\n", hospede.endereco);
                 printf("cpf             : %s\n", hospede.cpf);
                 printf("telefone        : %s\n", hospede.telefone);
                 printf("sexo            : %c\n", hospede.sexo);
@@ -259,7 +144,7 @@ int main()
             }
             else
             {
-                printf("\nHospede nÆo encontrado!\n");
+                printf("\nHospede nï¿½o encontrado!\n");
                 system("pause");
             }
 
@@ -278,7 +163,7 @@ int main()
                     printf("Digite o campo que deseja alterar: \n\n");
                     printf("ID (fixo)           : %d\n", hospede.id);
                     printf("1 - nome            : %s\n", hospede.nome);
-                    printf("2 - endere‡o        : %s\n", hospede.endereco);
+                    printf("2 - endereÃ§o        : %s\n", hospede.endereco);
                     printf("3 - cpf             : %s\n", hospede.cpf);
                     printf("4 - telefone        : %s\n", hospede.telefone);
                     printf("5 - sexo            : %c\n", hospede.sexo);
@@ -306,7 +191,7 @@ int main()
                         fflush(stdin);
                         break;
                     case 2:
-                        printf("Insira seu endere‡o: ");
+                        printf("Insira seu endereï¿½o: ");
                         scanf("%[^\n]", hospede.endereco);
                         fflush(stdin);
                         break;
@@ -347,7 +232,7 @@ int main()
                             }
                             else
                             {
-                                printf("Op‡Æo inv lida");
+                                printf("Opï¿½ï¿½o invï¿½lida");
                                 system("pause");
                                 fflush(stdin);
                             }
@@ -373,7 +258,7 @@ int main()
                         break;
 
                     default:
-                        printf("Escolha um valor v lido...\n");
+                        printf("Escolha um valor vï¿½lido...\n");
                         system("pause");
                         break;
                     }
@@ -381,7 +266,7 @@ int main()
             }
             else
             {
-                printf("\nHospede nÆo encontrado!\n");
+                printf("\nHospede nï¿½o encontrado!\n");
                 system("pause");
             }
 
@@ -414,7 +299,7 @@ int main()
             }
             else
             {
-                printf("\nHospede nÆo encontrado!\n\n");
+                printf("\nHospede nï¿½o encontrado!\n\n");
                 system("pause");
             }
             break;
@@ -426,7 +311,7 @@ int main()
             printf("\n=> %d\n", escolheId(listaHospedes));
             break;
         default:
-            printf("Op‡Æo inv lida!\n");
+            printf("Opï¿½ï¿½o invï¿½lida!\n");
             system("pause");
             fflush(stdin);
             break;
