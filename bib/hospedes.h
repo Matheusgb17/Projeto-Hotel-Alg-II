@@ -36,3 +36,5 @@ void alterarHospede(ListaHospede *pos, TipoHospede hospede);
 void apagarHospede(ListaHospede *pos);
 
 void listarHospedes(ListaHospede *lista);
+
+void interfaceHospedes();
