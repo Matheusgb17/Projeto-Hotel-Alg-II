@@ -103,11 +103,11 @@ void interfaceHospedes()
     TipoHospede hospede;
     int res = 0;
 
-    // Cadastro e GestÃ£o de Hospedes
+    // Cadastro e GestÆo de Hospedes
     do
     {
         system("cls");
-        printf("Cadastro e gestÃ£o de Hospedes!\n");
+        printf("Cadastro e gestÆo de Hospedes!\n");
         printf("1 - Inserir hospede\n");
         printf("2 - Buscar hospede\n");
         printf("3 - Alterar hospede\n");
@@ -123,7 +123,7 @@ void interfaceHospedes()
         {
             printf("\nTem certeza que deseja sair?\n");
             printf("1 - sim\n");
-            printf("2 - nÃ£o\n");
+            printf("2 - nÆo\n");
             printf("=> ");
             scanf("%d", &res);
             fflush(stdin);
@@ -141,7 +141,7 @@ void interfaceHospedes()
             scanf("%[^\n]", hospede.nome);
             fflush(stdin);
 
-            printf("Insira o endereÃ§o: ");
+            printf("Insira o endere‡o: ");
             scanf("%[^\n]", hospede.endereco);
             fflush(stdin);
 
@@ -179,7 +179,7 @@ void interfaceHospedes()
                 }
                 else
                 {
-                    printf("OpÃ§Ã£o invÃ¡lida");
+                    printf("Op‡Æo inv lida");
                     system("pause");
                     fflush(stdin);
                 }
@@ -225,7 +225,7 @@ void interfaceHospedes()
                 printf("\nHospede encontrado!! -------------\n");
                 printf("ID              : %d\n", hospede.id);
                 printf("nome            : %s\n", hospede.nome);
-                printf("endereÃ§o        : %s\n", hospede.endereco);
+                printf("endere‡o        : %s\n", hospede.endereco);
                 printf("cpf             : %s\n", hospede.cpf);
                 printf("telefone        : %s\n", hospede.telefone);
                 printf("sexo            : %c\n", hospede.sexo);
@@ -237,7 +237,7 @@ void interfaceHospedes()
             }
             else
             {
-                printf("\nHospede nÃ£o encontrado!\n");
+                printf("\nHospede nÆo encontrado!\n");
                 system("pause");
             }
 
@@ -257,7 +257,7 @@ void interfaceHospedes()
                     printf("Digite o campo que deseja alterar: \n\n");
                     printf("ID (fixo)           : %d\n", hospede.id);
                     printf("1 - nome            : %s\n", hospede.nome);
-                    printf("2 - endereÃ§o        : %s\n", hospede.endereco);
+                    printf("2 - endere‡o        : %s\n", hospede.endereco);
                     printf("3 - cpf             : %s\n", hospede.cpf);
                     printf("4 - telefone        : %s\n", hospede.telefone);
                     printf("5 - sexo            : %c\n", hospede.sexo);
@@ -283,7 +283,7 @@ void interfaceHospedes()
                         fflush(stdin);
                         break;
                     case 2:
-                        printf("Insira o novo endereÃ§o: ");
+                        printf("Insira o novo endere‡o: ");
                         scanf("%[^\n]", hospede.endereco);
                         fflush(stdin);
                         break;
@@ -324,7 +324,7 @@ void interfaceHospedes()
                             }
                             else
                             {
-                                printf("OpÃ§Ã£o invÃ¡lida");
+                                printf("Op‡Æo inv lida");
                                 system("pause");
                                 fflush(stdin);
                             }
@@ -350,7 +350,7 @@ void interfaceHospedes()
                         break;
 
                     default:
-                        printf("Escolha um valor vÃ¡lido...\n");
+                        printf("Escolha um valor v lido...\n");
                         system("pause");
                         break;
                     }
@@ -358,7 +358,7 @@ void interfaceHospedes()
             }
             else
             {
-                printf("\nHospede nÃ£o encontrado!\n");
+                printf("\nHospede nÆo encontrado!\n");
                 system("pause");
             }
 
@@ -394,7 +394,7 @@ void interfaceHospedes()
             }
             else
             {
-                printf("\nHospede nÃ£o encontrado!\n\n");
+                printf("\nHospede nÆo encontrado!\n\n");
                 system("pause");
             }
             break;
@@ -407,7 +407,7 @@ void interfaceHospedes()
             system("pause");
             break;
         default:
-            printf("OpÃ§Ã£o invÃ¡lida!\n");
+            printf("Op‡Æo inv lida!\n");
             system("pause");
             fflush(stdin);
             break;
