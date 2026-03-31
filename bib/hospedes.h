@@ -4,7 +4,7 @@ typedef struct
     int id;
     char nome[100];
     char endereco[100];
-    char cpf[12];
+    char cpf[15];
     char telefone[12];
     char email[100];
     char sexo;
@@ -29,7 +29,7 @@ ListaHospede *iniciaListaHospede();
 
 int inserirHospede(ListaHospede **lista, TipoHospede hospede);
 
-int buscarHospede(ListaHospede **lista, TipoHospede *hospede, int id, ListaHospede **pos);
+int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHospede **pos);
 
 void alterarHospede(ListaHospede *pos, TipoHospede hospede);
 

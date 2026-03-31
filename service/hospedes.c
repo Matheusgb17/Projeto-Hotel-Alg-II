@@ -47,27 +47,23 @@ int inserirHospede(ListaHospede **lista, TipoHospede hospede)
     return 1;
 }
 
-int buscarHospede(ListaHospede **lista, TipoHospede *hospede, int id, ListaHospede **pos)
+int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHospede **pos)
 {
     if ((*lista)->prox == NULL)
         return 1;
 
     ListaHospede *aux = (*lista)->prox;
 
-    while (aux->Hospedes.id != id && aux != NULL)
+    while (aux != NULL && strcmp(aux->Hospedes.cpf, cpf) 
+    != 0)
         aux = aux->prox;
 
     if (aux == NULL)
         return 1;
 
-    if (aux->Hospedes.id == id)
-    {
-        *hospede = aux->Hospedes;
-        *pos = aux;
-        return 0;
-    }
-
-    return 1;
+    *hospede = aux->Hospedes;
+    *pos = aux;
+    return 0;
 }
 
 void alterarHospede(ListaHospede *pos, TipoHospede hospede)
@@ -101,3 +97,4 @@ void listarHospedes(ListaHospede *lista)
         }
     }
 }
+

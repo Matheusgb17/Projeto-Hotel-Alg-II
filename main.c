@@ -10,11 +10,11 @@ int main()
     TipoHospede hospede;
     int res = 0;
 
-    // Cadastro e GestÃ£o de Hospedes
+    // Cadastro e GestÆo de Hospedes
     do
     {
         system("cls");
-        printf("Cadastro e gestÃ£o de Hospedes!\n");
+        printf("Cadastro e gestÆo de Hospedes!\n");
         printf("1 - Inserir hospede\n");
         printf("2 - Buscar hospede\n");
         printf("3 - Alterar hospede\n");
@@ -30,7 +30,7 @@ int main()
         {
             printf("\nTem certeza que deseja sair?\n");
             printf("1 - sim\n");
-            printf("2 - nï¿½o\n");
+            printf("2 - nÆo\n");
             printf("=> ");
             scanf("%d", &res);
             fflush(stdin);
@@ -44,25 +44,25 @@ int main()
         switch (res)
         {
         case 1:
-            printf("Insira seu nome            : ");
+            printf("Insira o nome: ");
             scanf("%[^\n]", hospede.nome);
             fflush(stdin);
 
-            printf("Insira seu endereï¿½o        : ");
+            printf("Insira o endere‡o: ");
             scanf("%[^\n]", hospede.endereco);
             fflush(stdin);
 
-            printf("Insira seu cpf             : ");
+            printf("Insira o cpf: ");
             scanf("%[^\n]", hospede.cpf);
             fflush(stdin);
 
-            printf("Insira seu telefone        : ");
+            printf("Insira o telefone: ");
             scanf("%[^\n]", hospede.telefone);
             fflush(stdin);
 
             while (1)
             {
-                printf("\nSelecione o seu sexo       : \n");
+                printf("\nSelecione o sexo       : \n");
                 printf("1 - Feminino\n");
                 printf("2 - Masculino\n");
                 printf("3 - Outro\n=> ");
@@ -71,36 +71,36 @@ int main()
 
                 if (res == 1)
                 {
-                    hospede.sexo = 'f';
+                    hospede.sexo = 'F';
                     break;
                 }
                 else if (res == 2)
                 {
-                    hospede.sexo = 'm';
+                    hospede.sexo = 'M';
                     break;
                 }
                 else if (res == 3)
                 {
-                    hospede.sexo = 'n';
+                    hospede.sexo = 'O';
                     break;
                 }
                 else
                 {
-                    printf("Opï¿½ï¿½o invï¿½lida");
+                    printf("Op‡Æo inv lida");
                     system("pause");
                     fflush(stdin);
                 }
             }
 
-            printf("Insira seu email           : ");
+            printf("Insira o email: ");
             scanf("%[^\n]", hospede.email);
             fflush(stdin);
 
-            printf("Insira seu estado civil    : ");
+            printf("Insira o estado civil: ");
             scanf("%[^\n]", hospede.estado_civil);
             fflush(stdin);
 
-            printf("Insira sua data nascimento : ");
+            printf("Insira a data nascimento: ");
             scanf("%[^\n]", hospede.data_nasc);
             fflush(stdin);
 
@@ -111,7 +111,7 @@ int main()
             if (res == 0)
             {
                 printf("\nHospede inserido com sucesso!\n");
-                printf("O ID do hospede %s ï¿½ : %d\n", hospede.nome, hospede.id);
+                printf("O ID do hospede %s: %d\n", hospede.nome, hospede.id);
                 system("pause");
             }
             else
@@ -122,48 +122,49 @@ int main()
 
             break;
         case 2:
-            printf("Insira o id do Hospede que deseja buscar: ");
-            scanf("%d", &hospede.id);
+            printf("Insira o cpf do Hospede que deseja buscar: ");
+            scanf("%[^\n]", &hospede.cpf);
             fflush(stdin);
 
-            res = buscarHospede(&listaHospedes, &hospede, hospede.id, &pos);
+            res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
             if (res == 0)
             {
                 printf("\nHospede encontrado!! -------------\n");
                 printf("ID              : %d\n", hospede.id);
                 printf("nome            : %s\n", hospede.nome);
-                printf("endereï¿½o        : %s\n", hospede.endereco);
+                printf("endere‡o        : %s\n", hospede.endereco);
                 printf("cpf             : %s\n", hospede.cpf);
                 printf("telefone        : %s\n", hospede.telefone);
                 printf("sexo            : %c\n", hospede.sexo);
                 printf("email           : %s\n", hospede.email);
                 printf("estado civil    : %s\n", hospede.estado_civil);
-                printf("data nascimento : %s\n", hospede.data_nasc);
+                printf("data nascimento : %s\n\n", hospede.data_nasc);
 
                 system("pause");
             }
             else
             {
-                printf("\nHospede nï¿½o encontrado!\n");
+                printf("\nHospede nÆo encontrado!\n");
                 system("pause");
             }
 
             break;
         case 3:
-            printf("Insira o id do Hospede que deseja alterar: ");
-            scanf("%d", &hospede.id);
+            printf("Insira o cpf do Hospede que deseja alterar: ");
+            scanf("%[^\n]", &hospede.cpf);
             fflush(stdin);
 
-            res = buscarHospede(&listaHospedes, &hospede, hospede.id, &pos);
+            res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
             if (res == 0)
             {
                 while (res != 9)
                 {
+                    system("cls");
                     printf("\nHospede encontrado!! -------------\n");
                     printf("Digite o campo que deseja alterar: \n\n");
                     printf("ID (fixo)           : %d\n", hospede.id);
                     printf("1 - nome            : %s\n", hospede.nome);
-                    printf("2 - endereÃ§o        : %s\n", hospede.endereco);
+                    printf("2 - endere‡o        : %s\n", hospede.endereco);
                     printf("3 - cpf             : %s\n", hospede.cpf);
                     printf("4 - telefone        : %s\n", hospede.telefone);
                     printf("5 - sexo            : %c\n", hospede.sexo);
@@ -177,8 +178,6 @@ int main()
 
                     scanf("%d", &res);
 
-                    printf("%d", res);
-
                     if (res == 0)
                         break;
 
@@ -191,24 +190,24 @@ int main()
                         fflush(stdin);
                         break;
                     case 2:
-                        printf("Insira seu endereï¿½o: ");
+                        printf("Insira o novo endere‡o: ");
                         scanf("%[^\n]", hospede.endereco);
                         fflush(stdin);
                         break;
                     case 3:
-                        printf("Insira seu cpf: ");
+                        printf("Insira o novo cpf: ");
                         scanf("%[^\n]", hospede.cpf);
                         fflush(stdin);
                         break;
                     case 4:
-                        printf("Insira seu telefone: ");
+                        printf("Insira o novo telefone: ");
                         scanf("%[^\n]", hospede.telefone);
                         fflush(stdin);
                         break;
                     case 5:
                         while (1)
                         {
-                            printf("\nSelecione o seu sexo       : \n");
+                            printf("\nSelecione o novo sexo       : \n");
                             printf("1 - Feminino\n");
                             printf("2 - Masculino\n");
                             printf("3 - Outro\n=> ");
@@ -217,39 +216,39 @@ int main()
 
                             if (res == 1)
                             {
-                                hospede.sexo = 'f';
+                                hospede.sexo = 'F';
                                 break;
                             }
                             else if (res == 2)
                             {
-                                hospede.sexo = 'm';
+                                hospede.sexo = 'M';
                                 break;
                             }
                             else if (res == 3)
                             {
-                                hospede.sexo = 'n';
+                                hospede.sexo = 'O';
                                 break;
                             }
                             else
                             {
-                                printf("Opï¿½ï¿½o invï¿½lida");
+                                printf("Op‡Æo inv lida");
                                 system("pause");
                                 fflush(stdin);
                             }
                         }
                         break;
                     case 6:
-                        printf("Insira seu email: ");
+                        printf("Insira o novo email: ");
                         scanf("%[^\n]", hospede.email);
                         fflush(stdin);
                         break;
                     case 7:
-                        printf("Insira seu estado civil: ");
+                        printf("Insira o novo estado civil: ");
                         scanf("%[^\n]", hospede.estado_civil);
                         fflush(stdin);
                         break;
                     case 8:
-                        printf("Insira sua data nascimento: ");
+                        printf("Insira a nova data nascimento: ");
                         scanf("%[^\n]", hospede.data_nasc);
                         fflush(stdin);
                         break;
@@ -258,7 +257,7 @@ int main()
                         break;
 
                     default:
-                        printf("Escolha um valor vï¿½lido...\n");
+                        printf("Escolha um valor v lido...\n");
                         system("pause");
                         break;
                     }
@@ -266,22 +265,25 @@ int main()
             }
             else
             {
-                printf("\nHospede nï¿½o encontrado!\n");
+                printf("\nHospede nÆo encontrado!\n");
                 system("pause");
             }
 
             break;
         case 4:
-            printf("Insira o id do Hospede que deseja apagar: ");
-            scanf("%d", &hospede.id);
+            printf("Insira o cpf do Hospede que deseja apagar: ");
+            scanf("%[^\n]", &hospede.cpf);
             fflush(stdin);
 
-            res = buscarHospede(&listaHospedes, &hospede, hospede.id, &pos);
+            res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
             if (res == 0)
             {
                 printf("\nHospede encontrado!! -------------\n");
                 printf("ID              : %d\n", hospede.id);
-                printf("nome            : %s\n\n", hospede.nome);
+                printf("nome            : %s\n", hospede.nome);
+                printf("cpf             : %s\n", hospede.cpf);
+                printf("sexo            : %c\n", hospede.sexo);
+                printf("telefone        : %s\n", hospede.telefone);
 
                 printf("Tem certeza que deseja apagar esse hospede?\n");
                 printf("1 - Apagar\n");
@@ -299,7 +301,7 @@ int main()
             }
             else
             {
-                printf("\nHospede nï¿½o encontrado!\n\n");
+                printf("\nHospede nÆo encontrado!\n\n");
                 system("pause");
             }
             break;
@@ -309,9 +311,10 @@ int main()
             break;
         case 35:
             printf("\n=> %d\n", escolheId(listaHospedes));
+            system("pause");
             break;
         default:
-            printf("Opï¿½ï¿½o invï¿½lida!\n");
+            printf("Op‡Æo inv lida!\n");
             system("pause");
             fflush(stdin);
             break;
