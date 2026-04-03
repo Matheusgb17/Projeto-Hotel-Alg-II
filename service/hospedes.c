@@ -120,19 +120,7 @@ void interfaceHospedes()
         system("cls");
 
         if (res == 5)
-        {
-            printf("\nTem certeza que deseja sair?\n");
-            printf("1 - sim\n");
-            printf("2 - nÆo\n");
-            printf("=> ");
-            scanf("%d", &res);
-            fflush(stdin);
-
-            if (res == 1)
-                break;
-            else
-                continue;
-        }
+            break;
 
         switch (res)
         {

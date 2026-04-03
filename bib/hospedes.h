@@ -25,16 +25,50 @@ typedef struct listaHospedes
  */
 int escolheId(ListaHospede *lista);
 
+/**
+ * Aloca memória e inicializa o nó sentinela (cabecalho) da lista de hóspedes.
+ * @return ListaHospede* Ponteiro para a lista inicializada com ID 0 e próximo nulo.
+ */
 ListaHospede *iniciaListaHospede();
 
+/**
+ * Insere um novo hóspede no final da lista encadeada.
+ * @param lista Ponteiro para o ponteiro da lista (para permitir alteração direta).
+ * @param hospede Estrutura contendo os dados do hóspede a ser inserido.
+ * @return int Retorna 0 para sucesso ou 1 caso ocorra falha na alocação.
+ */
 int inserirHospede(ListaHospede **lista, TipoHospede hospede);
 
+/**
+ * Localiza um hóspede na lista através do número de CPF.
+ * @param lista Ponteiro para o ponteiro da lista de busca.
+ * @param hospede Ponteiro para armazenar os dados do hóspede encontrado.
+ * @param cpf String contendo o CPF a ser comparado.
+ * @param pos Ponteiro para armazenar o endereço do nó (Node) encontrado na lista.
+ * @return int Retorna 0 se encontrado ou 1 caso a lista esteja vazia ou o CPF não exista.
+ */
 int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHospede **pos);
 
+/**
+ * Sobrescreve os dados de um hóspede em uma posição específica da lista.
+ * @param pos Ponteiro para o nó da lista que será alterado.
+ * @param hospede Estrutura com os novos dados a serem gravados.
+ * @return void
+ */
 void alterarHospede(ListaHospede *pos, TipoHospede hospede);
 
+/**
+ * Realiza a exclusão lógica de um hóspede definindo seu ID como 0.
+ * @param pos Ponteiro para o nó da lista que terá o hóspede "apagado".
+ * @return void
+ */
 void apagarHospede(ListaHospede *pos);
 
+/**
+ * @brief Percorre a lista e exibe no console o ID e Nome de todos os hóspedes cadastrados.
+ * @param lista Ponteiro para a lista de hóspedes.
+ * @return void
+ */
 void listarHospedes(ListaHospede *lista);
 
 void interfaceHospedes();

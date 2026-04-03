@@ -3,7 +3,8 @@
 #include <string.h>
 #include <windows.h>
 #include "bib\hospedes.h"
+#include "bib\hotel.h"
 
 int main(){
-    interfaceHospedes();
+    interfaceHotel();
 }
