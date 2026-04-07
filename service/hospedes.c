@@ -4,7 +4,7 @@
 #include <windows.h>
 #include "..\bib\hospedes.h"
 
-int escolheId(ListaHospede *lista)
+int escolheIdHospede(ListaHospede *lista)
 {
     int cont = 0;
     lista = lista->prox;
@@ -43,7 +43,6 @@ int inserirHospede(ListaHospede **lista, TipoHospede hospede)
         aux->prox = novoHospede;
         return 0;
     }
-    printf("Erro ao inserir...\n");
     return 1;
 }
 
@@ -81,7 +80,7 @@ void listarHospedes(ListaHospede *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum hospede cadastrado");
+        printf("Nenhum hospede cadastrado.\n");
         return;
     }
     else
@@ -118,9 +117,6 @@ void interfaceHospedes()
         scanf("%d", &res);
         fflush(stdin);
         system("cls");
-
-        if (res == 5)
-            break;
 
         switch (res)
         {
@@ -185,7 +181,7 @@ void interfaceHospedes()
             scanf("%[^\n]", hospede.data_nasc);
             fflush(stdin);
 
-            hospede.id = escolheId(listaHospedes);
+            hospede.id = escolheIdHospede(listaHospedes);
 
             res = inserirHospede(&listaHospedes, hospede);
 
@@ -391,16 +387,19 @@ void interfaceHospedes()
             system("pause");
             break;
         case 35:
-            printf("\n=> %d\n", escolheId(listaHospedes));
+            printf("\n=> %d\n", escolheIdHospede(listaHospedes));
             system("pause");
             break;
         default:
-            printf("Op‡Æo inv lida!\n");
-            system("pause");
-            fflush(stdin);
+            if (res != 5)
+            {
+                printf("Op‡Æo inv lida!\n");
+                system("pause");
+                fflush(stdin);
+            }
             break;
         }
-    } while (1);
+    } while (res != 5);
 
     return;
 }

@@ -8,10 +8,10 @@ typedef struct
     char inscricaoEstadual[20];
     char CNPJ[19];
     char enderecoCompleto[200];
-    char telefone[12];
+    char telefone[16];
     char email[100];
     char nomeResponsavel[100];
-    char telefoneResponsavel[12];
+    char telefoneResponsavel[16];
     char horarioCheckin[6];
     char horarioCheckout[6];
     float margemLucro;

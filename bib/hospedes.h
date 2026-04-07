@@ -5,7 +5,7 @@ typedef struct
     char nome[100];
     char endereco[100];
     char cpf[15];
-    char telefone[12];
+    char telefone[16];
     char email[100];
     char sexo;
     char estado_civil[20];
@@ -23,7 +23,7 @@ typedef struct listaHospedes
  * @param lista endereço da lista que será percorrida,
  * @return retorna a quantidade de individuos inseridos
  */
-int escolheId(ListaHospede *lista);
+int escolheIdHospede(ListaHospede *lista);
 
 /**
  * Aloca memória e inicializa o nó sentinela (cabecalho) da lista de hóspedes.
@@ -65,7 +65,7 @@ void alterarHospede(ListaHospede *pos, TipoHospede hospede);
 void apagarHospede(ListaHospede *pos);
 
 /**
- * @brief Percorre a lista e exibe no console o ID e Nome de todos os hóspedes cadastrados.
+ * Percorre a lista e exibe no console o ID e Nome de todos os hóspedes cadastrados.
  * @param lista Ponteiro para a lista de hóspedes.
  * @return void
  */

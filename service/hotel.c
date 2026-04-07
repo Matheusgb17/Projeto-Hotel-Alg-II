@@ -9,7 +9,7 @@ TipoHotel *iniciaHotel()
     TipoHotel *hotel = malloc(sizeof(TipoHotel));
 
     hotel->cadastrado = false;
-    strcpy(hotel->nomeFantasia, "[Dados nÆo cadastrados]");
+    strcpy(hotel->nomeFantasia, "[Dados nï¿½o cadastrados]");
     return hotel;
 }
 
@@ -28,7 +28,7 @@ TipoHotel consultarDadosHotel(TipoHotel *h)
 void apagarDadosHotel(TipoHotel *hotel)
 {
     hotel->cadastrado = false;
-    strcpy(hotel->nomeFantasia, "[Dados nÆo cadastrados]");
+    strcpy(hotel->nomeFantasia, "[Dados nï¿½o cadastrados]");
     return;
 }
 
@@ -39,7 +39,7 @@ void interfaceHotel()
     while (res != 5)
     {
         system("cls");
-        printf("GestÆo de dados do hotel | %s\n", dadosHotel->nomeFantasia);
+        printf("Gestï¿½o de dados do hotel | %s\n", dadosHotel->nomeFantasia);
         if (!dadosHotel->cadastrado)
             printf("1 - Cadastrar dados do hotel\n");
         if (dadosHotel->cadastrado)
@@ -66,11 +66,11 @@ void interfaceHotel()
             scanf("%[^\n]", hotel.nomeFantasia);
             fflush(stdin);
 
-            printf("Insira a RazÆo Social: ");
+            printf("Insira a Razï¿½o Social: ");
             scanf("%[^\n]", hotel.razaoSocial);
             fflush(stdin);
 
-            printf("Insira a Inscri‡Æo Estadual do hotel: ");
+            printf("Insira a Inscriï¿½ï¿½o Estadual do hotel: ");
             scanf("%[^\n]", hotel.inscricaoEstadual);
             fflush(stdin);
 
@@ -78,7 +78,7 @@ void interfaceHotel()
             scanf("%[^\n]", hotel.CNPJ);
             fflush(stdin);
 
-            printf("Insira o endere‡o completo do hotel: ");
+            printf("Insira o endereï¿½o completo do hotel: ");
             scanf("%[^\n]", hotel.enderecoCompleto);
             fflush(stdin);
 
@@ -90,11 +90,11 @@ void interfaceHotel()
             scanf("%[^\n]", hotel.email);
             fflush(stdin);
 
-            printf("Insira o nome do respons vel do hotel: ");
+            printf("Insira o nome do responsï¿½vel do hotel: ");
             scanf("%[^\n]", hotel.nomeResponsavel);
             fflush(stdin);
 
-            printf("Insira o telefone do respons vel do hotel: ");
+            printf("Insira o telefone do responsï¿½vel do hotel: ");
             scanf("%[^\n]", hotel.telefoneResponsavel);
             fflush(stdin);
 
@@ -122,7 +122,7 @@ void interfaceHotel()
             printf("Razao Social            : %s\n", hotel.razaoSocial);
             printf("Inscricao Estadual      : %s\n", hotel.inscricaoEstadual);
             printf("CNPJ                    : %s\n", hotel.CNPJ);
-            printf("Endere‡o Completo       : %s\n", hotel.enderecoCompleto);
+            printf("Endereï¿½o Completo       : %s\n", hotel.enderecoCompleto);
             printf("Telefone                : %s\n", hotel.telefone);
             printf("Email                   : %s\n", hotel.email);
             printf("Nome do Responsavel     : %s\n", hotel.nomeResponsavel);
@@ -148,7 +148,7 @@ void interfaceHotel()
                 printf("2  - Razao Social            : %s\n", hotel.razaoSocial);
                 printf("3  - Inscricao Estadual      : %s\n", hotel.inscricaoEstadual);
                 printf("4  - CNPJ                    : %s\n", hotel.CNPJ);
-                printf("5  - Endere‡o Completo       : %s\n", hotel.enderecoCompleto);
+                printf("5  - Endereï¿½o Completo       : %s\n", hotel.enderecoCompleto);
                 printf("6  - Telefone                : %s\n", hotel.telefone);
                 printf("7  - Email                   : %s\n", hotel.email);
                 printf("8  - Nome do Responsavel     : %s\n", hotel.nomeResponsavel);
@@ -170,57 +170,57 @@ void interfaceHotel()
                 {
                 case 1:
                     printf("Insira o novo Nome Fantasia do hotel: ");
-                    fgets(hotel.nomeFantasia, 100, stdin);
+                    scanf("%[^\n]", hotel.nomeFantasia);
                     fflush(stdin);
                     break;
                 case 2:
-                    printf("Insira a nova RazÆo Social: ");
-                    fgets(hotel.razaoSocial, 150, stdin);
+                    printf("Insira a nova RazÃ£o Social: ");
+                    scanf("%[^\n]", hotel.razaoSocial);
                     fflush(stdin);
                     break;
                 case 3:
-                    printf("Insira a nova Inscri‡Æo Estadual do hotel: ");
-                    fgets(hotel.inscricaoEstadual, 20, stdin);
+                    printf("Insira a nova InscriÃ§Ã£o Estadual do hotel: ");
+                    scanf("%[^\n]", hotel.inscricaoEstadual);
                     fflush(stdin);
                     break;
                 case 4:
                     printf("Insira o novo CNPJ do hotel: ");
-                    fgets(hotel.CNPJ, 19, stdin);
+                    scanf("%[^\n]", hotel.CNPJ);
                     fflush(stdin);
                     break;
                 case 5:
-                    printf("Insira o novo endere‡o completo do hotel: ");
-                    fgets(hotel.enderecoCompleto, 200, stdin);
+                    printf("Insira o novo endereÃ§o completo do hotel: ");
+                    scanf("%[^\n]", hotel.enderecoCompleto);
                     fflush(stdin);
                     break;
                 case 6:
                     printf("Insira o novo telefone do hotel: ");
-                    fgets(hotel.telefone, 12, stdin);
+                    scanf("%[^\n]", hotel.telefone);
                     fflush(stdin);
                     break;
                 case 7:
                     printf("Insira o novo email do hotel: ");
-                    fgets(hotel.email, 150, stdin);
+                    scanf("%[^\n]", hotel.email);
                     fflush(stdin);
                     break;
                 case 8:
-                    printf("Insira o novo nome do respons vel do hotel: ");
-                    fgets(hotel.nomeResponsavel, 100, stdin);
+                    printf("Insira o novo nome do responsÃ¡vel do hotel: ");
+                    scanf("%[^\n]", hotel.nomeResponsavel);
                     fflush(stdin);
                     break;
                 case 9:
-                    printf("Insira o novo telefone do respons vel do hotel: ");
-                    fgets(hotel.telefoneResponsavel, 12, stdin);
+                    printf("Insira o novo telefone do responsÃ¡vel do hotel: ");
+                    scanf("%[^\n]", hotel.telefoneResponsavel);
                     fflush(stdin);
                     break;
                 case 10:
                     printf("Insira o novo horario de check-in do hotel: ");
-                    fgets(hotel.horarioCheckin, 6, stdin);
+                    scanf("%[^\n]", hotel.horarioCheckin);
                     fflush(stdin);
                     break;
                 case 11:
                     printf("Insira o novo horario de check-out do hotel: ");
-                    fgets(hotel.horarioCheckout, 6, stdin);
+                    scanf("%[^\n]", hotel.horarioCheckout);
                     fflush(stdin);
                     break;
                 case 12:
@@ -234,7 +234,7 @@ void interfaceHotel()
                     system("pause");
                     break;
                 default:
-                    printf("Op‡Æo inv lida!\n");
+                    printf("OpÃ§Ã£o invÃ¡lida!\n");
                     system("pause");
                     fflush(stdin);
                     break;
@@ -257,8 +257,8 @@ void interfaceHotel()
             res = 0;
             break;
         default:
-            if(res != 5)
-                printf("Op‡Æo inv lida!\n");
+            if (res != 5)
+                printf("Opï¿½ï¿½o invï¿½lida!\n");
             system("pause");
             break;
         }
