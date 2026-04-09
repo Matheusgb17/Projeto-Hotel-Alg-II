@@ -18,6 +18,21 @@ int escolheIdFornecedor(ListaFornecedor *lista)
     return cont + 1;
 }
 
+int listarFornecedores(ListaFornecedor *lista){
+    if (lista->prox != NULL) {
+        printf("Nenhum fornecedor cadastrado");
+        return;
+    } else {
+        lista = lista->prox;
+        printf("\nFornecedor ---------\n");
+        while (lista != NULL) {
+            printf("Id: %d\n", lista->Fornecedor.id);
+            printf("Nome: %s\n", lista->Fornecedor.nome_fantasia);
+            lista = lista->prox;
+        }
+    }
+}
+
 ListaFornecedor *iniciaListaFornecedor()
 {
     ListaFornecedor *Lista = malloc(sizeof(ListaFornecedor));
@@ -87,7 +102,7 @@ void listarFornecedor(ListaFornecedor *lista)
     if (lista->prox == NULL)
     {
         printf("Nenhum Fornecedor cadastrado");
-        return;
+        system("pause");
     }
     else
     {
@@ -115,14 +130,15 @@ void interfaceFornecedor(){
         printf("2 - Buscar fornecedor\n");
         printf("3 - Alterar fornecedor\n");
         printf("4 - Apagar fornecedor\n");
-        printf("5 - Sair\n");
+        printf("5- Listar fornecedores\n");
+        printf("6 - Sair\n");
 
         printf("=> ");
         scanf("%d", &res);
         fflush(stdin);
         system("cls");
 
-        if (res == 5) {
+        if (res == 6) {
             break;
         }
 
@@ -317,16 +333,18 @@ void interfaceFornecedor(){
                     system("pause");
                 }
                 break;
-
+            case 5:
+                listarFornecedor(listaFornecedor);
+                break;
             default:
-                if (res != 5) {
+                if (res != 6) {
                     printf("Selecione uma opção válida!\n");
                     system("pause");
                     fflush(stdin);
                 }
                 break;
         }
-    } while (res != 5);
+    } while (res != 6);
 }
 
 

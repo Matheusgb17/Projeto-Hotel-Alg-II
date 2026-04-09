@@ -21,6 +21,8 @@ typedef struct listaFornecedor
 
 int escolheIdFornecedor(ListaFornecedor *lista);
 
+int listarFornecedores(ListaFornecedor *lista);
+
 ListaFornecedor *iniciaListaFornecedor();
 
 int inserirFornecedor(ListaFornecedor **lista, TipoFornecedor Fornecedor);
