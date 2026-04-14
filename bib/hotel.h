@@ -18,15 +18,15 @@ typedef struct
 } TipoHotel;
 
 /**
- * Aloca e inicializa uma nova estrutura de hotel com valores padr√£o.
- * @return TipoHotel* Ponteiro para a estrutura alocada na mem√≥ria.
+ * Aloca e inicializa uma nova estrutura de hotel com valores padr∆o.
+ * @return TipoHotel* Ponteiro para a estrutura alocada na mem¢ria.
  */
 TipoHotel *iniciaHotel();
 
 /**
- * Salva os dados de uma vari√°vel local para o ponteiro de refer√™ncia do hotel.
+ * Salva os dados de uma vari†vel local para o ponteiro de referància do hotel.
  * @param h Estrutura contendo os novos dados a serem salvos.
- * @param hotel Ponteiro para o destino onde os dados ser√£o persistidos.
+ * @param hotel Ponteiro para o destino onde os dados ser∆o persistidos.
  * @return void
  */
 void salvarDadosHotel(TipoHotel h, TipoHotel *hotel);
@@ -34,13 +34,13 @@ void salvarDadosHotel(TipoHotel h, TipoHotel *hotel);
 /**
  * Retorna os dados contidos no ponteiro do hotel.
  * @param h Ponteiro para a estrutura dos dados do hotel.
- * @return TipoHotel Uma c√≥pia dos dados contidos no endere√ßo apontado.
+ * @return TipoHotel Uma c¢pia dos dados contidos no endereáo apontado.
  */
 TipoHotel consultarDadosHotel(TipoHotel *h);
 
 /**
- * Restaura o estado da estrutura para n√£o cadastrado e limpa o nome fantasia.
- * @param hotel Ponteiro para a estrutura que ter√° os dados removidos.
+ * Restaura o estado da estrutura para n∆o cadastrado e limpa o nome fantasia.
+ * @param hotel Ponteiro para a estrutura que ter† os dados removidos.
  * @return void
  */
 void apagarDadosHotel(TipoHotel *hotel);

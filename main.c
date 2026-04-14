@@ -6,6 +6,10 @@
 #include "bib/hotel.h"
 #include "bib/operadores.h"
 
-int main(){
-    interfaceOperadores();
+#define BIN 1
+#define TXT 2
+
+int main()
+{
+    interfaceHospedes(BIN);
 }

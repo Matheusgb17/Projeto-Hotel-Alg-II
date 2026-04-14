@@ -4,6 +4,12 @@
 #include <windows.h>
 #include "..\bib\hospedes.h"
 
+#define HospedesBIN "./data/bin/hospedes.dat"
+#define HospedesTXT "./data/bin/hospedes.txt"
+
+#define BIN 1
+#define TXT 2
+
 int escolheIdHospede(ListaHospede *lista)
 {
     int cont = 0;
@@ -96,9 +102,50 @@ void listarHospedes(ListaHospede *lista)
     }
 }
 
-void interfaceHospedes()
+void salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
 {
-    ListaHospede *pos, *listaHospedes = iniciaListaHospede();
+    FILE *arquivo = fopen(nome_arquivo, "wb");
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n\n");
+        system("pause");
+        return;
+    }
+    ListaHospede *aux = lista->prox;
+    while (aux != NULL)
+    {
+        fwrite(&(aux->Hospedes), sizeof(TipoHospede), 1, arquivo);
+        aux = aux->prox;
+    }
+    fclose(arquivo);
+}
+
+ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
+{
+    TipoHospede hospede;
+    ListaHospede *lista = iniciaListaHospede();
+    int res;
+
+    FILE *arquivo = fopen(nome_arquivo, "rb");
+
+    if (arquivo == NULL)
+        return lista;
+
+    while (fread(&hospede, sizeof(TipoHospede), 1, arquivo) == 1)
+        res = inserirHospede(&lista, hospede);
+
+    if (res == 1)
+        printf("Erro ao cadastrar hospede!");
+
+    fclose(arquivo);
+    return lista;
+}
+
+void interfaceHospedes(int modo)
+{
+    ListaHospede *pos, *listaHospedes = resgataDadosHospedesBin(HospedesBIN);
+    // if(listaHospedes == NULL)
+    //     listaHospedes = resgataDadosHospedesTxt(HospedesTXT);
     TipoHospede hospede;
     int res = 0;
 
@@ -122,24 +169,24 @@ void interfaceHospedes()
         {
         case 1:
             printf("Insira o nome: ");
-            scanf("%[^\n]", hospede.nome);
+            scanf(" %[^\n]", hospede.nome);
             fflush(stdin);
 
             printf("Insira o endere‡o: ");
-            scanf("%[^\n]", hospede.endereco);
+            scanf(" %[^\n]", hospede.endereco);
             fflush(stdin);
 
             printf("Insira o cpf: ");
-            scanf("%[^\n]", hospede.cpf);
+            scanf(" %[^\n]", hospede.cpf);
             fflush(stdin);
 
             printf("Insira o telefone: ");
-            scanf("%[^\n]", hospede.telefone);
+            scanf(" %[^\n]", hospede.telefone);
             fflush(stdin);
 
             while (1)
             {
-                printf("\nSelecione o sexo       : \n");
+                printf("\nSelecione o sexo: \n");
                 printf("1 - Feminino\n");
                 printf("2 - Masculino\n");
                 printf("3 - Outro\n=> ");
@@ -170,15 +217,15 @@ void interfaceHospedes()
             }
 
             printf("Insira o email: ");
-            scanf("%[^\n]", hospede.email);
+            scanf(" %[^\n]", hospede.email);
             fflush(stdin);
 
             printf("Insira o estado civil: ");
-            scanf("%[^\n]", hospede.estado_civil);
+            scanf(" %[^\n]", hospede.estado_civil);
             fflush(stdin);
 
             printf("Insira a data nascimento: ");
-            scanf("%[^\n]", hospede.data_nasc);
+            scanf(" %[^\n]", hospede.data_nasc);
             fflush(stdin);
 
             hospede.id = escolheIdHospede(listaHospedes);
@@ -200,7 +247,7 @@ void interfaceHospedes()
             break;
         case 2:
             printf("Insira o cpf do Hospede que deseja buscar: ");
-            scanf("%[^\n]", &hospede.cpf);
+            scanf(" %[^\n]", hospede.cpf);
             fflush(stdin);
 
             res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
@@ -228,7 +275,7 @@ void interfaceHospedes()
             break;
         case 3:
             printf("Insira o cpf do Hospede que deseja alterar: ");
-            scanf("%[^\n]", &hospede.cpf);
+            scanf(" %[^\n]", hospede.cpf);
             fflush(stdin);
 
             res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
@@ -263,28 +310,28 @@ void interfaceHospedes()
                     {
                     case 1:
                         printf("Insira o novo nome: ");
-                        scanf("%[^\n]", hospede.nome);
+                        scanf(" %[^\n]", hospede.nome);
                         fflush(stdin);
                         break;
                     case 2:
                         printf("Insira o novo endere‡o: ");
-                        scanf("%[^\n]", hospede.endereco);
+                        scanf(" %[^\n]", hospede.endereco);
                         fflush(stdin);
                         break;
                     case 3:
                         printf("Insira o novo cpf: ");
-                        scanf("%[^\n]", hospede.cpf);
+                        scanf(" %[^\n]", hospede.cpf);
                         fflush(stdin);
                         break;
                     case 4:
                         printf("Insira o novo telefone: ");
-                        scanf("%[^\n]", hospede.telefone);
+                        scanf(" %[^\n]", hospede.telefone);
                         fflush(stdin);
                         break;
                     case 5:
                         while (1)
                         {
-                            printf("\nSelecione o novo sexo       : \n");
+                            printf("\nSelecione o novo sexo: \n");
                             printf("1 - Feminino\n");
                             printf("2 - Masculino\n");
                             printf("3 - Outro\n=> ");
@@ -316,17 +363,17 @@ void interfaceHospedes()
                         break;
                     case 6:
                         printf("Insira o novo email: ");
-                        scanf("%[^\n]", hospede.email);
+                        scanf(" %[^\n]", hospede.email);
                         fflush(stdin);
                         break;
                     case 7:
                         printf("Insira o novo estado civil: ");
-                        scanf("%[^\n]", hospede.estado_civil);
+                        scanf(" %[^\n]", hospede.estado_civil);
                         fflush(stdin);
                         break;
                     case 8:
                         printf("Insira a nova data nascimento: ");
-                        scanf("%[^\n]", hospede.data_nasc);
+                        scanf(" %[^\n]", hospede.data_nasc);
                         fflush(stdin);
                         break;
                     case 9:
@@ -349,7 +396,7 @@ void interfaceHospedes()
             break;
         case 4:
             printf("Insira o cpf do Hospede que deseja apagar: ");
-            scanf("%[^\n]", &hospede.cpf);
+            scanf(" %[^\n]", hospede.cpf);
             fflush(stdin);
 
             res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
@@ -396,6 +443,13 @@ void interfaceHospedes()
                 printf("Op‡Æo inv lida!\n");
                 system("pause");
                 fflush(stdin);
+            }
+            else
+            {
+                if(modo == BIN)
+                    salvaDadosHospedesBin(listaHospedes, HospedesBIN);
+                // else if (modo == TXT)
+                //     salvaDadosHospedesTxt(listaHospedes, HospedesTXT);
             }
             break;
         }
