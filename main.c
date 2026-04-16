@@ -3,7 +3,9 @@
 #include <string.h>
 #include <windows.h>
 #include "bib\hospedes.h"
+#include "bib\categorias.h"
 
 int main(){
-    interfaceHospedes();
+    //interfaceHospedes();
+    interfaceCategoria();
 }

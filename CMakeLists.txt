@@ -8,7 +8,9 @@ include_directories(bib)
 add_executable(Marismar_Plaza
         bib/hospedes.h
         service/hospedes.c
-        main.c)
+        main.c
+        service/categorias.c
+        bib/categorias.h)
 
 # Para executar pelo prompt:
 
