@@ -19,17 +19,19 @@ int escolheIdFornecedor(ListaFornecedor *lista)
 }
 
 int listarFornecedores(ListaFornecedor *lista){
-    if (lista->prox != NULL) {
+    if (lista->prox == NULL) {
         printf("Nenhum fornecedor cadastrado");
-        return;
     } else {
         lista = lista->prox;
         printf("\nFornecedor ---------\n");
         while (lista != NULL) {
-            printf("Id: %d\n", lista->Fornecedor.id);
-            printf("Nome: %s\n", lista->Fornecedor.nome_fantasia);
+            if (lista->Fornecedor.id != 0) {
+                printf("Id: %d\n", lista->Fornecedor.id);
+                printf("Nome: %s\n", lista->Fornecedor.nome_fantasia);
+            }
             lista = lista->prox;
         }
+        system("pause");
     }
 }
 
@@ -72,7 +74,7 @@ int buscarFornecedor(ListaFornecedor **lista, TipoFornecedor *Fornecedor, char *
     while (strcmp(aux->Fornecedor.cnpj, CNPJ) != 0 && aux != NULL)
         aux = aux->prox;
 
-    if (aux == NULL)
+    if (aux == NULL || aux->Fornecedor.id == 0)
         return 1;
 
     if (strcmp(aux->Fornecedor.cnpj, CNPJ) == 0)
@@ -114,6 +116,7 @@ void listarFornecedor(ListaFornecedor *lista)
             printf("Nome : %s\n\n", lista->Fornecedor.nome_fantasia);
             lista = lista->prox;
         }
+        system("pause");
     }
 }
 

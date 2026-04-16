@@ -2,13 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+
+#include "bib\produtos.h"
 #include "bib\hospedes.h"
 #include  "bib/fornecedores.h"
+
 
 int main()
 {
 
-    interfaceFornecedor();
+    interfaceProduto();
 
     return 0;
 }

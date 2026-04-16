@@ -10,4 +10,7 @@ add_executable(Projeto_Hotel_Alg_II
         bib/hospedes.h
         service/fornecedores.c
         service/hospedes.c
-        main.c)
+        main.c
+        service/produtos.c
+        bib/produtos.h
+)
