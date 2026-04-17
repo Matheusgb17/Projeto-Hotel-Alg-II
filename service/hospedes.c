@@ -5,7 +5,7 @@
 #include "..\bib\hospedes.h"
 
 #define HospedesBIN "./data/bin/hospedes.dat"
-#define HospedesTXT "./data/bin/hospedes.txt"
+#define HospedesTXT "./data/txt/hospedes.txt"
 
 #define BIN 1
 #define TXT 2
@@ -62,7 +62,7 @@ int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHo
     while (aux != NULL && strcmp(aux->Hospedes.cpf, cpf) != 0)
         aux = aux->prox;
 
-    if (aux == NULL)
+    if (aux == NULL || aux->Hospedes.id == 0)
         return 1;
 
     *hospede = aux->Hospedes;
@@ -95,8 +95,12 @@ void listarHospedes(ListaHospede *lista)
         printf("\nHospedes ---------\n");
         while (lista != NULL)
         {
-            printf("Id   : %d\n", lista->Hospedes.id);
-            printf("Nome : %s\n\n", lista->Hospedes.nome);
+            if (lista->Hospedes.id != 0)
+            {
+                printf("Id   : %d\n", lista->Hospedes.id);
+                printf("Nome : %s\n", lista->Hospedes.nome);
+                printf("Cpf  : %s\n\n", lista->Hospedes.cpf);
+            }
             lista = lista->prox;
         }
     }
@@ -141,11 +145,94 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
     return lista;
 }
 
+void salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
+{
+    FILE *arquivo = fopen(nome_arquivo, "w");
+
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n\n");
+        system("pause");
+        return;
+    }
+
+    if (lista->prox != NULL)
+    {
+        ListaHospede *aux = lista->prox;
+
+        fprintf(arquivo, "<tabela=hospede>\n");
+        while (aux != NULL)
+        {
+            fprintf(arquivo, "    <registro>\n");
+            fprintf(arquivo, "        <codigo>%d</codigo>\n", aux->Hospedes.id);
+            fprintf(arquivo, "        <nome>%s</nome>\n", aux->Hospedes.nome);
+            fprintf(arquivo, "        <endereco>%s</endereco>\n", aux->Hospedes.endereco);
+            fprintf(arquivo, "        <cpf>%s</cpf>\n", aux->Hospedes.cpf);
+            fprintf(arquivo, "        <telefone>%s</telefone>\n", aux->Hospedes.telefone);
+            fprintf(arquivo, "        <email>%s</email>\n", aux->Hospedes.email);
+            fprintf(arquivo, "        <sexo>%c</sexo>\n", aux->Hospedes.sexo);
+            fprintf(arquivo, "        <est_civil>%s</est_civil>\n", aux->Hospedes.estado_civil);
+            fprintf(arquivo, "        <data_nascimento>%s</data_nascimento>\n", aux->Hospedes.data_nasc);
+            fprintf(arquivo, "    </registro>\n");
+            aux = aux->prox;
+        }
+        fprintf(arquivo, "</tabela>\n");
+    }
+    fclose(arquivo);
+}
+
+ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo)
+{
+    ListaHospede *lista = iniciaListaHospede();
+    TipoHospede hospede;
+
+    FILE *arquivo = fopen(nome_arquivo, "r");
+
+    if (arquivo == NULL)
+        return lista;
+
+    char linha[256];
+
+    while (fgets(linha, sizeof(linha), arquivo))
+    {
+        if (strstr(linha, "<registro>") != NULL)
+        {
+            memset(&hospede, 0, sizeof(TipoHospede));
+            continue;
+        }
+
+        if (strstr(linha, "</registro>") != NULL)
+        {
+            inserirHospede(&lista, hospede);
+            continue;
+        }
+
+        sscanf(linha, " <codigo>%d", &hospede.id);
+        sscanf(linha, " <nome>%[^<]", hospede.nome);
+        sscanf(linha, " <endereco>%[^<]", hospede.endereco);
+        sscanf(linha, " <cpf>%[^<]", hospede.cpf);
+        sscanf(linha, " <telefone>%[^<]", hospede.telefone);
+        sscanf(linha, " <email>%[^<]", hospede.email);
+        sscanf(linha, " <sexo>%c", &hospede.sexo);
+        sscanf(linha, " <est_civil>%[^<]", hospede.estado_civil);
+        sscanf(linha, " <data_nascimento>%[^<]", hospede.data_nasc);
+    }
+    fclose(arquivo);
+
+    return lista;
+}
+
 void interfaceHospedes(int modo)
 {
-    ListaHospede *pos, *listaHospedes = resgataDadosHospedesBin(HospedesBIN);
-    // if(listaHospedes == NULL)
-    //     listaHospedes = resgataDadosHospedesTxt(HospedesTXT);
+    ListaHospede *pos, *listaHospedes;
+
+    listaHospedes = resgataDadosHospedesBin(HospedesBIN);
+    if (listaHospedes->prox == NULL)
+    {
+        free(listaHospedes);
+        listaHospedes = resgataDadosHospedesTxt(HospedesTXT);
+    }
+
     TipoHospede hospede;
     int res = 0;
 
@@ -446,10 +533,10 @@ void interfaceHospedes(int modo)
             }
             else
             {
-                if(modo == BIN)
+                if (modo == BIN)
                     salvaDadosHospedesBin(listaHospedes, HospedesBIN);
-                // else if (modo == TXT)
-                //     salvaDadosHospedesTxt(listaHospedes, HospedesTXT);
+                else if (modo == TXT)
+                    salvaDadosHospedesTxt(listaHospedes, HospedesTXT);
             }
             break;
         }

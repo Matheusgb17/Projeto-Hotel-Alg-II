@@ -11,5 +11,5 @@
 
 int main()
 {
-    interfaceHospedes(BIN);
+    interfaceHospedes(TXT);
 }

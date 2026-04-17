@@ -86,19 +86,134 @@ void listarOperadores(ListaOperadores *lista)
         printf("\nOperadores -----------\n");
         while (lista != NULL)
         {
-            printf("Id                 : %d\n", lista->operador.id);
-            printf("Nome               : %s\n", lista->operador.nome);
-            printf("Usu†rio            : %s\n", lista->operador.user);
-            printf("N°vel de Permiss∆o : %d\n", lista->operador.permission);
+            if (lista->operador.id != 0)
+            {
+                printf("Id                 : %d\n", lista->operador.id);
+                printf("Nome               : %s\n", lista->operador.nome);
+                printf("Usu†rio            : %s\n", lista->operador.user);
+                printf("N°vel de Permiss∆o : %d\n", lista->operador.permission);
+            }
             lista = lista->prox;
         }
     }
 }
 
+void salvaDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo)
+{
+    FILE *arquivo = fopen(nome_arquivo, "wb");
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n\n");
+        system("pause");
+        return;
+    }
+
+    ListaOperadores *aux = lista->prox;
+    while (aux != NULL)
+    {
+        fwrite(&(aux->operador), sizeof(TipoOperador), 1, arquivo);
+        aux = aux->prox;
+    }
+    fclose(arquivo);
+}
+
+ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo)
+{
+    TipoOperador operador;
+    ListaOperadores *lista = iniciaListaOperadores();
+    int res;
+
+    FILE *arquivo = fopen(nome_arquivo, "rb");
+
+    if (arquivo == NULL)
+        return lista;
+
+    while (fread(&operador, sizeof(TipoOperador), 1, arquivo) == 1)
+        res = inserirOperador(&lista, operador);
+
+    if (res == 1)
+        printf("Erro ao carregar operador do arquivo bin†rio!\n");
+
+    fclose(arquivo);
+    return lista;
+}
+
+void salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
+{
+    FILE *arquivo = fopen(nome_arquivo, "w");
+
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n\n");
+        system("pause");
+        return;
+    }
+
+    if (lista->prox != NULL)
+    {
+        ListaOperadores *aux = lista->prox;
+
+        fprintf(arquivo, "<tabela=operador>\n");
+        while (aux != NULL)
+        {
+            fprintf(arquivo, "    <registro>\n");
+
+            fprintf(arquivo, "        <codigo>%d</codigo>\n", aux->operador.id);
+            fprintf(arquivo, "        <nome>%s</nome>\n", aux->operador.nome);
+            fprintf(arquivo, "        <user>%s</user>\n", aux->operador.user);
+            fprintf(arquivo, "        <senha>%s</senha>\n", aux->operador.senha);
+            fprintf(arquivo, "        <permissao>%d</permissao>\n", aux->operador.permission);
+
+            fprintf(arquivo, "    </registro>\n");
+            aux = aux->prox;
+        }
+        fprintf(arquivo, "</tabela>\n");
+    }
+    fclose(arquivo);
+}
+
+ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
+{
+    ListaOperadores *lista = iniciaListaOperadores();
+    TipoOperador operador;
+
+    FILE *arquivo = fopen(nome_arquivo, "r");
+
+    if (arquivo == NULL)
+        return lista;
+
+    char linha[256];
+
+    while (fgets(linha, sizeof(linha), arquivo))
+    {
+        if (strstr(linha, "<registro>") != NULL)
+        {
+            memset(&operador, 0, sizeof(TipoOperador));
+            continue;
+        }
+
+        if (strstr(linha, "</registro>") != NULL)
+        {
+            inserirOperador(&lista, operador);
+            continue;
+        }
+
+        sscanf(linha, " <codigo>%d", &operador.id);
+        sscanf(linha, " <nome>%[^<]", operador.nome);
+        sscanf(linha, " <user>%[^<]", operador.user);
+        sscanf(linha, " <senha>%[^<]", operador.senha);
+        sscanf(linha, " <permissao>%d", &operador.permission);
+    }
+
+    fclose(arquivo);
+    return lista;
+}
+
 void interfaceOperadores()
 {
-    ListaOperadores *pos, *listaOperadores = iniciaListaOperadores();
+    ListaOperadores *pos, *listaOperadores;
     TipoOperador operador;
+
     int res = 0, tam;
 
     do
@@ -110,20 +225,20 @@ void interfaceOperadores()
         printf("3 - Alterar operador\n");
         printf("4 - Apagar operador\n");
         printf("5 - Sair\n");
-        
+
         printf("=> ");
         scanf("%d", &res);
         fflush(stdin);
-        
+
         system("cls");
         switch (res)
         {
         case 1:
-        printf("Insira o nome completo do operador: ");
-        scanf("%[^\n]", operador.nome);
-        fflush(stdin);
-        
-        printf("Insira o nome de usu†rio do operador: ");
+            printf("Insira o nome completo do operador: ");
+            scanf("%[^\n]", operador.nome);
+            fflush(stdin);
+
+            printf("Insira o nome de usu†rio do operador: ");
             scanf("%[^\n]", operador.user);
             fflush(stdin);
 
@@ -376,7 +491,7 @@ void interfaceOperadores()
                 printf("Nome completo      : %s\n", operador.nome);
                 printf("Nome de usu†rio    : %s\n", operador.user);
                 printf("N°vel de permiss∆o : %d\n\n", operador.permission);
-                
+
                 printf("Tem certeza quedeseja apagar esse usu†rio?\n");
                 printf("1 - Sim\n");
                 printf("2 - N∆o\n");
@@ -384,7 +499,8 @@ void interfaceOperadores()
                 scanf("%d", &res);
                 fflush(stdin);
 
-                if(res == 1){
+                if (res == 1)
+                {
                     apagarOperador(pos);
                     printf("Operador apagado com sucesso!\n");
                     system("pause");
