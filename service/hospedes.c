@@ -4,7 +4,13 @@
 #include <windows.h>
 #include "..\bib\hospedes.h"
 
-int escolheId(ListaHospede *lista)
+#define HospedesBIN "./data/bin/hospedes.dat"
+#define HospedesTXT "./data/txt/hospedes.txt"
+
+#define BIN 1
+#define TXT 2
+
+int escolheIdHospede(ListaHospede *lista)
 {
     int cont = 0;
     lista = lista->prox;
@@ -43,7 +49,6 @@ int inserirHospede(ListaHospede **lista, TipoHospede hospede)
         aux->prox = novoHospede;
         return 0;
     }
-    printf("Erro ao inserir...\n");
     return 1;
 }
 
@@ -57,7 +62,7 @@ int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHo
     while (aux != NULL && strcmp(aux->Hospedes.cpf, cpf) != 0)
         aux = aux->prox;
 
-    if (aux == NULL)
+    if (aux == NULL || aux->Hospedes.id == 0)
         return 1;
 
     *hospede = aux->Hospedes;
@@ -81,7 +86,7 @@ void listarHospedes(ListaHospede *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum hospede cadastrado");
+        printf("Nenhum hospede cadastrado.\n");
         return;
     }
     else
@@ -90,16 +95,144 @@ void listarHospedes(ListaHospede *lista)
         printf("\nHospedes ---------\n");
         while (lista != NULL)
         {
-            printf("Id   : %d\n", lista->Hospedes.id);
-            printf("Nome : %s\n\n", lista->Hospedes.nome);
+            if (lista->Hospedes.id != 0)
+            {
+                printf("Id   : %d\n", lista->Hospedes.id);
+                printf("Nome : %s\n", lista->Hospedes.nome);
+                printf("Cpf  : %s\n\n", lista->Hospedes.cpf);
+            }
             lista = lista->prox;
         }
     }
 }
 
-void interfaceHospedes()
+void salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
 {
-    ListaHospede *pos, *listaHospedes = iniciaListaHospede();
+    FILE *arquivo = fopen(nome_arquivo, "wb");
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n\n");
+        system("pause");
+        return;
+    }
+    ListaHospede *aux = lista->prox;
+    while (aux != NULL)
+    {
+        fwrite(&(aux->Hospedes), sizeof(TipoHospede), 1, arquivo);
+        aux = aux->prox;
+    }
+    fclose(arquivo);
+}
+
+ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
+{
+    TipoHospede hospede;
+    ListaHospede *lista = iniciaListaHospede();
+    int res;
+
+    FILE *arquivo = fopen(nome_arquivo, "rb");
+
+    if (arquivo == NULL)
+        return lista;
+
+    while (fread(&hospede, sizeof(TipoHospede), 1, arquivo) == 1)
+        res = inserirHospede(&lista, hospede);
+
+    if (res == 1)
+        printf("Erro ao cadastrar hospede!");
+
+    fclose(arquivo);
+    return lista;
+}
+
+void salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
+{
+    FILE *arquivo = fopen(nome_arquivo, "w");
+
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n\n");
+        system("pause");
+        return;
+    }
+
+    if (lista->prox != NULL)
+    {
+        ListaHospede *aux = lista->prox;
+
+        fprintf(arquivo, "<tabela=hospede>\n");
+        while (aux != NULL)
+        {
+            fprintf(arquivo, "    <registro>\n");
+            fprintf(arquivo, "        <codigo>%d</codigo>\n", aux->Hospedes.id);
+            fprintf(arquivo, "        <nome>%s</nome>\n", aux->Hospedes.nome);
+            fprintf(arquivo, "        <endereco>%s</endereco>\n", aux->Hospedes.endereco);
+            fprintf(arquivo, "        <cpf>%s</cpf>\n", aux->Hospedes.cpf);
+            fprintf(arquivo, "        <telefone>%s</telefone>\n", aux->Hospedes.telefone);
+            fprintf(arquivo, "        <email>%s</email>\n", aux->Hospedes.email);
+            fprintf(arquivo, "        <sexo>%c</sexo>\n", aux->Hospedes.sexo);
+            fprintf(arquivo, "        <est_civil>%s</est_civil>\n", aux->Hospedes.estado_civil);
+            fprintf(arquivo, "        <data_nascimento>%s</data_nascimento>\n", aux->Hospedes.data_nasc);
+            fprintf(arquivo, "    </registro>\n");
+            aux = aux->prox;
+        }
+        fprintf(arquivo, "</tabela>\n");
+    }
+    fclose(arquivo);
+}
+
+ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo)
+{
+    ListaHospede *lista = iniciaListaHospede();
+    TipoHospede hospede;
+
+    FILE *arquivo = fopen(nome_arquivo, "r");
+
+    if (arquivo == NULL)
+        return lista;
+
+    char linha[256];
+
+    while (fgets(linha, sizeof(linha), arquivo))
+    {
+        if (strstr(linha, "<registro>") != NULL)
+        {
+            memset(&hospede, 0, sizeof(TipoHospede));
+            continue;
+        }
+
+        if (strstr(linha, "</registro>") != NULL)
+        {
+            inserirHospede(&lista, hospede);
+            continue;
+        }
+
+        sscanf(linha, " <codigo>%d", &hospede.id);
+        sscanf(linha, " <nome>%[^<]", hospede.nome);
+        sscanf(linha, " <endereco>%[^<]", hospede.endereco);
+        sscanf(linha, " <cpf>%[^<]", hospede.cpf);
+        sscanf(linha, " <telefone>%[^<]", hospede.telefone);
+        sscanf(linha, " <email>%[^<]", hospede.email);
+        sscanf(linha, " <sexo>%c", &hospede.sexo);
+        sscanf(linha, " <est_civil>%[^<]", hospede.estado_civil);
+        sscanf(linha, " <data_nascimento>%[^<]", hospede.data_nasc);
+    }
+    fclose(arquivo);
+
+    return lista;
+}
+
+void interfaceHospedes(int modo)
+{
+    ListaHospede *pos, *listaHospedes;
+
+    listaHospedes = resgataDadosHospedesBin(HospedesBIN);
+    if (listaHospedes->prox == NULL)
+    {
+        free(listaHospedes);
+        listaHospedes = resgataDadosHospedesTxt(HospedesTXT);
+    }
+
     TipoHospede hospede;
     int res = 0;
 
@@ -119,43 +252,28 @@ void interfaceHospedes()
         fflush(stdin);
         system("cls");
 
-        if (res == 5)
-        {
-            printf("\nTem certeza que deseja sair?\n");
-            printf("1 - sim\n");
-            printf("2 - nÆo\n");
-            printf("=> ");
-            scanf("%d", &res);
-            fflush(stdin);
-
-            if (res == 1)
-                break;
-            else
-                continue;
-        }
-
         switch (res)
         {
         case 1:
             printf("Insira o nome: ");
-            scanf("%[^\n]", hospede.nome);
+            scanf(" %[^\n]", hospede.nome);
             fflush(stdin);
 
             printf("Insira o endere‡o: ");
-            scanf("%[^\n]", hospede.endereco);
+            scanf(" %[^\n]", hospede.endereco);
             fflush(stdin);
 
             printf("Insira o cpf: ");
-            scanf("%[^\n]", hospede.cpf);
+            scanf(" %[^\n]", hospede.cpf);
             fflush(stdin);
 
             printf("Insira o telefone: ");
-            scanf("%[^\n]", hospede.telefone);
+            scanf(" %[^\n]", hospede.telefone);
             fflush(stdin);
 
             while (1)
             {
-                printf("\nSelecione o sexo       : \n");
+                printf("\nSelecione o sexo: \n");
                 printf("1 - Feminino\n");
                 printf("2 - Masculino\n");
                 printf("3 - Outro\n=> ");
@@ -186,18 +304,18 @@ void interfaceHospedes()
             }
 
             printf("Insira o email: ");
-            scanf("%[^\n]", hospede.email);
+            scanf(" %[^\n]", hospede.email);
             fflush(stdin);
 
             printf("Insira o estado civil: ");
-            scanf("%[^\n]", hospede.estado_civil);
+            scanf(" %[^\n]", hospede.estado_civil);
             fflush(stdin);
 
             printf("Insira a data nascimento: ");
-            scanf("%[^\n]", hospede.data_nasc);
+            scanf(" %[^\n]", hospede.data_nasc);
             fflush(stdin);
 
-            hospede.id = escolheId(listaHospedes);
+            hospede.id = escolheIdHospede(listaHospedes);
 
             res = inserirHospede(&listaHospedes, hospede);
 
@@ -216,7 +334,7 @@ void interfaceHospedes()
             break;
         case 2:
             printf("Insira o cpf do Hospede que deseja buscar: ");
-            scanf("%[^\n]", &hospede.cpf);
+            scanf(" %[^\n]", hospede.cpf);
             fflush(stdin);
 
             res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
@@ -244,7 +362,7 @@ void interfaceHospedes()
             break;
         case 3:
             printf("Insira o cpf do Hospede que deseja alterar: ");
-            scanf("%[^\n]", &hospede.cpf);
+            scanf(" %[^\n]", hospede.cpf);
             fflush(stdin);
 
             res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
@@ -279,28 +397,28 @@ void interfaceHospedes()
                     {
                     case 1:
                         printf("Insira o novo nome: ");
-                        scanf("%[^\n]", hospede.nome);
+                        scanf(" %[^\n]", hospede.nome);
                         fflush(stdin);
                         break;
                     case 2:
                         printf("Insira o novo endere‡o: ");
-                        scanf("%[^\n]", hospede.endereco);
+                        scanf(" %[^\n]", hospede.endereco);
                         fflush(stdin);
                         break;
                     case 3:
                         printf("Insira o novo cpf: ");
-                        scanf("%[^\n]", hospede.cpf);
+                        scanf(" %[^\n]", hospede.cpf);
                         fflush(stdin);
                         break;
                     case 4:
                         printf("Insira o novo telefone: ");
-                        scanf("%[^\n]", hospede.telefone);
+                        scanf(" %[^\n]", hospede.telefone);
                         fflush(stdin);
                         break;
                     case 5:
                         while (1)
                         {
-                            printf("\nSelecione o novo sexo       : \n");
+                            printf("\nSelecione o novo sexo: \n");
                             printf("1 - Feminino\n");
                             printf("2 - Masculino\n");
                             printf("3 - Outro\n=> ");
@@ -332,17 +450,17 @@ void interfaceHospedes()
                         break;
                     case 6:
                         printf("Insira o novo email: ");
-                        scanf("%[^\n]", hospede.email);
+                        scanf(" %[^\n]", hospede.email);
                         fflush(stdin);
                         break;
                     case 7:
                         printf("Insira o novo estado civil: ");
-                        scanf("%[^\n]", hospede.estado_civil);
+                        scanf(" %[^\n]", hospede.estado_civil);
                         fflush(stdin);
                         break;
                     case 8:
                         printf("Insira a nova data nascimento: ");
-                        scanf("%[^\n]", hospede.data_nasc);
+                        scanf(" %[^\n]", hospede.data_nasc);
                         fflush(stdin);
                         break;
                     case 9:
@@ -365,7 +483,7 @@ void interfaceHospedes()
             break;
         case 4:
             printf("Insira o cpf do Hospede que deseja apagar: ");
-            scanf("%[^\n]", &hospede.cpf);
+            scanf(" %[^\n]", hospede.cpf);
             fflush(stdin);
 
             res = buscarHospede(&listaHospedes, &hospede, hospede.cpf, &pos);
@@ -403,16 +521,26 @@ void interfaceHospedes()
             system("pause");
             break;
         case 35:
-            printf("\n=> %d\n", escolheId(listaHospedes));
+            printf("\n=> %d\n", escolheIdHospede(listaHospedes));
             system("pause");
             break;
         default:
-            printf("Op‡Æo inv lida!\n");
-            system("pause");
-            fflush(stdin);
+            if (res != 5)
+            {
+                printf("Op‡Æo inv lida!\n");
+                system("pause");
+                fflush(stdin);
+            }
+            else
+            {
+                if (modo == BIN)
+                    salvaDadosHospedesBin(listaHospedes, HospedesBIN);
+                else if (modo == TXT)
+                    salvaDadosHospedesTxt(listaHospedes, HospedesTXT);
+            }
             break;
         }
-    } while (1);
+    } while (res != 5);
 
     return;
 }
