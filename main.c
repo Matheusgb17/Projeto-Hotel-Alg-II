@@ -3,8 +3,8 @@
 #include <string.h>
 #include <windows.h>
 
-#include "bib\produtos.h"
-#include "bib\hospedes.h"
+#include "bib/produtos.h"
+#include "bib/hospedes.h"
 #include  "bib/fornecedores.h"
 
 
