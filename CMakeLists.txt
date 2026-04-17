@@ -1,16 +1,16 @@
-cmake_minimum_required(VERSION 4.2)
-project(Marismar_Plaza C)
+cmake_minimum_required(VERSION 3.31)
+project(Projeto_Hotel_Alg_II C)
 
 set(CMAKE_C_STANDARD 11)
 
 include_directories(bib)
 
-add_executable(Marismar_Plaza
+add_executable(Projeto_Hotel_Alg_II
+        bib/fornecedores.h
         bib/hospedes.h
+        service/fornecedores.c
         service/hospedes.c
-        main.c)
-
-# Para executar pelo prompt:
-
-# gcc main.c service/hospedes.c service/hotel.c service/operadores.c -I bib -o output/marismar-plaza.exe
-# ./output/marismar-plaza.exe
+        main.c
+        service/produtos.c
+        bib/produtos.h
+)

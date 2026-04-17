@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-#include "bib/hospedes.h"
-#include "bib/hotel.h"
-#include "bib/operadores.h"
 
-#define BIN 1
-#define TXT 2
+#include "bib/produtos.h"
+#include "bib/hospedes.h"
+#include  "bib/fornecedores.h"
+
 
 int main()
 {
-    interfaceHospedes(TXT);
+
+    interfaceProduto();
+
+    return 0;
 }
