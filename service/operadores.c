@@ -4,6 +4,12 @@
 #include <windows.h>
 #include "../bib/operadores.h"
 
+#define OperadoresBIN "./data/bin/operadores.dat"
+#define OperadoresTXT "./data/txt/operadores.txt"
+
+#define BIN 1
+#define TXT 2
+
 int escolheIdOperador(ListaOperadores *lista)
 {
     int cont = 0;
@@ -174,7 +180,11 @@ void salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
 
 ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
 {
-    ListaOperadores *lista = iniciaListaOperadores();
+    ListaOperadores *lista = resgataDadosOperadoresBin(OperadoresBIN);
+    if(lista->prox == NULL){
+        free(lista);
+        lista = resgataDadosOperadoresTxt(OperadoresTXT);
+    }
     TipoOperador operador;
 
     FILE *arquivo = fopen(nome_arquivo, "r");
@@ -209,7 +219,7 @@ ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceOperadores()
+void interfaceOperadores(int modo)
 {
     ListaOperadores *pos, *listaOperadores;
     TipoOperador operador;
@@ -519,6 +529,13 @@ void interfaceOperadores()
                 printf("Selecione uma op‡Æo v lida!\n");
                 system("pause");
                 fflush(stdin);
+            }
+            else
+            {
+                if(modo == BIN)
+                    salvaDadosOperadoresBin(listaOperadores, OperadoresBIN);
+                else if(modo == TXT)
+                    salvaDadosOperadoresTxt(listaOperadores, OperadoresTXT);
             }
             break;
         }
