@@ -2,13 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-#include "..\bib\hospedes.h"
+#include "../bib/hospedes.h"
+#include "../bib/utils.h"
 
 #define HospedesBIN "./data/bin/hospedes.dat"
 #define HospedesTXT "./data/txt/hospedes.txt"
 
 #define BIN 1
 #define TXT 2
+#define MEM 3
 
 int escolheIdHospede(ListaHospede *lista)
 {
@@ -97,23 +99,30 @@ void listarHospedes(ListaHospede *lista)
         {
             if (lista->Hospedes.id != 0)
             {
-                printf("Id   : %d\n", lista->Hospedes.id);
-                printf("Nome : %s\n", lista->Hospedes.nome);
-                printf("Cpf  : %s\n\n", lista->Hospedes.cpf);
+                printf("Id                 : %d\n", lista->Hospedes.id);
+                printf("Nome               : %s\n", lista->Hospedes.nome);
+                printf("Endereco           : %s\n", lista->Hospedes.endereco);
+                printf("CPF                : %s\n", lista->Hospedes.cpf);
+                printf("Telefone           : %s\n", lista->Hospedes.telefone);
+                printf("Email              : %s\n", lista->Hospedes.email);
+                printf("Sexo               : %c\n", lista->Hospedes.sexo);
+                printf("Estado Civil       : %s\n", lista->Hospedes.estado_civil);
+                printf("Data de Nascimento : %s\n", lista->Hospedes.data_nasc);
+                printf("-------------------\n");
             }
             lista = lista->prox;
         }
     }
 }
 
-void salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
+int salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL)
     {
         printf("Erro ao acessar o arquivo...\n\n");
         system("pause");
-        return;
+        return 1;
     }
     ListaHospede *aux = lista->prox;
     while (aux != NULL)
@@ -122,6 +131,7 @@ void salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
         aux = aux->prox;
     }
     fclose(arquivo);
+    return 0;
 }
 
 ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
@@ -145,7 +155,7 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
     return lista;
 }
 
-void salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
+int salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
@@ -153,7 +163,7 @@ void salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
     {
         printf("Erro ao acessar o arquivo...\n\n");
         system("pause");
-        return;
+        return 1;
     }
 
     if (lista->prox != NULL)
@@ -179,6 +189,7 @@ void salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
         fprintf(arquivo, "</tabela>\n");
     }
     fclose(arquivo);
+    return 0;
 }
 
 ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo)
@@ -245,7 +256,8 @@ void interfaceHospedes(int modo)
         printf("2 - Buscar hospede\n");
         printf("3 - Alterar hospede\n");
         printf("4 - Apagar hospede\n");
-        printf("5 - Sair\n");
+        printf("5 - Listar hospedes\n");
+        printf("0 - Sair\n");
 
         printf("=> ");
         scanf("%d", &res);
@@ -516,7 +528,7 @@ void interfaceHospedes(int modo)
                 system("pause");
             }
             break;
-        case 34:
+        case 5:
             listarHospedes(listaHospedes);
             system("pause");
             break;
@@ -525,7 +537,7 @@ void interfaceHospedes(int modo)
             system("pause");
             break;
         default:
-            if (res != 5)
+            if (res != 0)
             {
                 printf("Opá∆o inv†lida!\n");
                 system("pause");
@@ -533,14 +545,30 @@ void interfaceHospedes(int modo)
             }
             else
             {
-                if (modo == BIN)
-                    salvaDadosHospedesBin(listaHospedes, HospedesBIN);
-                else if (modo == TXT)
-                    salvaDadosHospedesTxt(listaHospedes, HospedesTXT);
+                if (modo == BIN){
+                    if(salvaDadosHospedesBin(listaHospedes, HospedesBIN) == 1)
+                    {
+                        printf("Erro ao salvar dados em formato bin†rio! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
+                        system("pause");
+                    }
+                    else
+                        apagaArquivo(HospedesTXT);
+                }
+                
+                if (modo == TXT)
+                {
+                    if(salvaDadosHospedesTxt(listaHospedes, HospedesTXT) == 1)
+                    {
+                        printf("Erro ao salvar dados em formato texto! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
+                        system("pause");
+                    }
+                    else
+                        apagaArquivo(HospedesBIN);
+                }
             }
             break;
         }
-    } while (res != 5);
+    } while (res != 0);
 
     return;
 }

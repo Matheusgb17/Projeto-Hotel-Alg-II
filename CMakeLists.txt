@@ -12,5 +12,5 @@ add_executable(Marismar_Plaza
 
 # Para executar pelo prompt:
 
-# gcc main.c service/hospedes.c service/hotel.c service/operadores.c -I bib -o output/marismar-plaza.exe
+# gcc main.c service/utils.c service/hospedes.c service/hotel.c  service/operadores.c -I bib -o output/marismar-plaza.exe
 # ./output/marismar-plaza.exe

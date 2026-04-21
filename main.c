@@ -16,48 +16,40 @@ int main()
 
     while (1)
     {
+        system("cls");
         printf("Selecione a forma de armazenar os dados no sistema:\n");
-        printf("1 - Arquivos Txt\n");
-        printf("2 - Arquivos Bin\n");
+        printf("1 - Arquivos Bin\n");
+        printf("2 - Arquivos Txt\n");
         printf("3 - Em mem¢ria (CUIDADO: todos os arquivos serÆo perdidos ap¢s o encerramento do sistema)\n");
         printf("4 - Sair\n");
         printf("=> ");
-        scanf("%d", &res);
+        scanf("%d", &modo);
         fflush(stdin);
 
-        if (res == 4)
-            return 0;
-
-        switch (res)
+        if (modo == BIN || modo == TXT || modo == MEM || modo == 4)
         {
-        case 1:
-            modo = TXT;
-            break;
-        case 2:
-            modo = BIN;
-            break;
-        case 3:
-            modo = MEM;
-            break;
-        default:
-            printf("Op‡Æo inv lida!\n");
-            system("pause");
+            if (modo == 4)
+                return 0;
             break;
         }
-
-        if (res != 1 && res != 2 && res != 3)
-            break;
+        else
+        {
+            printf("Selecione uma op‡Æo v lida!\n");
+            system("pause");
+            fflush(stdin);
+        }
     }
 
     do
-    {
+    { // MENU PRINCIPAL =============================================================================
+        system("cls");
         printf("Menu principal\n");
         printf("1 - Cadastro e GestÆo\n");
         printf("2 - Reservas e Cancelamentos\n");
         printf("3 - Transa‡äes\n");
         printf("4 - Feedback\n");
         printf("5 - Importa‡Æo/Exporta‡Æo de dados\n");
-        printf("6 - Sair do sistema\n");
+        printf("0 - Sair do sistema\n");
         printf("=> ");
 
         scanf("%d", &res);
@@ -65,9 +57,10 @@ int main()
 
         switch (res)
         {
-        case 1:
+        case 1: // CADASTRO E GESTÇO ====================================================
             do
             {
+                system("cls");
                 printf("Cadastro e gestÆo de hospedes\n");
                 printf("1 - Dados do Hotel\n");
                 printf("2 - H¢spedes\n");
@@ -76,7 +69,7 @@ int main()
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
-                printf("8 - Voltar para o Menu principal\n");
+                printf("0 - Voltar para o Menu principal\n");
                 printf("=> ");
 
                 scanf("%d", &res);
@@ -84,7 +77,7 @@ int main()
                 switch (res)
                 {
                 case 1: // hotel
-                    interfaceHotel();
+                    interfaceHotel(modo);
                     break;
                 case 2: // hospedes
                     interfaceHospedes(modo);
@@ -101,30 +94,30 @@ int main()
                     interfaceOperadores(modo);
                     break;
                 default:
-                    if (res != 8)
+                    if (res != 0)
                     {
                         printf("Selecione uma op‡Æo v lida!");
                         system("pause");
                     }
                     break;
                 }
-            } while (res != 8);
-            res = 0;
+            } while (res != 0);
+            res = 1;
             break;
-        case 2:
+        case 2: // RESERVAS E CANCELAMENTOS =============================================
 
             break;
-        case 3:
+        case 3: // TRANSACOES ===========================================================
 
             break;
-        case 4:
+        case 4: // FEEDBACK =============================================================
 
             break;
-        case 5:
+        case 5: // IMPORTA€ÇO/EXPORTA€ÇO DE DADOS =======================================
 
             break;
-        default:
-            if (res != 6)
+        default: // SAIR DO SISTEMA =====================================================
+            if (res != 0)
             {
                 printf("Escolha um valor v lido!\n");
                 system("pause");
@@ -144,5 +137,6 @@ int main()
             break;
         }
 
-    } while (res != 6);
+    } while (res != 0);
+    return 0;
 }

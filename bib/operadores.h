@@ -64,4 +64,34 @@ void apagarOperador(ListaOperadores *pos);
  */
 void listarOperadores(ListaOperadores *lista);
 
+/**
+ * Funá∆o para salvar os dados dos operadores em um arquivo bin†rio.
+ * @param lista Ponteiro para a lista de operadores a ser salva.
+ * @param nome_arquivo String contendo o nome do arquivo bin†rio onde os dados ser∆o salvos.
+ * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
+ */
+int salvaDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo);
+
+/**
+ * Funá∆o para resgatar os dados dos operadores a partir de um arquivo bin†rio.
+ * @param nome_arquivo String contendo o nome do arquivo bin†rio a ser lido.
+ * @return ListaOperadores* Ponteiro para a lista preenchida com os dados resgatados.
+ */
+ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo);
+
+/**
+ * Funá∆o para salvar os dados dos operadores em um arquivo texto.
+ * @param lista Ponteiro para a lista de operadores a ser salva.
+ * @param nome_arquivo String contendo o nome do arquivo de texto onde os dados ser∆o salvos.
+ * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
+ */
+int salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo);
+
+/**
+ * Funá∆o para resgatar os dados dos operadores a partir de um arquivo de texto.
+ * @param nome_arquivo String contendo o nome do arquivo de texto a ser lido.
+ * @return ListaOperadores* Ponteiro para a lista preenchida com os dados resgatados.
+ */
+ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo);
+
 void interfaceOperadores();
