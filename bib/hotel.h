@@ -45,4 +45,39 @@ TipoHotel consultarDadosHotel(TipoHotel *h);
  */
 void apagarDadosHotel(TipoHotel *hotel);
 
-void interfaceHotel();
+/**
+ * Funá∆o para salvar os dados do hotel em um arquivo bin†rio.
+ * @param h Estrutura contendo os dados a serem salvos.
+ * @param nome_arquivo String contendo o nome do arquivo bin†rio onde os dados ser∆o salvos.
+ * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
+ */
+int salvarDadosHotelBin(TipoHotel h, char *nome_arquivo);
+
+/**
+ * Funá∆o para resgatar os dados do hotel a partir de um arquivo bin†rio.
+ * @param nome_arquivo String contendo o nome do arquivo bin†rio a ser lido.
+ * @return TipoHotel* Ponteiro para a estrutura preenchida com os dados resgatados.
+ */
+TipoHotel *resgataDadosHotelBin(char *nome_arquivo);
+
+/**
+ * Funá∆o para salvar os dados do hotel em um arquivo texto.
+ * @param h Estrutura contendo os dados a serem salvos.
+ * @param nome_arquivo String contendo o nome do arquivo de texto onde os dados ser∆o salvos.
+ * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
+ */
+int salvarDadosHotelTxt(TipoHotel h, char *nome_arquivo);
+
+/**
+ * Funá∆o para resgatar os dados do hotel a partir de um arquivo de texto.
+ * @param nome_arquivo String contendo o nome do arquivo de texto a ser lido.
+ * @return TipoHotel* Ponteiro para a estrutura preenchida com os dados resgatados.
+ */
+TipoHotel *resgataDadosHotelTxt(char *nome_arquivo);
+
+/**
+ * Interface para gest∆o de hotÇis, permitindo cadastro, consulta, alteraá∆o e exclus∆o de dados.
+ * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).
+ * @return void
+ */
+void interfaceHotel(int modo);
