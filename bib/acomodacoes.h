@@ -100,6 +100,6 @@ ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo);
  * @param listaAcomod Ponteiro para a lista de acomodações.
  * @param listaCat Ponteiro para a lista de categorias.
  */
-void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat, int modo);
+void interfaceAcomodacao(int modo);
 
 #endif

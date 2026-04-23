@@ -3,6 +3,14 @@
 #include <stdlib.h>
 #include <windows.h>
 #include "../bib/operadores.h"
+#include "../bib/utils.h"
+
+#define OperadoresBIN "./data/bin/operadores.dat"
+#define OperadoresTXT "./data/txt/operadores.txt"
+
+#define BIN 1
+#define TXT 2
+#define MEM 3
 
 int escolheIdOperador(ListaOperadores *lista)
 {
@@ -92,20 +100,21 @@ void listarOperadores(ListaOperadores *lista)
                 printf("Nome               : %s\n", lista->operador.nome);
                 printf("Usu†rio            : %s\n", lista->operador.user);
                 printf("N°vel de Permiss∆o : %d\n", lista->operador.permission);
+                printf("-----------------------------\n");
             }
             lista = lista->prox;
         }
     }
 }
 
-void salvaDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo)
+int salvaDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL)
     {
         printf("Erro ao acessar o arquivo...\n\n");
         system("pause");
-        return;
+        return 1;
     }
 
     ListaOperadores *aux = lista->prox;
@@ -115,6 +124,7 @@ void salvaDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo)
         aux = aux->prox;
     }
     fclose(arquivo);
+    return 0;
 }
 
 ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo)
@@ -138,7 +148,7 @@ ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo)
     return lista;
 }
 
-void salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
+int salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
@@ -146,7 +156,7 @@ void salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
     {
         printf("Erro ao acessar o arquivo...\n\n");
         system("pause");
-        return;
+        return 1;
     }
 
     if (lista->prox != NULL)
@@ -170,6 +180,7 @@ void salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
         fprintf(arquivo, "</tabela>\n");
     }
     fclose(arquivo);
+    return 0;
 }
 
 ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
@@ -184,7 +195,7 @@ ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
 
     char linha[256];
 
-    while (fgets(linha, sizeof(linha), arquivo))
+    while (fgets(linha, sizeof(linha), arquivo) != NULL)
     {
         if (strstr(linha, "<registro>") != NULL)
         {
@@ -209,10 +220,17 @@ ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceOperadores()
+void interfaceOperadores(int modo)
 {
     ListaOperadores *pos, *listaOperadores;
     TipoOperador operador;
+
+    listaOperadores = resgataDadosOperadoresBin(OperadoresBIN);
+    if (listaOperadores->prox == NULL)
+    {
+        free(listaOperadores);
+        listaOperadores = resgataDadosOperadoresTxt(OperadoresTXT);
+    }
 
     int res = 0, tam;
 
@@ -224,7 +242,8 @@ void interfaceOperadores()
         printf("2 - Buscar operador\n");
         printf("3 - Alterar operador\n");
         printf("4 - Apagar operador\n");
-        printf("5 - Sair\n");
+        printf("5 - Listar operadores\n");
+        printf("0 - Sair\n");
 
         printf("=> ");
         scanf("%d", &res);
@@ -355,6 +374,7 @@ void interfaceOperadores()
             {
                 while (res != 5)
                 {
+                    system("cls");
                     tam = strlen(operador.senha) - 1;
                     printf("Usu†rio encontrado!\n");
                     printf("Digite o campo que deseja alterar: \n\n");
@@ -378,6 +398,7 @@ void interfaceOperadores()
                     {
                         printf("Operaá∆o cancelada!\n");
                         system("pause");
+                        break;
                     }
 
                     switch (res)
@@ -492,7 +513,7 @@ void interfaceOperadores()
                 printf("Nome de usu†rio    : %s\n", operador.user);
                 printf("N°vel de permiss∆o : %d\n\n", operador.permission);
 
-                printf("Tem certeza quedeseja apagar esse usu†rio?\n");
+                printf("Tem certeza que deseja apagar esse usu†rio?\n");
                 printf("1 - Sim\n");
                 printf("2 - N∆o\n");
                 printf("=> ");
@@ -513,15 +534,42 @@ void interfaceOperadores()
                 system("pause");
             }
             break;
+        case 5:
+            listarOperadores(listaOperadores);
+            system("pause");
+            break;
         default:
-            if (res != 5)
+            if (res != 0)
             {
                 printf("Selecione uma opá∆o v†lida!\n");
                 system("pause");
                 fflush(stdin);
             }
+            else
+            {
+                if (modo == BIN)
+                {
+                    if (salvaDadosOperadoresBin(listaOperadores, OperadoresBIN) == 1)
+                    {
+                        printf("Erro ao salvar dados em formato bin†rio! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
+                        system("pause");
+                    }
+                    else
+                        apagaArquivo(OperadoresTXT);
+                }
+                else if (modo == TXT)
+                {
+                    if (salvaDadosOperadoresTxt(listaOperadores, OperadoresTXT) == 1)
+                    {
+                        printf("Erro ao salvar dados em formato texto! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
+                        system("pause");
+                    }
+                    else
+                        apagaArquivo(OperadoresBIN);
+                }
+            }
             break;
         }
 
-    } while (res != 5);
+    } while (res != 0);
 }

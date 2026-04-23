@@ -2,14 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-#include "..\bib\hotel.h"
+#include "../bib/hotel.h"
+#include "../bib/utils.h"
+
+#define HotelBIN "./data/bin/hotel.dat"
+#define HotelTXT "./data/txt/hotel.txt"
+
+#define BIN 1
+#define TXT 2
+#define MEM 3
 
 TipoHotel *iniciaHotel()
 {
     TipoHotel *hotel = malloc(sizeof(TipoHotel));
 
     hotel->cadastrado = false;
-    strcpy(hotel->nomeFantasia, "[Dados nï¿½o cadastrados]");
+    strcpy(hotel->nomeFantasia, "[Dados n?o cadastrados]");
     return hotel;
 }
 
@@ -28,18 +36,135 @@ TipoHotel consultarDadosHotel(TipoHotel *h)
 void apagarDadosHotel(TipoHotel *hotel)
 {
     hotel->cadastrado = false;
-    strcpy(hotel->nomeFantasia, "[Dados nï¿½o cadastrados]");
+    strcpy(hotel->nomeFantasia, "[Dados n?o cadastrados]");
     return;
 }
 
-void interfaceHotel()
+int salvarDadosHotelBin(TipoHotel h, char *nome_arquivo)
 {
-    TipoHotel hotel, *dadosHotel = iniciaHotel();
+    FILE *arquivo = fopen(nome_arquivo, "wb");
+
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n");
+        return 1;
+    }
+
+    fwrite(&h, sizeof(TipoHotel), 1, arquivo);
+    fclose(arquivo);
+    return 0;
+}
+
+TipoHotel *resgataDadosHotelBin(char *nome_arquivo)
+{
+    TipoHotel *hotel = iniciaHotel();
+    FILE *arquivo = fopen(nome_arquivo, "rb");
+
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n");
+        return hotel;
+    }
+
+    fread(hotel, sizeof(TipoHotel), 1, arquivo);
+    fclose(arquivo);
+    return hotel;
+}
+
+int salvarDadosHotelTxt(TipoHotel h, char *nome_arquivo)
+{
+    FILE *arquivo = fopen(nome_arquivo, "w");
+
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n");
+        return 1;
+    }
+
+    fprintf(arquivo, "<tabela=hotel>\n");
+    fprintf(arquivo, "  <registro>\n");
+    fprintf(arquivo, "    <cadastrado>%d</cadastrado>\n", h.cadastrado);
+    fprintf(arquivo, "    <nome_fantasia>%s</nome_fantasia>\n", h.nomeFantasia);
+    fprintf(arquivo, "    <razao_social>%s</razao_social>\n", h.razaoSocial);
+    fprintf(arquivo, "    <inscricao_estadual>%s</inscricao_estadual>\n", h.inscricaoEstadual);
+    fprintf(arquivo, "    <CNPJ>%s</CNPJ>\n", h.CNPJ);
+    fprintf(arquivo, "    <endereco_completo>%s</endereco_completo>\n", h.enderecoCompleto);
+    fprintf(arquivo, "    <telefone>%s</telefone>\n", h.telefone);
+    fprintf(arquivo, "    <email>%s</email>\n", h.email);
+    fprintf(arquivo, "    <nome_responsavel>%s</nome_responsavel>\n", h.nomeResponsavel);
+    fprintf(arquivo, "    <telefone_responsavel>%s</telefone_responsavel>\n", h.telefoneResponsavel);
+    fprintf(arquivo, "    <horario_checkin>%s</horario_checkin>\n", h.horarioCheckin);
+    fprintf(arquivo, "    <horario_checkout>%s</horario_checkout>\n", h.horarioCheckout);
+    fprintf(arquivo, "    <margem_lucro>%.2f</margem_lucro>\n", h.margemLucro);
+    fprintf(arquivo, "  </registro>\n");
+    fprintf(arquivo, "</tabela>\n");
+
+    fclose(arquivo);
+    return 0;
+}
+
+TipoHotel *resgataDadosHotelTxt(char *nome_arquivo)
+{
+    TipoHotel *hotel = iniciaHotel();
+    FILE *arquivo = fopen(nome_arquivo, "r");
+
+    if (arquivo == NULL)
+    {
+        printf("Erro ao acessar o arquivo...\n");
+        return hotel;
+    }
+
+    char linha[256];
+
+    while (fgets(linha, sizeof(linha), arquivo))
+    {
+        if (strstr(linha, "<registro>") != NULL)
+        {
+            memset(hotel, 0, sizeof(TipoHotel));
+            continue;
+        }
+
+        if (strstr(linha, "</registro>") != NULL)
+        {
+            salvarDadosHotel(*hotel, hotel);
+            break;
+        }
+
+        sscanf(linha, " <cadastrado>%d", &hotel->cadastrado);
+        sscanf(linha, " <nome_fantasia>%[^<]", hotel->nomeFantasia);
+        sscanf(linha, " <razao_social>%[^<]", hotel->razaoSocial);
+        sscanf(linha, " <inscricao_estadual>%[^<]", hotel->inscricaoEstadual);
+        sscanf(linha, " <CNPJ>%[^<]", hotel->CNPJ);
+        sscanf(linha, " <endereco_completo>%[^<]", hotel->enderecoCompleto);
+        sscanf(linha, " <telefone>%[^<]", hotel->telefone);
+        sscanf(linha, " <email>%[^<]", hotel->email);
+        sscanf(linha, " <nome_responsavel>%[^<]", hotel->nomeResponsavel);
+        sscanf(linha, " <telefone_responsavel>%[^<]", hotel->telefoneResponsavel);
+        sscanf(linha, " <horario_checkin>%[^<]", hotel->horarioCheckin);
+        sscanf(linha, " <horario_checkout>%[^<]", hotel->horarioCheckout);
+        sscanf(linha, " <margem_lucro>%f", &hotel->margemLucro);
+    }
+
+    fclose(arquivo);
+    return hotel;
+}
+
+void interfaceHotel(int modo)
+{
+    TipoHotel hotel, *dadosHotel;
+
+    dadosHotel = resgataDadosHotelBin(HotelBIN);
+    if (!dadosHotel->cadastrado)
+    {
+        free(dadosHotel);
+        dadosHotel = resgataDadosHotelTxt(HotelTXT);
+    }
+
     int res = 0;
-    while (res != 5)
+    do
     {
         system("cls");
-        printf("Gestï¿½o de dados do hotel | %s\n", dadosHotel->nomeFantasia);
+        printf("GestÆo de dados do hotel | %s\n", dadosHotel->nomeFantasia);
         if (!dadosHotel->cadastrado)
             printf("1 - Cadastrar dados do hotel\n");
         if (dadosHotel->cadastrado)
@@ -49,7 +174,7 @@ void interfaceHotel()
         if (dadosHotel->cadastrado)
             printf("4 - Apagar dados do hotel\n");
 
-        printf("5 - voltar\n");
+        printf("0 - voltar\n");
         printf("=> ");
 
         scanf("%d", &res);
@@ -66,11 +191,11 @@ void interfaceHotel()
             scanf("%[^\n]", hotel.nomeFantasia);
             fflush(stdin);
 
-            printf("Insira a Razï¿½o Social: ");
+            printf("Insira a RazÆo Social: ");
             scanf("%[^\n]", hotel.razaoSocial);
             fflush(stdin);
 
-            printf("Insira a Inscriï¿½ï¿½o Estadual do hotel: ");
+            printf("Insira a Inscri‡Æo Estadual do hotel: ");
             scanf("%[^\n]", hotel.inscricaoEstadual);
             fflush(stdin);
 
@@ -78,7 +203,7 @@ void interfaceHotel()
             scanf("%[^\n]", hotel.CNPJ);
             fflush(stdin);
 
-            printf("Insira o endereï¿½o completo do hotel: ");
+            printf("Insira o endere‡o completo do hotel: ");
             scanf("%[^\n]", hotel.enderecoCompleto);
             fflush(stdin);
 
@@ -90,11 +215,11 @@ void interfaceHotel()
             scanf("%[^\n]", hotel.email);
             fflush(stdin);
 
-            printf("Insira o nome do responsï¿½vel do hotel: ");
+            printf("Insira o nome do respons vel do hotel: ");
             scanf("%[^\n]", hotel.nomeResponsavel);
             fflush(stdin);
 
-            printf("Insira o telefone do responsï¿½vel do hotel: ");
+            printf("Insira o telefone do respons vel do hotel: ");
             scanf("%[^\n]", hotel.telefoneResponsavel);
             fflush(stdin);
 
@@ -122,7 +247,7 @@ void interfaceHotel()
             printf("Razao Social            : %s\n", hotel.razaoSocial);
             printf("Inscricao Estadual      : %s\n", hotel.inscricaoEstadual);
             printf("CNPJ                    : %s\n", hotel.CNPJ);
-            printf("Endereï¿½o Completo       : %s\n", hotel.enderecoCompleto);
+            printf("Endere‡o Completo       : %s\n", hotel.enderecoCompleto);
             printf("Telefone                : %s\n", hotel.telefone);
             printf("Email                   : %s\n", hotel.email);
             printf("Nome do Responsavel     : %s\n", hotel.nomeResponsavel);
@@ -148,7 +273,7 @@ void interfaceHotel()
                 printf("2  - Razao Social            : %s\n", hotel.razaoSocial);
                 printf("3  - Inscricao Estadual      : %s\n", hotel.inscricaoEstadual);
                 printf("4  - CNPJ                    : %s\n", hotel.CNPJ);
-                printf("5  - Endereï¿½o Completo       : %s\n", hotel.enderecoCompleto);
+                printf("5  - Endere‡o Completo       : %s\n", hotel.enderecoCompleto);
                 printf("6  - Telefone                : %s\n", hotel.telefone);
                 printf("7  - Email                   : %s\n", hotel.email);
                 printf("8  - Nome do Responsavel     : %s\n", hotel.nomeResponsavel);
@@ -174,12 +299,12 @@ void interfaceHotel()
                     fflush(stdin);
                     break;
                 case 2:
-                    printf("Insira a nova RazÃ£o Social: ");
+                    printf("Insira a nova RazÆo Social: ");
                     scanf("%[^\n]", hotel.razaoSocial);
                     fflush(stdin);
                     break;
                 case 3:
-                    printf("Insira a nova InscriÃ§Ã£o Estadual do hotel: ");
+                    printf("Insira a nova Inscri‡Æo Estadual do hotel: ");
                     scanf("%[^\n]", hotel.inscricaoEstadual);
                     fflush(stdin);
                     break;
@@ -189,7 +314,7 @@ void interfaceHotel()
                     fflush(stdin);
                     break;
                 case 5:
-                    printf("Insira o novo endereÃ§o completo do hotel: ");
+                    printf("Insira o novo endere‡o completo do hotel: ");
                     scanf("%[^\n]", hotel.enderecoCompleto);
                     fflush(stdin);
                     break;
@@ -204,12 +329,12 @@ void interfaceHotel()
                     fflush(stdin);
                     break;
                 case 8:
-                    printf("Insira o novo nome do responsÃ¡vel do hotel: ");
+                    printf("Insira o novo nome do respons vel do hotel: ");
                     scanf("%[^\n]", hotel.nomeResponsavel);
                     fflush(stdin);
                     break;
                 case 9:
-                    printf("Insira o novo telefone do responsÃ¡vel do hotel: ");
+                    printf("Insira o novo telefone do respons vel do hotel: ");
                     scanf("%[^\n]", hotel.telefoneResponsavel);
                     fflush(stdin);
                     break;
@@ -234,7 +359,7 @@ void interfaceHotel()
                     system("pause");
                     break;
                 default:
-                    printf("OpÃ§Ã£o invÃ¡lida!\n");
+                    printf("Op‡Æo inv lida!\n");
                     system("pause");
                     fflush(stdin);
                     break;
@@ -257,11 +382,35 @@ void interfaceHotel()
             res = 0;
             break;
         default:
-            if (res != 5)
-                printf("Opï¿½ï¿½o invï¿½lida!\n");
-            system("pause");
+            if (res != 0)
+            {
+                printf("Op‡Æo inv lida!\n");
+                system("pause");
+            }
+            else{
+                if(modo == BIN){
+                    
+                    if(salvarDadosHotelBin(*dadosHotel, HotelBIN) == 1)
+                    {
+                        printf("Erro ao salvar dados em formato bin rio! Os dados serÆo mantidos da forma que estavam antes do inicio do sistema.\n");
+                        system("pause");
+                    }
+                    else
+                        apagaArquivo(HotelTXT);
+                }
+                if(modo == TXT)
+                {
+                    if(salvarDadosHotelTxt(*dadosHotel, HotelTXT) == 1)
+                    {
+                        printf("Erro ao salvar dados em formato texto! Os dados serÆo mantidos da forma que estavam antes do inicio do sistema.\n");
+                        system("pause");
+                    }
+                    else
+                        apagaArquivo(HotelBIN);
+                }
+            }
             break;
         }
-    }
+    }while (res != 0);
     return;
 }

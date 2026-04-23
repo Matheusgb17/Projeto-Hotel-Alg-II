@@ -15,8 +15,10 @@ add_executable(Projeto_Hotel_Alg_II
         bib/categorias.h
         service/produtos.c
         bib/produtos.h
+        service/utils.c
+        service/acomodacoes.c
         bib/acomodacoes.h
-        service/acomodacoes.c)
+)
 
 # Para executar pelo prompt:
 
