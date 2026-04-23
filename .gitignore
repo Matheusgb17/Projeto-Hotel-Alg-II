@@ -1,0 +1,10 @@
+.idea/
+cmake-build-debug/
+cmake-build-*/
+.dist/
+
+data/
+*.out
+*.exe
+*.o
+*.a

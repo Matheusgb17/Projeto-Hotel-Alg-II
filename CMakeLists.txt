@@ -11,6 +11,16 @@ add_executable(Projeto_Hotel_Alg_II
         service/fornecedores.c
         service/hospedes.c
         main.c
+        service/categorias.c
+        bib/categorias.h
         service/produtos.c
         bib/produtos.h
+        service/utils.c
+        service/acomodacoes.c
+        bib/acomodacoes.h
 )
+
+# Para executar pelo prompt:
+
+# gcc main.c service/hospedes.c -I bib -o output/marismar-plaza.exe
+# ./output/marismar-plaza.exe
