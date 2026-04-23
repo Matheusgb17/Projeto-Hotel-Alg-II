@@ -11,6 +11,7 @@
 #define TXT 2
 #define MEM 3
 
+// ;)
 int escolheIdProduto(ListaProduto *lista)
 {
     int cont = 0;
