@@ -132,7 +132,7 @@ void interfaceProduto(){
 
     do {
         system("cls");
-        printf("Cadastro e gest√£o de Produtos!\n");
+        printf("Cadastro e gest∆o de Produtos!\n");
         printf("1 - Inserir Produto\n");
         printf("2 - Buscar Produto\n");
         printf("3 - Alterar Produto\n");
@@ -160,15 +160,15 @@ void interfaceProduto(){
                 scanf("%d", &Produto.estoque);
                 fflush(stdin);
 
-                printf("Insira o estoque m√≠nimo: ");
+                printf("Insira o estoque m°nimo: ");
                 scanf("%d", &Produto.estoque_minimo);
                 fflush(stdin);
 
-                printf("Insira o pre√ßo de custo: ");
+                printf("Insira o preáo de custo: ");
                 scanf("%f", &Produto.preco_custo);
                 fflush(stdin);
 
-                printf("Insira o pre√ßo de venda: ");
+                printf("Insira o preáo de venda: ");
                 scanf("%f", &Produto.preco_venda);
                 fflush(stdin);
 
@@ -177,11 +177,11 @@ void interfaceProduto(){
                 res = inserirProduto(&ListaProduto, Produto);
 
                 if (res == 0) {
-                    printf("\nFuncion√°rio inserido com sucesso!\n");
-                    printf("\nO ID do Produto %s √©: %d\n", Produto.descricao, Produto.id);
+                    printf("\nFuncion†rio inserido com sucesso!\n");
+                    printf("\nO ID do Produto %s Ç: %d\n", Produto.descricao, Produto.id);
                     system("pause");
                 } else {
-                    printf("\nFalha ao inserir o funcion√°rio!\n");
+                    printf("\nFalha ao inserir o funcion†rio!\n");
                     system("pause");
                 }
 
@@ -197,14 +197,14 @@ void interfaceProduto(){
                 if (res == 0) {
                     printf("\nProduto encontrado! -------------\n");
                     printf("ID                     : %d\n", Produto.id);
-                    printf("Descri√ß√£o              : %s\n", Produto.descricao);
+                    printf("Descriá∆o              : %s\n", Produto.descricao);
                     printf("Estoque                : %d\n", Produto.estoque);
-                    printf("Estoque m√≠nimo         : %d\n", Produto.estoque_minimo);
-                    printf("Pre√ßo custo            : %f\n", Produto.preco_custo);
-                    printf("Pre√ßo venda            : %f\n", Produto.preco_venda);
+                    printf("Estoque m°nimo         : %d\n", Produto.estoque_minimo);
+                    printf("Preáo custo            : %f\n", Produto.preco_custo);
+                    printf("Preáo venda            : %f\n", Produto.preco_venda);
                     system("pause");
                 } else {
-                    printf("\nProduto n√£o encontrado!\n");
+                    printf("\nProduto n∆o encontrado!\n");
                     system("pause");
                 }
 
@@ -223,11 +223,11 @@ void interfaceProduto(){
                         system("cls");
                         printf("\nProduto encontrado! -------------\n");
                         printf("ID (fixo)                     : %d\n", Produto.id);
-                        printf("1- Descri√ß√£o              : %s\n", Produto.descricao);
+                        printf("1- Descriá∆o              : %s\n", Produto.descricao);
                         printf("2- Estoque                : %d\n", Produto.estoque);
-                        printf("3- Estoque m√≠nimo         : %d\n", Produto.estoque_minimo);
-                        printf("4- Pre√ßo custo            : %f\n", Produto.preco_custo);
-                        printf("5- Pre√ßo venda            : %f\n", Produto.preco_venda);
+                        printf("3- Estoque m°nimo         : %d\n", Produto.estoque_minimo);
+                        printf("4- Preáo custo            : %f\n", Produto.preco_custo);
+                        printf("5- Preáo venda            : %f\n", Produto.preco_venda);
 
                         printf("6- Salvar dados\n");
                         printf("0- Cancelar \n");
@@ -242,7 +242,7 @@ void interfaceProduto(){
 
                         switch (res) {
                             case 1:
-                                printf("Insira a nova descri√ß√£o: \n");
+                                printf("Insira a nova descriá∆o: \n");
                                 scanf("%[^\n]", Produto.descricao);
                                 fflush(stdin);
                                 break;
@@ -252,17 +252,17 @@ void interfaceProduto(){
                                 fflush(stdin);
                                 break;
                             case 3:
-                                printf("Insira o estoque m√≠nimo: \n");
+                                printf("Insira o estoque m°nimo: \n");
                                 scanf("%d", &Produto.estoque_minimo);
                                 fflush(stdin);
                                 break;
                             case 4:
-                                printf("Insira o pre√ßo de custo: \n");
+                                printf("Insira o preáo de custo: \n");
                                 scanf("%f", &Produto.preco_custo);
                                 fflush(stdin);
                                 break;
                             case 5:
-                                printf("Insira o pre√ßo de venda: \n");
+                                printf("Insira o preáo de venda: \n");
                                 scanf("%f", &Produto.preco_venda);
                                 fflush(stdin);
                                 break;
@@ -270,13 +270,13 @@ void interfaceProduto(){
                                 alterarProduto(pos, Produto);
                                 break;
                             default:
-                                printf("Insira uma op√ß√£o v√°lida...");
+                                printf("Insira uma opá∆o v†lida...");
                                 system("pause");
                                 break;
                         }
                     }
                 } else {
-                    printf("\nProduto n√£o encontrado!\n");
+                    printf("\nProduto n∆o encontrado!\n");
                     system("pause");
                 }
 
@@ -291,15 +291,15 @@ void interfaceProduto(){
 
                 if (res == 0) {
                     printf("1- ID                     : %d\n", Produto.id);
-                    printf("2- Descri√ß√£o              : %s\n", Produto.descricao);
+                    printf("2- Descriá∆o              : %s\n", Produto.descricao);
                     printf("3- Estoque                : %d\n", Produto.estoque);
-                    printf("4- Estoque m√≠nimo         : %d\n", Produto.estoque_minimo);
-                    printf("5- Pre√ßo custo            : %f\n", Produto.preco_custo);
-                    printf("6- Pre√ßo venda            : %f\n", Produto.preco_venda);
+                    printf("4- Estoque m°nimo         : %d\n", Produto.estoque_minimo);
+                    printf("5- Preáo custo            : %f\n", Produto.preco_custo);
+                    printf("6- Preáo venda            : %f\n", Produto.preco_venda);
 
                     printf("Tem certeza que deseja apagar esse Produto?\n");
                     printf("1- Sim \n");
-                    printf("2- N√£o \n");
+                    printf("2- N∆o \n");
                     printf("=> ");
                     scanf("%d", &res);
                     fflush(stdin);
@@ -311,7 +311,7 @@ void interfaceProduto(){
                         fflush(stdin);
                     }
                 } else {
-                    printf("Usu√°rio n√£o encontrado!\n");
+                    printf("Usu†rio n∆o encontrado!\n");
                     system("pause");
                 }
                 break;
@@ -320,7 +320,7 @@ void interfaceProduto(){
                 break;
             default:
                 if (res != 6) {
-                    printf("Selecione uma op√ß√£o v√°lida!\n");
+                    printf("Selecione uma opá∆o v†lida!\n");
                     system("pause");
                     fflush(stdin);
                 }

@@ -3,11 +3,13 @@
 #include <string.h>
 #include <windows.h>
 
+#include "bib/hotel.h" 
 #include "bib/hospedes.h"
+// #include "bib/acomodacoes.h"
 #include "bib/categorias.h"
 #include "bib/produtos.h"
 #include "bib/fornecedores.h"
-#include "bib/acomodacoes.h"
+#include "bib/operadores.h"
 
 #define BIN 1
 #define TXT 2
@@ -68,7 +70,7 @@ int main()
                 printf("1 - Dados do Hotel\n");
                 printf("2 - H�spedes\n");
                 printf("3 - Acomoda��es\n");
-                printf("4 - Categorias de Acomoda��o\n");
+                printf("4 - Categorias de Acomoda��es\n");
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
@@ -86,10 +88,8 @@ int main()
                     //interfaceHospedes(modo);
                     break;
                 case 3: // acomoda��es
-                    interfaceAcomodacao(modo);
                     break;
                 case 4: // categorias de acomoda��es
-                        interfaceCategoria();
                     break;
                 case 5: // produtos
                     break;

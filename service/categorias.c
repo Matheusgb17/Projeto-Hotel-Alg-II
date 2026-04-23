@@ -115,7 +115,7 @@ void salvarCategoriasTXT(ListaCategoria *lista) {
 }
 
 void salvarCategoriasBIN(ListaCategoria *lista) {
-    FILE *arquivo = fopen("../dados/categorias.bin", "wb");
+    FILE *arquivo = fopen("../dados/categorias.bin", "wb"); 
 
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo!\n");

@@ -128,7 +128,7 @@ void interfaceFornecedor(){
 
     do {
         system("cls");
-        printf("Cadastro e gest√£o de fornecedores!\n");
+        printf("Cadastro e gest∆o de fornecedores!\n");
         printf("1 - Inserir fornecedor\n");
         printf("2 - Buscar fornecedor\n");
         printf("3 - Alterar fornecedor\n");
@@ -152,11 +152,11 @@ void interfaceFornecedor(){
                 scanf("%[^\n]", fornecedor.nome_fantasia);
                 fflush(stdin);
 
-                printf("Insira a raz√£o social: ");
+                printf("Insira a raz∆o social: ");
                 scanf("%[^\n]", fornecedor.razao_social);
                 fflush(stdin);
 
-                printf("Insira a inscri√ß√£o estadual: ");
+                printf("Insira a inscriá∆o estadual: ");
                 scanf("%[^\n]", fornecedor.inscricao_estadual);
                 fflush(stdin);
 
@@ -164,7 +164,7 @@ void interfaceFornecedor(){
                 scanf("%[^\n]", fornecedor.cnpj);
                 fflush(stdin);
 
-                printf("Insira o endere√ßo completo\n");
+                printf("Insira o endereáo completo\n");
                 scanf("%[^\n]", fornecedor.endereco_completo);
                 fflush(stdin);
 
@@ -181,11 +181,11 @@ void interfaceFornecedor(){
                 res = inserirFornecedor(&listaFornecedor, fornecedor);
 
                 if (res == 0) {
-                    printf("\nFuncion√°rio inserido com sucesso!\n");
-                    printf("\nO ID do fornecedor %s √©: %d\n", fornecedor.nome_fantasia, fornecedor.id);
+                    printf("\nFuncion†rio inserido com sucesso!\n");
+                    printf("\nO ID do fornecedor %s Ç: %d\n", fornecedor.nome_fantasia, fornecedor.id);
                     system("pause");
                 } else {
-                    printf("\nFalha ao inserir o funcion√°rio!\n");
+                    printf("\nFalha ao inserir o funcion†rio!\n");
                     system("pause");
                 }
 
@@ -203,14 +203,14 @@ void interfaceFornecedor(){
                     printf("ID                     : %d\n", fornecedor.id);
                     printf("Nome                   : %s\n", fornecedor.nome_fantasia);
                     printf("Razao social           : %s\n", fornecedor.razao_social);
-                    printf("Inscri√ß√£o estadual   : %s\n", fornecedor.inscricao_estadual);
+                    printf("Inscriá∆o estadual   : %s\n", fornecedor.inscricao_estadual);
                     printf("CNPJ                   : %s\n", fornecedor.cnpj);
                     printf("Endereco completo      : %s\n", fornecedor.endereco_completo);
                     printf("Telefone               : %s\n", fornecedor.telefone);
                     printf("Email                  : %s\n", fornecedor.email);
                     system("pause");
                 } else {
-                    printf("\nFornecedor n√£o encontrado!\n");
+                    printf("\nFornecedor n∆o encontrado!\n");
                     system("pause");
                 }
 
@@ -231,7 +231,7 @@ void interfaceFornecedor(){
                         printf("ID (Fixo)                     : %d\n", fornecedor.id);
                         printf("1- Nome                   : %s\n", fornecedor.nome_fantasia);
                         printf("2- Razao social           : %s\n", fornecedor.razao_social);
-                        printf("3- Inscri√ß√£o estadual     : %s\n", fornecedor.inscricao_estadual);
+                        printf("3- Inscriá∆o estadual     : %s\n", fornecedor.inscricao_estadual);
                         printf("4- CNPJ                   : %s\n", fornecedor.cnpj);
                         printf("5- Endereco completo      : %s\n", fornecedor.endereco_completo);
                         printf("6- Telefone               : %s\n", fornecedor.telefone);
@@ -255,12 +255,12 @@ void interfaceFornecedor(){
                                 fflush(stdin);
                                 break;
                             case 2:
-                                printf("Insira a nova raz√£o social: \n");
+                                printf("Insira a nova raz∆o social: \n");
                                 scanf("%[^\n]", fornecedor.razao_social);
                                 fflush(stdin);
                                 break;
                             case 3:
-                                printf("Insira a nova inscri√ß√£o estadual: \n");
+                                printf("Insira a nova inscriá∆o estadual: \n");
                                 scanf("%[^\n]", fornecedor.inscricao_estadual);
                                 fflush(stdin);
                                 break;
@@ -270,7 +270,7 @@ void interfaceFornecedor(){
                                 fflush(stdin);
                                 break;
                             case 5:
-                                printf("Insira o novo endere√ßo: \n");
+                                printf("Insira o novo endereáo: \n");
                                 scanf("%[^\n]", fornecedor.endereco_completo);
                                 fflush(stdin);
                                 break;
@@ -288,13 +288,13 @@ void interfaceFornecedor(){
                                 alterarFornecedor(pos, fornecedor);
                                 break;
                             default:
-                                printf("Insira uma op√ß√£o v√°lida...");
+                                printf("Insira uma opá∆o v†lida...");
                                 system("pause");
                                 break;
                         }
                     }
                 } else {
-                    printf("\nFornecedor n√£o encontrado!\n");
+                    printf("\nFornecedor n∆o encontrado!\n");
                     system("pause");
                 }
 
@@ -312,7 +312,7 @@ void interfaceFornecedor(){
                     printf("1- ID                     : %d\n", fornecedor.id);
                     printf("2- Nome                   : %s\n", fornecedor.nome_fantasia);
                     printf("3- Razao social           : %s\n", fornecedor.razao_social);
-                    printf("4- Inscri√ß√£o estadual     : %s\n", fornecedor.inscricao_estadual);
+                    printf("4- Inscriá∆o estadual     : %s\n", fornecedor.inscricao_estadual);
                     printf("5- CNPJ                   : %s\n", fornecedor.cnpj);
                     printf("6- Endereco completo      : %s\n", fornecedor.endereco_completo);
                     printf("7- Telefone               : %s\n", fornecedor.telefone);
@@ -320,7 +320,7 @@ void interfaceFornecedor(){
 
                     printf("Tem certeza que deseja apagar esse fornecedor?\n");
                     printf("1- Sim \n");
-                    printf("2- N√£o \n");
+                    printf("2- N∆o \n");
                     printf("=> ");
                     scanf("%d", &res);
                     fflush(stdin);
@@ -332,7 +332,7 @@ void interfaceFornecedor(){
                         fflush(stdin);
                     }
                 } else {
-                    printf("Usu√°rio n√£o encontrado!\n");
+                    printf("Usu†rio n∆o encontrado!\n");
                     system("pause");
                 }
                 break;
@@ -341,7 +341,7 @@ void interfaceFornecedor(){
                 break;
             default:
                 if (res != 6) {
-                    printf("Selecione uma op√ß√£o v√°lida!\n");
+                    printf("Selecione uma opá∆o v†lida!\n");
                     system("pause");
                     fflush(stdin);
                 }

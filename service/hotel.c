@@ -17,7 +17,7 @@ TipoHotel *iniciaHotel()
     TipoHotel *hotel = malloc(sizeof(TipoHotel));
 
     hotel->cadastrado = false;
-    strcpy(hotel->nomeFantasia, "[Dados n?o cadastrados]");
+    strcpy(hotel->nomeFantasia, "[Dados n∆o cadastrados]");
     return hotel;
 }
 
