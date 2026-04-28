@@ -8,6 +8,7 @@
 #include "bib/produtos.h"
 #include "bib/fornecedores.h"
 #include "bib/acomodacoes.h"
+#include "bib/produtos.h"
 
 #define BIN 1
 #define TXT 2
@@ -80,20 +81,22 @@ int main()
                 switch (res)
                 {
                 case 1: // hotel
-                    //interfaceHotel(modo);
+                    // interfaceHotel(modo);
                     break;
                 case 2: // hospedes
                     //interfaceHospedes(modo);
                     break;
                 case 3: // acomoda��es
-                    interfaceAcomodacao(modo);
+                    // interfaceAcomodacao(modo);
                     break;
                 case 4: // categorias de acomoda��es
-                        interfaceCategoria();
+                        // interfaceCategoria(modo);
                     break;
-                case 5: // produtos
+                case 5:
+                        interfaceProduto(modo);
                     break;
-                case 6: // fornecedores
+                case 6:
+                        // interfaceFornecedor();
                     break;
                 case 7: // operadores
                     //interfaceOperadores(modo);
