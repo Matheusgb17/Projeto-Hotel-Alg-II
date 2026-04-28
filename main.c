@@ -22,16 +22,16 @@
 #define AcomodacoesBIN "./data/bin/acomodacoes.dat"
 #define AcomodacoesTXT "./data/txt/acomodacoes.txt"
 
-#define CategoriasBIN "./data/bin/categorias.bin"
+#define CategoriasBIN "./data/bin/categorias.dat"
 #define CategoriasTXT "./data/txt/categorias.txt"
 
-#define ProdutosBIN "./data/bin/produtos.bin"
+#define ProdutosBIN "./data/bin/produtos.dat"
 #define ProdutosTXT "./data/txt/produtos.txt"
 
-#define FornecedoresBIN "./data/bin/fornecedores.bin"
+#define FornecedoresBIN "./data/bin/fornecedores.dat"
 #define FornecedoresTXT "./data/txt/fornecedores.txt"
 
-#define OperadoresBIN "./data/bin/operadores.bin"
+#define OperadoresBIN "./data/bin/operadores.dat"
 #define OperadoresTXT "./data/txt/operadores.txt"
 
 #define BIN 1
