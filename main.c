@@ -55,7 +55,7 @@ int main()
         printf("Selecione a forma de armazenar os dados no sistema:\n");
         printf("1 - Arquivos Bin\n");
         printf("2 - Arquivos Txt\n");
-        printf("3 - Em mem¢ria (CUIDADO: todos os arquivos serï¿½o perdidos apï¿½s o encerramento do sistema)\n");
+        printf("3 - Em memÃ³ria (CUIDADO: todos os arquivos serÂ´â”Â¢o perdidos apÂ´â”Â¢s o encerramento do sistema)\n");
         printf("4 - Sair\n");
         printf("=> ");
         scanf("%d", &modo);
@@ -69,7 +69,7 @@ int main()
         }
         else
         {
-            printf("Selecione uma op‡Æo v lida!\n");
+            printf("Selecione uma opÃ§Ã£o vÃ¡lida!\n");
             system("pause");
             fflush(stdin);
         }
@@ -124,11 +124,11 @@ int main()
     { // MENU PRINCIPAL =============================================================================
         system("cls");
         printf("Menu principal\n");
-        printf("1 - Cadastro e GestÆo\n");
+        printf("1 - Cadastro e GestÃ£o\n");
         printf("2 - Reservas e Cancelamentos\n");
-        printf("3 - Transa‡äes\n");
+        printf("3 - TransaÃ§Ãµes\n");
         printf("4 - Feedback\n");
-        printf("5 - Importa‡Æo/Exporta‡Æo de dados\n");
+        printf("5 - ImportaÃ§Ã£o/ExportaÃ§Ã£o de dados\n");
         printf("0 - Sair do sistema\n");
         printf("=> ");
 
@@ -137,15 +137,15 @@ int main()
 
         switch (res)
         {
-        case 1: // CADASTRO E GESTÇO ====================================================
+        case 1: // CADASTRO E GESTÃƒO ====================================================
             do
             {
                 system("cls");
-                printf("Cadastro e gestÆo de hospedes\n");
+                printf("Cadastro e gestÃ£o de hospedes\n");
                 printf("1 - Dados do Hotel\n");
-                printf("2 - H¢spedes\n");
-                printf("3 - Acomoda‡äes\n");
-                printf("4 - Categorias de Acomoda‡Æo\n");
+                printf("2 - HÃ³spedes\n");
+                printf("3 - AcomodaÃ§Ãµes\n");
+                printf("4 - Categorias de AcomodaÃ§Ã£o\n");
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
@@ -162,10 +162,10 @@ int main()
                 case 2: // hospedes
                     interfaceHospedes(listaHospedes, modo);
                     break;
-                case 3: // acomoda‡äes
+                case 3: // acomodaÃ§Ãµes
                     interfaceAcomodacao(listaAcomodacao, listaCategoria, modo);
                     break;
-                case 4: // categorias de acomoda‡äes
+                case 4: // categorias de acomodaÃ§Ãµes
                     interfaceCategoria(listaCategoria, modo);
                     break;
                 case 5: // produtos
@@ -179,7 +179,7 @@ int main()
                 default:
                     if (res != 0)
                     {
-                        printf("Selecione uma op‡Æo v lida!");
+                        printf("Selecione uma opÃ§Ã£o vÃ¡lida!");
                         system("pause");
                     }
                     break;
@@ -196,20 +196,20 @@ int main()
         case 4: // FEEDBACK =============================================================
 
             break;
-        case 5: // IMPORTA€ÇO/EXPORTA€ÇO DE DADOS =======================================
+        case 5: // IMPORTAÃ‡ÃƒO/EXPORTAÃ‡ÃƒO DE DADOS =======================================
 
             break;
         default: // SAIR DO SISTEMA =====================================================
             if (res != 0)
             {
-                printf("Escolha um valor v lido!\n");
+                printf("Escolha um valor vÃ¡lido!\n");
                 system("pause");
             }
             else
             {
                 printf("Tem certeza que deseja sair do sistema?\n");
                 printf("1 - Sim\n");
-                printf("2 - NÆo\n");
+                printf("2 - NÃ£o\n");
                 printf("=> ");
                 scanf("%d", &res);
 
