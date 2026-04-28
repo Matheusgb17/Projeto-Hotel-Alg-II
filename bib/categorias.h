@@ -73,7 +73,7 @@ void listarCategoria(ListaCategoria *lista);
  * @param nome_arquivo Nome do arquivo onde os dados serão salvos.
  * @return int Retorna 0 para sucesso ou 1 para falha de acesso ao arquivo.
  */
-int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo);
+int salvarDadosCategoriasTxt(ListaCategoria *lista, char *nome_arquivo);
 
 /**
  * Salva a lista encadeada em formato binário (idêntico à memória).
@@ -81,7 +81,7 @@ int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo);
  * @param nome_arquivo Nome do arquivo onde os dados serão salvos.
  * @return int Retorna 0 para sucesso ou 1 para falha de acesso ao arquivo.
  */
-int salvarCategoriasBin(ListaCategoria *lista, char *nome_arquivo);
+int salvarDadosCategoriasBin(ListaCategoria *lista, char *nome_arquivo);
 
 /**
  * Carrega os dados salvos do arquivo para a memória ao iniciar o programa.

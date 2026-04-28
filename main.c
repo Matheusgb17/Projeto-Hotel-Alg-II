@@ -22,16 +22,16 @@
 #define AcomodacoesBIN "./data/bin/acomodacoes.dat"
 #define AcomodacoesTXT "./data/txt/acomodacoes.txt"
 
-#define CategoriasBIN "./data/bin/categorias.bin"
+#define CategoriasBIN "./data/bin/categorias.dat"
 #define CategoriasTXT "./data/txt/categorias.txt"
 
-#define ProdutosBIN "./data/bin/produtos.bin"
+#define ProdutosBIN "./data/bin/produtos.dat"
 #define ProdutosTXT "./data/txt/produtos.txt"
 
-#define FornecedoresBIN "./data/bin/fornecedores.bin"
+#define FornecedoresBIN "./data/bin/fornecedores.dat"
 #define FornecedoresTXT "./data/txt/fornecedores.txt"
 
-#define OperadoresBIN "./data/bin/operadores.bin"
+#define OperadoresBIN "./data/bin/operadores.dat"
 #define OperadoresTXT "./data/txt/operadores.txt"
 
 #define BIN 1
@@ -213,9 +213,41 @@ int main()
                 printf("=> ");
                 scanf("%d", &res);
 
-                if (res == 1)
+                if (res == 1){
+                    if(modo == BIN){
+                        salvarDadosHotelBin(*dadosHotel, HotelBIN);
+                        salvarDadosHospedesBin(listaHospedes, HospedesBIN);
+                        salvarDadosAcomodacoesBin(listaAcomodacao, AcomodacoesBIN);
+                        salvarDadosCategoriasBin(listaCategoria, CategoriasBIN);
+                        salvarDadosProdutosBin(listaProduto, ProdutosBIN);
+                        // salvarDadosFornecedoresBin(listaFornecedor, FornecedoresBIN);
+                        salvarDadosOperadoresBin(listaOperadores, OperadoresBIN);
+                        apagaArquivo(HotelTXT);
+                        apagaArquivo(HospedesTXT);
+                        apagaArquivo(AcomodacoesTXT);
+                        apagaArquivo(CategoriasTXT);
+                        apagaArquivo(ProdutosTXT);
+                        // apagaArquivo(FornecedoresTXT);
+                        apagaArquivo(OperadoresTXT);
+                    }
+                    else if(modo == TXT){
+                        salvarDadosHotelTxt(*dadosHotel, HotelTXT);
+                        salvarDadosHospedesTxt(listaHospedes, HospedesTXT);
+                        salvarDadosAcomodacoesTxt(listaAcomodacao, AcomodacoesTXT);
+                        salvarDadosCategoriasTxt(listaCategoria, CategoriasTXT);
+                        salvarDadosProdutosTxt(listaProduto, ProdutosTXT);
+                        // salvarDadosFornecedoresTxt(listaFornecedor, FornecedoresTXT);
+                        salvarDadosOperadoresTxt(listaOperadores, OperadoresTXT);
+                        apagaArquivo(HotelBIN);
+                        apagaArquivo(HospedesBIN);
+                        apagaArquivo(AcomodacoesBIN);
+                        apagaArquivo(CategoriasBIN);
+                        apagaArquivo(ProdutosBIN);
+                        // apagaArquivo(FornecedoresBIN);
+                        apagaArquivo(OperadoresBIN);
+                    }
                     return 0;
-                res = 0;
+                }
             }
             break;
         }

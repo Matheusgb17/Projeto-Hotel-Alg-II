@@ -39,13 +39,15 @@ void apagarProduto(ListaProduto *pos);
 
 void listarProduto(ListaProduto *lista);
 
+void listarProdutos(ListaProduto *lista);
+
 ListaProduto *resgataDadosProdutosBin(char *nome_arquivo);
 
 ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo);
 
-int salvaDadosProdutosBin(ListaProduto *lista, char *nome_arquivo);
+int salvarDadosProdutosBin(ListaProduto *lista, char *nome_arquivo);
 
-int salvarProdutosTxt(ListaProduto *lista, char *nome_arquivo);
+int salvarDadosProdutosTxt(ListaProduto *lista, char *nome_arquivo);
 
 void interfaceProduto();
 

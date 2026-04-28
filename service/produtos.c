@@ -31,6 +31,7 @@ void listarProdutos(ListaProduto *lista)
     if (lista->prox == NULL)
     {
         printf("Nenhum Produto cadastrado");
+        system("pause");
     }
     else
     {
@@ -139,7 +140,7 @@ void listarProduto(ListaProduto *lista)
     }
 }
 
-int salvaDadosProdutosBin(ListaProduto *lista, char *nome_arquivo)
+int salvarDadosProdutosBin(ListaProduto *lista, char *nome_arquivo)
 {
     FILE *arq = fopen(nome_arquivo, "wb");
     if (arq == NULL)
@@ -181,7 +182,7 @@ ListaProduto *resgataDadosProdutosBin(char *nome_arquivo)
     return lista;
 }
 
-int salvaDadosProdutosTxt(ListaProduto *lista, char *nome_arquivo)
+int salvarDadosProdutosTxt(ListaProduto *lista, char *nome_arquivo)
 {
     FILE *arq = fopen(nome_arquivo, "w");
     if (arq == NULL)
@@ -252,18 +253,11 @@ ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceProduto()
+void interfaceProduto(ListaProduto *listaProduto, int modo)
 {
 
-    ListaProduto *pos, *listaProduto;
+    ListaProduto *pos;
     TipoProduto Produto;
-
-    listaProduto = resgataDadosProdutosBin(ProdutosBIN);
-    if (listaProduto->prox == NULL)
-    {
-        free(listaProduto);
-        listaProduto = resgataDadosProdutosTxt(ProdutosTXT);
-    }
 
     int res = 0;
 
@@ -353,12 +347,11 @@ void interfaceProduto()
                 printf("\nProduto n∆o encontrado!\n");
                 system("pause");
             }
-
+            res = 1;
             break;
 
         // Alterar funcionario
         case 3:
-
             printf("Insira o ID do Produto que deseja alterar: ");
             scanf("%d", &Produto.id);
             fflush(stdin);

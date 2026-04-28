@@ -115,7 +115,7 @@ void listarHospedes(ListaHospede *lista)
     }
 }
 
-int salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
+int salvarDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL)
@@ -155,7 +155,7 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
     return lista;
 }
 
-int salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
+int salvarDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 

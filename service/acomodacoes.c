@@ -116,7 +116,7 @@ void listarAcomodacao(ListaAcomodacao *lista, ListaCategoria *listaCat)
     }
 }
 
-void salvaDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo)
+void salvarDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL)
@@ -158,7 +158,7 @@ ListaAcomodacao *resgataDadosAcomodacoesBin(char *nome_arquivo)
     return lista;
 }
 
-void salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo)
+void salvarDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 

@@ -114,7 +114,7 @@ void listarCategoria(ListaCategoria *lista)
     }
 }
 
-int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
+int salvarDadosCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
@@ -147,7 +147,7 @@ int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
     return 0;
 }
 
-int salvarCategoriasBin(ListaCategoria *lista, char *nome_arquivo)
+int salvarDadosCategoriasBin(ListaCategoria *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
 
