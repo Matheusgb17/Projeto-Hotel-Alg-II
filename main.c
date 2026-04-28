@@ -3,11 +3,36 @@
 #include <string.h>
 #include <windows.h>
 
+#include "bib/hotel.h"
 #include "bib/hospedes.h"
+#include "bib/acomodacoes.h"
 #include "bib/categorias.h"
 #include "bib/produtos.h"
 #include "bib/fornecedores.h"
 #include "bib/acomodacoes.h"
+#include "bib/operadores.h"
+#include "bib/utils.h"
+
+#define HotelBIN "./data/bin/hotel.dat"
+#define HotelTXT "./data/txt/hotel.txt"
+
+#define HospedesBIN "./data/bin/hospedes.dat"
+#define HospedesTXT "./data/txt/hospedes.txt"
+
+#define AcomodacoesBIN "./data/bin/acomodacoes.dat"
+#define AcomodacoesTXT "./data/txt/acomodacoes.txt"
+
+#define CategoriasBIN "./data/bin/categorias.bin"
+#define CategoriasTXT "./data/txt/categorias.txt"
+
+#define ProdutosBIN "./data/bin/produtos.bin"
+#define ProdutosTXT "./data/txt/produtos.txt"
+
+#define FornecedoresBIN "./data/bin/fornecedores.bin"
+#define FornecedoresTXT "./data/txt/fornecedores.txt"
+
+#define OperadoresBIN "./data/bin/operadores.bin"
+#define OperadoresTXT "./data/txt/operadores.txt"
 
 #define BIN 1
 #define TXT 2
@@ -16,6 +41,13 @@
 int main()
 {
     int res = 0, modo;
+    TipoHotel *dadosHotel;
+    ListaHospede *listaHospedes;
+    ListaAcomodacao *listaAcomodacao;
+    ListaCategoria *listaCategoria;
+    ListaProduto *listaProduto;
+    // ListaFornecedor *listaFornecedor;
+    ListaOperadores *listaOperadores;
 
     while (1)
     {
@@ -23,7 +55,7 @@ int main()
         printf("Selecione a forma de armazenar os dados no sistema:\n");
         printf("1 - Arquivos Bin\n");
         printf("2 - Arquivos Txt\n");
-        printf("3 - Em memï¿½ria (CUIDADO: todos os arquivos serï¿½o perdidos apï¿½s o encerramento do sistema)\n");
+        printf("3 - Em mem¢ria (CUIDADO: todos os arquivos serï¿½o perdidos apï¿½s o encerramento do sistema)\n");
         printf("4 - Sair\n");
         printf("=> ");
         scanf("%d", &modo);
@@ -37,21 +69,66 @@ int main()
         }
         else
         {
-            printf("Selecione uma opï¿½ï¿½o vï¿½lida!\n");
+            printf("Selecione uma op‡Æo v lida!\n");
             system("pause");
             fflush(stdin);
         }
+    }
+
+    dadosHotel = resgataDadosHotelBin(HotelBIN);
+    if (!dadosHotel->cadastrado)
+    {
+        free(dadosHotel);
+        dadosHotel = resgataDadosHotelTxt(HotelTXT);
+    }
+
+    listaHospedes = resgataDadosHospedesBin(HospedesBIN);
+    if (listaHospedes->prox == NULL)
+    {
+        free(listaHospedes);
+        listaHospedes = resgataDadosHospedesTxt(HospedesTXT);
+    }
+
+    listaAcomodacao = resgataDadosAcomodacoesBin(AcomodacoesBIN);
+    if (listaAcomodacao->prox == NULL)
+    {
+        free(listaAcomodacao);
+        listaAcomodacao = resgataDadosAcomodacoesTxt(AcomodacoesTXT);
+    }
+
+    listaCategoria = carregarCategoriasBin(CategoriasBIN);
+    if (listaCategoria->prox == NULL)    {
+        free(listaCategoria);
+        listaCategoria = carregarCategoriasTxt(CategoriasTXT);
+    }
+
+    listaProduto = resgataDadosProdutosBin(ProdutosBIN);
+    if (listaProduto->prox == NULL){    
+        free(listaProduto);
+        listaProduto = resgataDadosProdutosTxt(ProdutosTXT);
+    }   
+
+    // listaFornecedor = resgataDadosFornecedoresBin(FornecedoresBIN);
+    // if (listaFornecedor->prox == NULL){    
+    //     free(listaFornecedor);
+    //     listaFornecedor = resgataDadosFornecedoresTxt(FornecedoresTXT);
+    // }
+
+    listaOperadores = resgataDadosOperadoresBin(OperadoresBIN);
+    if (listaOperadores->prox == NULL){    
+        free(listaOperadores);
+        listaOperadores = resgataDadosOperadoresTxt(OperadoresTXT);
     }
 
     do
     { // MENU PRINCIPAL =============================================================================
         system("cls");
         printf("Menu principal\n");
-        printf("1 - Cadastro e Gestï¿½o\n");
+        printf("1 - Cadastro e GestÆo\n");
         printf("2 - Reservas e Cancelamentos\n");
-        printf("3 - Transaï¿½ï¿½es\n");
+        printf("3 - Transa‡äes\n");
         printf("4 - Feedback\n");
-        printf("5 - Importaï¿½ï¿½o/Exportaï¿½ï¿½o de dados\n");
+        printf("5 - Importa‡Æo/Exporta‡Æo de dados\n");
         printf("0 - Sair do sistema\n");
         printf("=> ");
 
@@ -60,15 +137,15 @@ int main()
 
         switch (res)
         {
-        case 1: // CADASTRO E GESTï¿½O ====================================================
+        case 1: // CADASTRO E GESTÇO ====================================================
             do
             {
                 system("cls");
-                printf("Cadastro e gestï¿½o de hospedes\n");
+                printf("Cadastro e gestÆo de hospedes\n");
                 printf("1 - Dados do Hotel\n");
-                printf("2 - Hï¿½spedes\n");
-                printf("3 - Acomodaï¿½ï¿½es\n");
-                printf("4 - Categorias de Acomodaï¿½ï¿½o\n");
+                printf("2 - H¢spedes\n");
+                printf("3 - Acomoda‡äes\n");
+                printf("4 - Categorias de Acomoda‡Æo\n");
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
@@ -80,28 +157,29 @@ int main()
                 switch (res)
                 {
                 case 1: // hotel
-                    //interfaceHotel(modo);
+                    interfaceHotel(dadosHotel, modo);
                     break;
                 case 2: // hospedes
-                    //interfaceHospedes(modo);
+                    interfaceHospedes(listaHospedes, modo);
                     break;
-                case 3: // acomodaï¿½ï¿½es
-                    interfaceAcomodacao(modo);
+                case 3: // acomoda‡äes
+                    interfaceAcomodacao(listaAcomodacao, listaCategoria, modo);
                     break;
-                case 4: // categorias de acomodaï¿½ï¿½es
-                        interfaceCategoria();
+                case 4: // categorias de acomoda‡äes
+                    interfaceCategoria(listaCategoria, modo);
                     break;
                 case 5: // produtos
+                    interfaceProduto(listaProduto, modo);
                     break;
                 case 6: // fornecedores
                     break;
                 case 7: // operadores
-                    //interfaceOperadores(modo);
+                    interfaceOperadores(listaOperadores, modo);
                     break;
                 default:
                     if (res != 0)
                     {
-                        printf("Selecione uma opï¿½ï¿½o vï¿½lida!");
+                        printf("Selecione uma op‡Æo v lida!");
                         system("pause");
                     }
                     break;
@@ -118,20 +196,20 @@ int main()
         case 4: // FEEDBACK =============================================================
 
             break;
-        case 5: // IMPORTAï¿½ï¿½O/EXPORTAï¿½ï¿½O DE DADOS =======================================
+        case 5: // IMPORTA€ÇO/EXPORTA€ÇO DE DADOS =======================================
 
             break;
         default: // SAIR DO SISTEMA =====================================================
             if (res != 0)
             {
-                printf("Escolha um valor vï¿½lido!\n");
+                printf("Escolha um valor v lido!\n");
                 system("pause");
             }
             else
             {
                 printf("Tem certeza que deseja sair do sistema?\n");
                 printf("1 - Sim\n");
-                printf("2 - Nï¿½o\n");
+                printf("2 - NÆo\n");
                 printf("=> ");
                 scanf("%d", &res);
 

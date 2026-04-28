@@ -149,9 +149,9 @@ TipoHotel *resgataDadosHotelTxt(char *nome_arquivo)
     return hotel;
 }
 
-void interfaceHotel(int modo)
+void interfaceHotel(TipoHotel *dadosHotel, int modo)
 {
-    TipoHotel hotel, *dadosHotel;
+    TipoHotel hotel;
 
     dadosHotel = resgataDadosHotelBin(HotelBIN);
     if (!dadosHotel->cadastrado)
@@ -386,28 +386,6 @@ void interfaceHotel(int modo)
             {
                 printf("Opá∆o inv†lida!\n");
                 system("pause");
-            }
-            else{
-                if(modo == BIN){
-                    
-                    if(salvarDadosHotelBin(*dadosHotel, HotelBIN) == 1)
-                    {
-                        printf("Erro ao salvar dados em formato bin†rio! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
-                        system("pause");
-                    }
-                    else
-                        apagaArquivo(HotelTXT);
-                }
-                if(modo == TXT)
-                {
-                    if(salvarDadosHotelTxt(*dadosHotel, HotelTXT) == 1)
-                    {
-                        printf("Erro ao salvar dados em formato texto! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
-                        system("pause");
-                    }
-                    else
-                        apagaArquivo(HotelBIN);
-                }
             }
             break;
         }

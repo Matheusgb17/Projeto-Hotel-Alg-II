@@ -80,4 +80,4 @@ TipoHotel *resgataDadosHotelTxt(char *nome_arquivo);
  * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).
  * @return void
  */
-void interfaceHotel(int modo);
+void interfaceHotel(TipoHotel *hotel, int modo);

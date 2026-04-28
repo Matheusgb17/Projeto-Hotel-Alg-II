@@ -4,6 +4,14 @@
 #include <windows.h>
 #include "../bib/produtos.h"
 
+#define ProdutosBIN "./data/bin/produtos.dat"
+#define ProdutosTXT "./data/txt/produtos.txt"
+
+#define BIN 1
+#define TXT 2
+#define MEM 3
+
+// ;)
 int escolheIdProduto(ListaProduto *lista)
 {
     int cont = 0;
@@ -18,14 +26,20 @@ int escolheIdProduto(ListaProduto *lista)
     return cont + 1;
 }
 
-void listarProdutos(ListaProduto *lista){
-    if (lista->prox == NULL) {
+void listarProdutos(ListaProduto *lista)
+{
+    if (lista->prox == NULL)
+    {
         printf("Nenhum Produto cadastrado");
-    } else {
+    }
+    else
+    {
         lista = lista->prox;
         printf("\nProduto ---------\n");
-        while (lista != NULL) {
-            if (lista->Produto.id != 0) {
+        while (lista != NULL)
+        {
+            if (lista->Produto.id != 0)
+            {
                 printf("Id: %d\n", lista->Produto.id);
                 printf("Nome: %s\n", lista->Produto.descricao);
             }
@@ -64,9 +78,10 @@ int inserirProduto(ListaProduto **lista, TipoProduto Produto)
     return 1;
 }
 
-int buscarProduto(ListaProduto **lista, TipoProduto *Produto, int id, ListaProduto **pos)
+int buscarProduto(ListaProduto **lista, TipoProduto *produto, int id, ListaProduto **pos)
 {
-    if (id == 0) {
+    if (id == 0)
+    {
         return 1;
     }
 
@@ -83,7 +98,7 @@ int buscarProduto(ListaProduto **lista, TipoProduto *Produto, int id, ListaProdu
 
     if (id == aux->Produto.id)
     {
-        *Produto = aux->Produto;
+        *produto = aux->Produto;
         *pos = aux;
         return 0;
     }
@@ -124,209 +139,349 @@ void listarProduto(ListaProduto *lista)
     }
 }
 
-void interfaceProduto(){
+int salvaDadosProdutosBin(ListaProduto *lista, char *nome_arquivo)
+{
+    FILE *arq = fopen(nome_arquivo, "wb");
+    if (arq == NULL)
+    {
+        printf("Erro ao abrir arquivo...\n\n");
+        system("pause");
+        return 1;
+    }
 
-    ListaProduto *pos, *ListaProduto = iniciaListaProduto();
+    ListaProduto *aux = lista->prox;
+    while (aux != NULL)
+    {
+        fwrite(&(aux->Produto), sizeof(TipoProduto), 1, arq);
+        aux = aux->prox;
+    }
+    fclose(arq);
+    return 0;
+}
+
+ListaProduto *resgataDadosProdutosBin(char *nome_arquivo)
+{
+    TipoProduto produto;
+    ListaProduto *lista = iniciaListaProduto();
+    int res;
+
+    FILE *arq = fopen(nome_arquivo, "rb");
+    if (arq == NULL)
+    {
+        return lista;
+    }
+
+    while (fread(&produto, sizeof(TipoProduto), 1, arq) == 1)
+        res = inserirProduto(&lista, produto);
+
+    if (res == 1)
+        printf("Erro ao carregar produto do arquivo binario!\n");
+
+    fclose(arq);
+    return lista;
+}
+
+int salvaDadosProdutosTxt(ListaProduto *lista, char *nome_arquivo)
+{
+    FILE *arq = fopen(nome_arquivo, "w");
+    if (arq == NULL)
+    {
+        printf("Erro ao abrir arquivo...\n\n");
+        system("pause");
+        return 1;
+    }
+
+    if (lista->prox == NULL)
+    {
+        ListaProduto *aux = lista->prox;
+        fprintf(arq, "<tabela=produto>\n");
+        while (aux != NULL)
+        {
+            fprintf(arq, "        <registro>\n");
+            fprintf(arq, "        <codigo>%d</codigo>\n", aux->Produto.id);
+            fprintf(arq, "        <descricao>%s</descricao>\n", aux->Produto.descricao);
+            fprintf(arq, "        <estoque>%d</estoque>\n", aux->Produto.estoque);
+            fprintf(arq, "        <estoque_minimo>%d</estoque_minimo>\n", aux->Produto.estoque_minimo);
+            fprintf(arq, "        <preco_custo>%f</preco_custo>\n", aux->Produto.preco_custo);
+            fprintf(arq, "        <preco_venda>%f</preco_venda>\n", aux->Produto.preco_venda);
+
+            fprintf(arq, "        </registro>\n");
+            aux = aux->prox;
+        }
+        fprintf(arq, "</tabela>\n");
+    }
+    fclose(arq);
+    return 0;
+}
+
+ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo)
+{
+    ListaProduto *lista = iniciaListaProduto();
+    TipoProduto produto;
+
+    FILE *arq = fopen(nome_arquivo, "r");
+    if (arq == NULL)
+    {
+        return lista;
+    }
+
+    char linha[256];
+
+    while (fgets(linha, sizeof(linha), arq) != NULL)
+    {
+        if (strstr(linha, "<registro>") != NULL)
+        {
+            memset(&produto, 0, sizeof(TipoProduto));
+            continue;
+        }
+
+        if (strstr(linha, "</registro>") != NULL)
+        {
+            inserirProduto(&lista, produto);
+            continue;
+        }
+
+        sscanf(linha, " <codigo>%d", &produto.id);
+        sscanf(linha, " <descricao>[^<]", &produto.descricao);
+        sscanf(linha, " <estoque>%d", &produto.estoque);
+        sscanf(linha, " <estoque_minimo>%d", &produto.estoque_minimo);
+        sscanf(linha, " <preco_custo>%f", &produto.preco_custo);
+        sscanf(linha, " <preco_venda>%f", &produto.preco_venda);
+    }
+    fclose(arq);
+    return lista;
+}
+
+void interfaceProduto()
+{
+
+    ListaProduto *pos, *listaProduto;
     TipoProduto Produto;
+
+    listaProduto = resgataDadosProdutosBin(ProdutosBIN);
+    if (listaProduto->prox == NULL)
+    {
+        free(listaProduto);
+        listaProduto = resgataDadosProdutosTxt(ProdutosTXT);
+    }
+
     int res = 0;
 
-    do {
+    do
+    {
         system("cls");
-        printf("Cadastro e gest√£o de Produtos!\n");
+        printf("Cadastro e gest∆o de Produtos!\n");
         printf("1 - Inserir Produto\n");
         printf("2 - Buscar Produto\n");
         printf("3 - Alterar Produto\n");
         printf("4 - Apagar Produto\n");
         printf("5 - Listar Produtos\n");
-        printf("6 - Sair\n");
+        printf("0 - Sair\n");
 
         printf("=> ");
         scanf("%d", &res);
         fflush(stdin);
         system("cls");
 
-        if (res == 6) {
+        if (res == 0)
+        {
             break;
         }
 
-        switch (res) {
-            //Inserir Produto
-            case 1:
-                printf("Insira o nome: ");
-                scanf("%[^\n]", Produto.descricao);
-                fflush(stdin);
+        switch (res)
+        {
+        // Inserir Produto
+        case 1:
+            printf("Insira o nome: ");
+            scanf("%[^\n]", Produto.descricao);
+            fflush(stdin);
 
-                printf("Insira o estoque: ");
-                scanf("%d", &Produto.estoque);
-                fflush(stdin);
+            printf("Insira o estoque: ");
+            scanf("%d", &Produto.estoque);
+            fflush(stdin);
 
-                printf("Insira o estoque m√≠nimo: ");
-                scanf("%d", &Produto.estoque_minimo);
-                fflush(stdin);
+            printf("Insira o estoque m°nimo: ");
+            scanf("%d", &Produto.estoque_minimo);
+            fflush(stdin);
 
-                printf("Insira o pre√ßo de custo: ");
-                scanf("%f", &Produto.preco_custo);
-                fflush(stdin);
+            printf("Insira o preáo de custo: ");
+            scanf("%f", &Produto.preco_custo);
+            fflush(stdin);
 
-                printf("Insira o pre√ßo de venda: ");
-                scanf("%f", &Produto.preco_venda);
-                fflush(stdin);
+            printf("Insira o preáo de venda: ");
+            scanf("%f", &Produto.preco_venda);
+            fflush(stdin);
 
-                Produto.id = escolheIdProduto(ListaProduto);
+            Produto.id = escolheIdProduto(listaProduto);
 
-                res = inserirProduto(&ListaProduto, Produto);
+            res = inserirProduto(&listaProduto, Produto);
 
-                if (res == 0) {
-                    printf("\nFuncion√°rio inserido com sucesso!\n");
-                    printf("\nO ID do Produto %s √©: %d\n", Produto.descricao, Produto.id);
-                    system("pause");
-                } else {
-                    printf("\nFalha ao inserir o funcion√°rio!\n");
-                    system("pause");
-                }
+            if (res == 0)
+            {
+                printf("\nFuncion†rio inserido com sucesso!\n");
+                printf("\nO ID do Produto %s Ç: %d\n", Produto.descricao, Produto.id);
+                system("pause");
+            }
+            else
+            {
+                printf("\nFalha ao inserir o funcion†rio!\n");
+                system("pause");
+            }
+            res = 1;
+            break;
 
-                break;
+            // Buscar Produto
+        case 2:
+            printf("Insira o ID do Produto que deseja buscar: ");
+            scanf("%d", &Produto.id);
+            fflush(stdin);
 
-                //Buscar Produto
-            case 2:
-                printf("Insira o ID do Produto que deseja buscar: ");
-                scanf("%d", &Produto.id);
-                fflush(stdin);
+            res = buscarProduto(&listaProduto, &Produto, Produto.id, &pos);
+            if (res == 0)
+            {
+                printf("\nProduto encontrado! -------------\n");
+                printf("ID                     : %d\n", Produto.id);
+                printf("Descriá∆o              : %s\n", Produto.descricao);
+                printf("Estoque                : %d\n", Produto.estoque);
+                printf("Estoque m°nimo         : %d\n", Produto.estoque_minimo);
+                printf("Preáo custo            : %f\n", Produto.preco_custo);
+                printf("Preáo venda            : %f\n", Produto.preco_venda);
+                system("pause");
+            }
+            else
+            {
+                printf("\nProduto n∆o encontrado!\n");
+                system("pause");
+            }
 
-                res = buscarProduto(&ListaProduto, &Produto, Produto.id, &pos);
-                if (res == 0) {
+            break;
+
+        // Alterar funcionario
+        case 3:
+
+            printf("Insira o ID do Produto que deseja alterar: ");
+            scanf("%d", &Produto.id);
+            fflush(stdin);
+
+            res = buscarProduto(&listaProduto, &Produto, Produto.id, &pos);
+            if (res == 0)
+            {
+                while (res != 7)
+                {
+                    system("cls");
                     printf("\nProduto encontrado! -------------\n");
-                    printf("ID                     : %d\n", Produto.id);
-                    printf("Descri√ß√£o              : %s\n", Produto.descricao);
-                    printf("Estoque                : %d\n", Produto.estoque);
-                    printf("Estoque m√≠nimo         : %d\n", Produto.estoque_minimo);
-                    printf("Pre√ßo custo            : %f\n", Produto.preco_custo);
-                    printf("Pre√ßo venda            : %f\n", Produto.preco_venda);
-                    system("pause");
-                } else {
-                    printf("\nProduto n√£o encontrado!\n");
-                    system("pause");
-                }
+                    printf("ID (fixo)                     : %d\n", Produto.id);
+                    printf("1- Descriá∆o              : %s\n", Produto.descricao);
+                    printf("2- Estoque                : %d\n", Produto.estoque);
+                    printf("3- Estoque m°nimo         : %d\n", Produto.estoque_minimo);
+                    printf("4- Preáo custo            : %f\n", Produto.preco_custo);
+                    printf("5- Preáo venda            : %f\n", Produto.preco_venda);
 
-                break;
-
-            //Alterar funcionario
-            case 3:
-
-                printf("Insira o ID do Produto que deseja alterar: ");
-                scanf("%d", &Produto.id);
-                fflush(stdin);
-
-                res = buscarProduto(&ListaProduto, &Produto, Produto.id, &pos);
-                if (res == 0) {
-                    while (res != 7) {
-                        system("cls");
-                        printf("\nProduto encontrado! -------------\n");
-                        printf("ID (fixo)                     : %d\n", Produto.id);
-                        printf("1- Descri√ß√£o              : %s\n", Produto.descricao);
-                        printf("2- Estoque                : %d\n", Produto.estoque);
-                        printf("3- Estoque m√≠nimo         : %d\n", Produto.estoque_minimo);
-                        printf("4- Pre√ßo custo            : %f\n", Produto.preco_custo);
-                        printf("5- Pre√ßo venda            : %f\n", Produto.preco_venda);
-
-                        printf("6- Salvar dados\n");
-                        printf("0- Cancelar \n");
-                        printf("=> ");
-                        scanf("%d", &res);
-
-                        if (res == 0) {
-                            break;
-                        }
-
-                        fflush(stdin);
-
-                        switch (res) {
-                            case 1:
-                                printf("Insira a nova descri√ß√£o: \n");
-                                scanf("%[^\n]", Produto.descricao);
-                                fflush(stdin);
-                                break;
-                            case 2:
-                                printf("Insira o estoque: \n");
-                                scanf("%d", &Produto.estoque);
-                                fflush(stdin);
-                                break;
-                            case 3:
-                                printf("Insira o estoque m√≠nimo: \n");
-                                scanf("%d", &Produto.estoque_minimo);
-                                fflush(stdin);
-                                break;
-                            case 4:
-                                printf("Insira o pre√ßo de custo: \n");
-                                scanf("%f", &Produto.preco_custo);
-                                fflush(stdin);
-                                break;
-                            case 5:
-                                printf("Insira o pre√ßo de venda: \n");
-                                scanf("%f", &Produto.preco_venda);
-                                fflush(stdin);
-                                break;
-                            case 6:
-                                alterarProduto(pos, Produto);
-                                break;
-                            default:
-                                printf("Insira uma op√ß√£o v√°lida...");
-                                system("pause");
-                                break;
-                        }
-                    }
-                } else {
-                    printf("\nProduto n√£o encontrado!\n");
-                    system("pause");
-                }
-
-                break;
-
-            case 4:
-                printf("Digite o ID do Produto que deseja apagar: ");
-                scanf("%d", &Produto.id);
-                fflush(stdin);
-
-                res = buscarProduto(&ListaProduto, &Produto, Produto.id, &pos);
-
-                if (res == 0) {
-                    printf("1- ID                     : %d\n", Produto.id);
-                    printf("2- Descri√ß√£o              : %s\n", Produto.descricao);
-                    printf("3- Estoque                : %d\n", Produto.estoque);
-                    printf("4- Estoque m√≠nimo         : %d\n", Produto.estoque_minimo);
-                    printf("5- Pre√ßo custo            : %f\n", Produto.preco_custo);
-                    printf("6- Pre√ßo venda            : %f\n", Produto.preco_venda);
-
-                    printf("Tem certeza que deseja apagar esse Produto?\n");
-                    printf("1- Sim \n");
-                    printf("2- N√£o \n");
+                    printf("6- Salvar dados\n");
+                    printf("0- Cancelar \n");
                     printf("=> ");
                     scanf("%d", &res);
-                    fflush(stdin);
 
-                    if (res == 1) {
-                        apagarProduto(pos);
-                        printf("\nProduto apagado com sucesso!\n");
-                        system("pause");
-                        fflush(stdin);
+                    if (res == 0)
+                    {
+                        break;
                     }
-                } else {
-                    printf("Usu√°rio n√£o encontrado!\n");
-                    system("pause");
+
+                    fflush(stdin);
+
+                    switch (res)
+                    {
+                    case 1:
+                        printf("Insira a nova descriá∆o: \n");
+                        scanf("%[^\n]", Produto.descricao);
+                        fflush(stdin);
+                        break;
+                    case 2:
+                        printf("Insira o estoque: \n");
+                        scanf("%d", &Produto.estoque);
+                        fflush(stdin);
+                        break;
+                    case 3:
+                        printf("Insira o estoque m°nimo: \n");
+                        scanf("%d", &Produto.estoque_minimo);
+                        fflush(stdin);
+                        break;
+                    case 4:
+                        printf("Insira o preáo de custo: \n");
+                        scanf("%f", &Produto.preco_custo);
+                        fflush(stdin);
+                        break;
+                    case 5:
+                        printf("Insira o preáo de venda: \n");
+                        scanf("%f", &Produto.preco_venda);
+                        fflush(stdin);
+                        break;
+                    case 6:
+                        alterarProduto(pos, Produto);
+                        break;
+                    default:
+                        printf("Insira uma opá∆o v†lida...");
+                        system("pause");
+                        break;
+                    }
                 }
-                break;
-            case 5:
-                listarProdutos(ListaProduto);
-                break;
-            default:
-                if (res != 6) {
-                    printf("Selecione uma op√ß√£o v√°lida!\n");
+            }
+            else
+            {
+                printf("\nProduto n∆o encontrado!\n");
+                system("pause");
+            }
+
+            break;
+
+        case 4:
+            printf("Digite o ID do Produto que deseja apagar: ");
+            scanf("%d", &Produto.id);
+            fflush(stdin);
+
+            res = buscarProduto(&listaProduto, &Produto, Produto.id, &pos);
+
+            if (res == 0)
+            {
+                printf("1- ID                     : %d\n", Produto.id);
+                printf("2- Descriá∆o              : %s\n", Produto.descricao);
+                printf("3- Estoque                : %d\n", Produto.estoque);
+                printf("4- Estoque m°nimo         : %d\n", Produto.estoque_minimo);
+                printf("5- Preáo custo            : %f\n", Produto.preco_custo);
+                printf("6- Preáo venda            : %f\n", Produto.preco_venda);
+
+                printf("Tem certeza que deseja apagar esse Produto?\n");
+                printf("1- Sim \n");
+                printf("2- N∆o \n");
+                printf("=> ");
+                scanf("%d", &res);
+                fflush(stdin);
+
+                if (res == 1)
+                {
+                    apagarProduto(pos);
+                    printf("\nProduto apagado com sucesso!\n");
                     system("pause");
                     fflush(stdin);
                 }
-                break;
+            }
+            else
+            {
+                printf("Usu†rio n∆o encontrado!\n");
+                system("pause");
+            }
+            break;
+        case 5:
+            listarProdutos(listaProduto);
+            break;
+        default:
+            if (res != 6)
+            {
+                printf("Selecione uma opá∆o v†lida!\n");
+                system("pause");
+                fflush(stdin);
+            }
+            break;
         }
-    } while (res != 6);
+    } while (res != 0);
 }
-
-
