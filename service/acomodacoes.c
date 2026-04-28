@@ -10,32 +10,40 @@
 #define BIN 1
 #define TXT 2
 
-ListaAcomodacao* iniciaListaAcomodacao() {
+ListaAcomodacao *iniciaListaAcomodacao()
+{
     ListaAcomodacao *lista = malloc(sizeof(ListaAcomodacao));
 
-    if (lista) {
+    if (lista)
+    {
         lista->acomodacao.id = 0;
         lista->prox = NULL;
     }
     return lista;
 }
 
-int escolheIdAcomodacao(ListaAcomodacao *lista) {
+int escolheIdAcomodacao(ListaAcomodacao *lista)
+{
     int maiorId = 0;
     ListaAcomodacao *aux = lista->prox;
 
-    while (aux != NULL) {
-        if (aux->acomodacao.id > maiorId) {
+    while (aux != NULL)
+    {
+        if (aux->acomodacao.id > maiorId)
+        {
             maiorId = aux->acomodacao.id;
         }
         aux = aux->prox;
     }
     return maiorId + 1;
 }
-int inserirAcomodacao(ListaAcomodacao **lista, TipoAcomodacao acomodacao) {
+
+int inserirAcomodacao(ListaAcomodacao **lista, TipoAcomodacao acomodacao)
+{
     ListaAcomodacao *aux, *novaAcomodacao = malloc(sizeof(ListaAcomodacao));
 
-    if (novaAcomodacao) {
+    if (novaAcomodacao)
+    {
         novaAcomodacao->acomodacao = acomodacao;
         novaAcomodacao->prox = NULL;
         aux = *lista;
@@ -49,18 +57,22 @@ int inserirAcomodacao(ListaAcomodacao **lista, TipoAcomodacao acomodacao) {
     return 1;
 }
 
-int buscarAcomodacao(ListaAcomodacao **lista, TipoAcomodacao *acomodacao, int id, ListaAcomodacao **pos) {
-
+int buscarAcomodacao(ListaAcomodacao **lista, TipoAcomodacao *acomodacao, int id, ListaAcomodacao **pos)
+{
     if (lista == NULL || *lista == NULL)
         return 1;
 
     ListaAcomodacao *aux = (*lista)->prox;
 
-    while (aux != NULL) {
-        //printf("DEBUG: Comparando ID digitado (%d) com ID no no (%d)\n", id, aux->acomodacao.id);
-        if (aux->acomodacao.id == id && aux->acomodacao.id != 0) {
-            if (acomodacao != NULL) *acomodacao = aux->acomodacao;
-            if (pos != NULL) *pos = aux;
+    while (aux != NULL)
+    {
+        // printf("DEBUG: Comparando ID digitado (%d) com ID no no (%d)\n", id, aux->acomodacao.id);
+        if (aux->acomodacao.id == id && aux->acomodacao.id != 0)
+        {
+            if (acomodacao != NULL)
+                *acomodacao = aux->acomodacao;
+            if (pos != NULL)
+                *pos = aux;
             return 0;
         }
         aux = aux->prox;
@@ -68,23 +80,31 @@ int buscarAcomodacao(ListaAcomodacao **lista, TipoAcomodacao *acomodacao, int id
     return 1;
 }
 
-void alterarAcomodacao(ListaAcomodacao *pos, TipoAcomodacao acomodacao) {
+void alterarAcomodacao(ListaAcomodacao *pos, TipoAcomodacao acomodacao)
+{
     pos->acomodacao = acomodacao;
 }
 
-void apagarAcomodacao(ListaAcomodacao *pos) {
+void apagarAcomodacao(ListaAcomodacao *pos)
+{
     pos->acomodacao.id = 0;
 }
 
-void listarAcomodacao(ListaAcomodacao *lista, ListaCategoria *listaCat) {
-    if (lista->prox == NULL) {
+void listarAcomodacao(ListaAcomodacao *lista, ListaCategoria *listaCat)
+{
+    if (lista->prox == NULL)
+    {
         printf("Nenhuma acomodacao cadastrada.\n");
-    } else {
+    }
+    else
+    {
         lista = lista->prox;
         printf("\nAcomodacoes cadastradas:\n");
 
-        while (lista != NULL) {
-            if (lista->acomodacao.id != 0) {
+        while (lista != NULL)
+        {
+            if (lista->acomodacao.id != 0)
+            {
                 printf("ID           : %d\n", lista->acomodacao.id);
                 printf("Descricao    : %s\n", lista->acomodacao.descricao);
                 printf("Facilidades  : %s\n", lista->acomodacao.facilidades);
@@ -108,7 +128,8 @@ void salvaDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo)
     ListaAcomodacao *aux = lista->prox;
     while (aux != NULL)
     {
-        if (aux->acomodacao.id != 0) {
+        if (aux->acomodacao.id != 0)
+        {
             fwrite(&(aux->acomodacao), sizeof(TipoAcomodacao), 1, arquivo);
         }
         aux = aux->prox;
@@ -155,7 +176,8 @@ void salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo)
         fprintf(arquivo, "<tabela=acomodacao>\n");
         while (aux != NULL)
         {
-            if (aux->acomodacao.id != 0) {
+            if (aux->acomodacao.id != 0)
+            {
                 fprintf(arquivo, "    <registro>\n");
                 fprintf(arquivo, "        <codigo>%d</codigo>\n", aux->acomodacao.id);
                 fprintf(arquivo, "        <descricao>%s</descricao>\n", aux->acomodacao.descricao);
@@ -210,32 +232,35 @@ ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceAcomodacao(int modo) {
-    ListaAcomodacao *pos, *listaAcomod;
-    ListaCategoria *posCat, *listaCat;
+void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat, int modo)
+{
+    ListaAcomodacao *pos;
+    ListaCategoria *posCat;
     TipoAcomodacao acomodacao;
     TipoCategoria catAux;
     int res = 0;
     int subRes = 0;
 
     listaAcomod = resgataDadosAcomodacoesBin(AcomodacoesBIN);
-    if (listaAcomod->prox == NULL) {
+    if (listaAcomod->prox == NULL)
+    {
         free(listaAcomod);
         listaAcomod = resgataDadosAcomodacoesTxt(AcomodacoesTXT);
     }
 
-    if (listaAcomod->prox == NULL) {
-        //printf("DEBUG: A lista de acomodacoes esta VAZIA apos o carregamento!\n");
+    if (listaAcomod->prox == NULL)
+    {
+        // printf("DEBUG: A lista de acomodacoes esta VAZIA apos o carregamento!\n");
         system("pause");
-    } else {
+    }
+    else
+    {
         printf("DEBUG: Lista carregada com sucesso.\n");
         system("pause");
     }
 
-    listaCat = iniciaListaCategoria();
-    carregarCategorias(&listaCat);
-
-    do {
+    do
+    {
         system("cls");
 
         printf("--- Gestao de Acomodacoes ---\n");
@@ -249,181 +274,185 @@ void interfaceAcomodacao(int modo) {
         scanf("%d", &res);
         fflush(stdin);
 
-        switch (res) {
-            case 1:
-                system("cls");
-                printf("Descricao: ");
-                scanf("%[^\n]", acomodacao.descricao);
-                fflush(stdin);
+        switch (res)
+        {
+        case 1:
+            system("cls");
+            printf("Descricao: ");
+            scanf("%[^\n]", acomodacao.descricao);
+            fflush(stdin);
 
-                printf("Facilidades: ");
-                scanf("%[^\n]", acomodacao.facilidades);
-                fflush(stdin);
+            printf("Facilidades: ");
+            scanf("%[^\n]", acomodacao.facilidades);
+            fflush(stdin);
 
-                printf("ID da categoria: ");
-                scanf("%d", &acomodacao.idCategoria);
-                fflush(stdin);
+            printf("ID da categoria: ");
+            scanf("%d", &acomodacao.idCategoria);
+            fflush(stdin);
 
+            acomodacao.id = escolheIdAcomodacao(listaAcomod);
+
+            // verifica se o idCategoria existe
+            if (buscarCategoria(&listaCat, &catAux, acomodacao.idCategoria, &posCat) == 0)
+            {
                 acomodacao.id = escolheIdAcomodacao(listaAcomod);
-
-                // verifica se o idCategoria existe
-                if (buscarCategoria(&listaCat, &catAux, acomodacao.idCategoria, &posCat) == 0) {
-                    acomodacao.id = escolheIdAcomodacao(listaAcomod);
-                    if (inserirAcomodacao(&listaAcomod, acomodacao) == 0) {
-                        printf("\n Acomodacao cadastrada com sucesso! ID: %d\n", acomodacao.id);
-                    } else {
-                        printf("\nErro ao alocar memoria!\n");
-                    }
-                } else {
-                    printf("\nErro: Categoria id %d nao encontrada! Cadastro cancelado.\n", acomodacao.idCategoria);
-                }
-
-                system("pause");
-                break;
-            case 2:
-                printf("Insira o id da acomodacao que deseja buscar: ");
-                fflush(stdin);
-                scanf("%d", &acomodacao.id);
-                fflush(stdin);
-
-                int achou = buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos);
-                if (achou == 0)
+                if (inserirAcomodacao(&listaAcomod, acomodacao) == 0)
                 {
-                    printf("\nAcomodacao encontrada!! -------------\n");
-                    printf("ID           : %d\n", acomodacao.id);
-                    printf("Descricao    : %s\n", acomodacao.descricao);
-                    printf("Facilidades  : %s\n", acomodacao.facilidades);
-                    printf("ID Categoria : %d\n", acomodacao.idCategoria);
-
-                    system("pause");
+                    printf("\n Acomodacao cadastrada com sucesso! ID: %d\n", acomodacao.id);
                 }
                 else
                 {
-                    printf("\nAcomodacao nao encontrada!\n");
-                    system("pause");
+                    printf("\nErro ao alocar memoria!\n");
                 }
-                break;
-            case 3:
-                printf("Digite o ID da acomodacao que deseja alterar: ");
-                scanf("%d", &acomodacao.id);
-                fflush(stdin);
+            }
+            else
+            {
+                printf("\nErro: Categoria id %d nao encontrada! Cadastro cancelado.\n", acomodacao.idCategoria);
+            }
 
-                if (buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos) == 0){
-                    subRes = 0;
-                    while (subRes != 4 && subRes != 5) {
-                        system("cls");
-                        printf("\nAcomodacao encontrada! -------------\n");
-                        printf("Digite o campo que deseja alterar: \n\n");
-                        printf("1 - Descricao                    : %s\n", acomodacao.descricao);
-                        printf("2 - Facilidades                  : R$ %s\n", acomodacao.facilidades);
-                        printf("3 - ID Categoria                 : %d\n", acomodacao.idCategoria);
+            system("pause");
+            break;
+        case 2:
+            printf("Insira o id da acomodacao que deseja buscar: ");
+            fflush(stdin);
+            scanf("%d", &acomodacao.id);
+            fflush(stdin);
 
-                        printf("4 - Salvar dados\n");
-                        printf("5 - Cancelar\n");
-                        printf("=> ");
+            int achou = buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos);
+            if (achou == 0)
+            {
+                printf("\nAcomodacao encontrada!! -------------\n");
+                printf("ID           : %d\n", acomodacao.id);
+                printf("Descricao    : %s\n", acomodacao.descricao);
+                printf("Facilidades  : %s\n", acomodacao.facilidades);
+                printf("ID Categoria : %d\n", acomodacao.idCategoria);
 
-                        scanf("%d", &subRes);
-                        fflush(stdin);
+                system("pause");
+            }
+            else
+            {
+                printf("\nAcomodacao nao encontrada!\n");
+                system("pause");
+            }
+            break;
+        case 3:
+            printf("Digite o ID da acomodacao que deseja alterar: ");
+            scanf("%d", &acomodacao.id);
+            fflush(stdin);
 
-                        switch (subRes) {
-                            case 1:
-                                printf("Insira a nova descricao: ");
-                                scanf("%[^\n]", acomodacao.descricao);
-                                fflush(stdin);
-                                break;
-                            case 2:
-                                printf("Insira as novas facilidades: ");
-                                scanf("%[^\n]", acomodacao.facilidades);
-                                fflush(stdin);
-                                break;
-                            case 3:
-                                printf("Insira o novo ID Categoria: ");
-                                scanf("%d", &acomodacao.idCategoria);
-                                fflush(stdin);
-                                break;
-                            case 4:
-                                if (buscarCategoria(&listaCat, &catAux, acomodacao.idCategoria, &posCat) == 0) {
-                                    alterarAcomodacao(pos, acomodacao);
-                                    printf("Dados atualizados!\n");
-                                } else {
-                                    printf("Erro: Categoria nao existe! Alteracao nao pode ser feita.\n");
-                                    subRes = 0;
-                                }
-                                system("pause");
-                                break;
-                            case 5:
-                                printf("Alteracao cancelada:\n");
-                                system("pause");
-                                break;
-                            default:
-                                printf("Escolha um valor valido...\n");
-                                system("pause");
-                                break;
-                        }
-                    }
-                } else {
-                    printf("Acomodacao nao encontrada!\n");
-                    system("pause");
-                }
-                break;
-
-            case 4:
-                printf("Insira o id da acomodacao que deseja apagar: ");
-                scanf(" %d", &acomodacao.id);
-                fflush(stdin);
-
-                int buscaRes = buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos);
-                if (buscaRes == 0)
+            if (buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos) == 0)
+            {
+                subRes = 0;
+                while (subRes != 4 && subRes != 5)
                 {
-                    printf("\nAcomodacao encontrada!! -------------\n");
-                    printf("ID                      : %d\n", acomodacao.id);
-                    printf("Descricao               : %s\n", acomodacao.descricao);
-                    printf("Facilidades             : %s\n", acomodacao.facilidades);
-                    printf("ID Categoria            : %d\n", acomodacao.idCategoria);
+                    system("cls");
+                    printf("\nAcomodacao encontrada! -------------\n");
+                    printf("Digite o campo que deseja alterar: \n\n");
+                    printf("1 - Descricao                    : %s\n", acomodacao.descricao);
+                    printf("2 - Facilidades                  : R$ %s\n", acomodacao.facilidades);
+                    printf("3 - ID Categoria                 : %d\n", acomodacao.idCategoria);
 
-                    printf("Tem certeza que deseja apagar essa acomodacao?\n");
-                    printf("1 - Apagar\n");
-                    printf("2 - Cancelar\n");
+                    printf("4 - Salvar dados\n");
+                    printf("5 - Cancelar\n");
                     printf("=> ");
 
                     scanf("%d", &subRes);
                     fflush(stdin);
-                    if (subRes == 1)
+
+                    switch (subRes)
                     {
-                        apagarAcomodacao(pos);
-                        printf("Acomodacao apagada!\n\n");
+                    case 1:
+                        printf("Insira a nova descricao: ");
+                        scanf("%[^\n]", acomodacao.descricao);
+                        fflush(stdin);
+                        break;
+                    case 2:
+                        printf("Insira as novas facilidades: ");
+                        scanf("%[^\n]", acomodacao.facilidades);
+                        fflush(stdin);
+                        break;
+                    case 3:
+                        printf("Insira o novo ID Categoria: ");
+                        scanf("%d", &acomodacao.idCategoria);
+                        fflush(stdin);
+                        break;
+                    case 4:
+                        if (buscarCategoria(&listaCat, &catAux, acomodacao.idCategoria, &posCat) == 0)
+                        {
+                            alterarAcomodacao(pos, acomodacao);
+                            printf("Dados atualizados!\n");
+                        }
+                        else
+                        {
+                            printf("Erro: Categoria nao existe! Alteracao nao pode ser feita.\n");
+                            subRes = 0;
+                        }
                         system("pause");
+                        break;
+                    case 5:
+                        printf("Alteracao cancelada:\n");
+                        system("pause");
+                        break;
+                    default:
+                        printf("Escolha um valor valido...\n");
+                        system("pause");
+                        break;
                     }
                 }
-                else
+            }
+            else
+            {
+                printf("Acomodacao nao encontrada!\n");
+                system("pause");
+            }
+            break;
+
+        case 4:
+            printf("Insira o id da acomodacao que deseja apagar: ");
+            scanf(" %d", &acomodacao.id);
+            fflush(stdin);
+
+            int buscaRes = buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos);
+            if (buscaRes == 0)
+            {
+                printf("\nAcomodacao encontrada!! -------------\n");
+                printf("ID                      : %d\n", acomodacao.id);
+                printf("Descricao               : %s\n", acomodacao.descricao);
+                printf("Facilidades             : %s\n", acomodacao.facilidades);
+                printf("ID Categoria            : %d\n", acomodacao.idCategoria);
+
+                printf("Tem certeza que deseja apagar essa acomodacao?\n");
+                printf("1 - Apagar\n");
+                printf("2 - Cancelar\n");
+                printf("=> ");
+
+                scanf("%d", &subRes);
+                fflush(stdin);
+                if (subRes == 1)
                 {
-                    printf("\nAcomodacao nao encontrada!\n\n");
+                    apagarAcomodacao(pos);
+                    printf("Acomodacao apagada!\n\n");
                     system("pause");
                 }
-                break;
-            case 5:
-                system("cls");
-                listarAcomodacao(listaAcomod, listaCat);
+            }
+            else
+            {
+                printf("\nAcomodacao nao encontrada!\n\n");
                 system("pause");
-                break;
-            case 6:
-                system("cls");
-                printf("Salvando dados e encerrando modulo...");
-                if (modo == BIN) {
-                    salvaDadosAcomodacoesBin(listaAcomod, AcomodacoesBIN);
-                    apagaArquivo(AcomodacoesTXT);
-                }
-                else if (modo == TXT) {
-                    salvaDadosAcomodacoesTxt(listaAcomod, AcomodacoesTXT);
-                    apagaArquivo(AcomodacoesBIN);
-                }
-                printf("Dados salvos com sucesso!\n");
-                system("pause");
-                break;
-            default:
+            }
+            break;
+        case 5:
+            system("cls");
+            listarAcomodacao(listaAcomod, listaCat);
+            system("pause");
+            break;
+        default:
+            if (res != 6)
+            {
                 printf("Opcao invalida\n");
                 system("pause");
-                break;
+            }
+            break;
         }
     } while (res != 6);
 }

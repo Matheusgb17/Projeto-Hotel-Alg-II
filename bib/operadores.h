@@ -94,4 +94,4 @@ int salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo);
  */
 ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo);
 
-void interfaceOperadores();
+void interfaceOperadores(ListaOperadores *listaOperadores, int modo);

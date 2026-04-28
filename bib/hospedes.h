@@ -106,4 +106,4 @@ ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo);
  * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).
  * @return void
  */
-void interfaceHospedes(int modo);
+void interfaceHospedes(ListaHospede *listaHospedes, int modo);

@@ -70,21 +70,33 @@ void listarCategoria(ListaCategoria *lista);
 /**
  * Salva a lista encadeada em um arquivo de texto legível.
  * @param lista Ponteiro para a lista de categorias.
+ * @param nome_arquivo Nome do arquivo onde os dados serão salvos.
+ * @return int Retorna 0 para sucesso ou 1 para falha de acesso ao arquivo.
  */
-void salvarCategoriasTXT(ListaCategoria *lista);
+int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo);
 
 /**
  * Salva a lista encadeada em formato binário (idêntico à memória).
  * @param lista Ponteiro para a lista de categorias.
+ * @param nome_arquivo Nome do arquivo onde os dados serão salvos.
+ * @return int Retorna 0 para sucesso ou 1 para falha de acesso ao arquivo.
  */
-void salvarCategoriasBIN(ListaCategoria *lista);
+int salvarCategoriasBin(ListaCategoria *lista, char *nome_arquivo);
 
 /**
  * Carrega os dados salvos do arquivo para a memória ao iniciar o programa.
- * @param lista Ponteiro para o ponteiro da lista onde os dados serão inseridos.
+ * @param nome_arquivo Nome do arquivo de onde os dados serão lidos.
+ * @return ListaCategoria* Ponteiro para a lista preenchida com os dados do arquivo.
  */
-void carregarCategorias(ListaCategoria **lista);
+ListaCategoria *carregarCategoriasBin(char *nome_arquivo);
 
-void interfaceCategoria();
+/**
+ * Carrega os dados salvos do arquivo de texto para a memória ao iniciar o programa.
+ * @param nome_arquivo Nome do arquivo de onde os dados serão lidos.
+ * @return ListaCategoria* Ponteiro para a lista preenchida com os dados do arquivo.
+ */
+ListaCategoria *carregarCategoriasTxt(char *nome_arquivo);
+
+void interfaceCategoria(ListaCategoria *listaCategorias, int modo);
 
 #endif

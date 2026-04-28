@@ -220,9 +220,9 @@ ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceOperadores(int modo)
+void interfaceOperadores(ListaOperadores *listaOperadores, int modo)
 {
-    ListaOperadores *pos, *listaOperadores;
+    ListaOperadores *pos;
     TipoOperador operador;
 
     listaOperadores = resgataDadosOperadoresBin(OperadoresBIN);
@@ -544,29 +544,6 @@ void interfaceOperadores(int modo)
                 printf("Selecione uma opá∆o v†lida!\n");
                 system("pause");
                 fflush(stdin);
-            }
-            else
-            {
-                if (modo == BIN)
-                {
-                    if (salvaDadosOperadoresBin(listaOperadores, OperadoresBIN) == 1)
-                    {
-                        printf("Erro ao salvar dados em formato bin†rio! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
-                        system("pause");
-                    }
-                    else
-                        apagaArquivo(OperadoresTXT);
-                }
-                else if (modo == TXT)
-                {
-                    if (salvaDadosOperadoresTxt(listaOperadores, OperadoresTXT) == 1)
-                    {
-                        printf("Erro ao salvar dados em formato texto! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
-                        system("pause");
-                    }
-                    else
-                        apagaArquivo(OperadoresBIN);
-                }
             }
             break;
         }

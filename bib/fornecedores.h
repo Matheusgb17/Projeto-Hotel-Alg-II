@@ -35,6 +35,6 @@ void apagarFornecedor(ListaFornecedor *pos);
 
 void listarFornecedor(ListaFornecedor *lista);
 
-void interfaceFornecedor();
+void interfaceFornecedor(ListaFornecedor *listaFornecedores, int modo);
 
 #endif

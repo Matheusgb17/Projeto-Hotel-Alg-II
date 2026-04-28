@@ -120,9 +120,9 @@ void listarFornecedor(ListaFornecedor *lista)
     }
 }
 
-void interfaceFornecedor(){
-
-    ListaFornecedor *pos, *listaFornecedor = iniciaListaFornecedor();
+void interfaceFornecedor(ListaFornecedor *listaFornecedor, int modo)
+{
+    ListaFornecedor *pos;
     TipoFornecedor fornecedor;
     int res = 0;
 
