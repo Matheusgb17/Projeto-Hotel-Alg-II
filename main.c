@@ -90,6 +90,7 @@ int main()
                     break;
                 case 4: // categorias de acomoda��es
                         interfaceCategoria();
+
                     break;
                 case 5: // produtos
                     break;

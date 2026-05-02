@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../bib/acomodacoes.h"
+#include "../bib/categorias.h"
 #include "../bib/utils.h"
 
 #define AcomodacoesBIN "./data/bin/acomodacoes.dat"
@@ -218,6 +219,8 @@ void interfaceAcomodacao(int modo) {
     int res = 0;
     int subRes = 0;
 
+    listaCat = iniciaListaCategoria();
+    carregarCategorias(&listaCat);
     listaAcomod = resgataDadosAcomodacoesBin(AcomodacoesBIN);
     if (listaAcomod->prox == NULL) {
         free(listaAcomod);
@@ -244,7 +247,7 @@ void interfaceAcomodacao(int modo) {
         printf("3 - Alterar acomodacao\n");
         printf("4 - Apagar acomodacao\n");
         printf("5 - Listar acomodacoes\n");
-        printf("6 - Sair\n");
+        printf("0 - Sair\n");
         printf("=> ");
         scanf("%d", &res);
         fflush(stdin);
@@ -263,8 +266,6 @@ void interfaceAcomodacao(int modo) {
                 printf("ID da categoria: ");
                 scanf("%d", &acomodacao.idCategoria);
                 fflush(stdin);
-
-                acomodacao.id = escolheIdAcomodacao(listaAcomod);
 
                 // verifica se o idCategoria existe
                 if (buscarCategoria(&listaCat, &catAux, acomodacao.idCategoria, &posCat) == 0) {
@@ -406,7 +407,7 @@ void interfaceAcomodacao(int modo) {
                 listarAcomodacao(listaAcomod, listaCat);
                 system("pause");
                 break;
-            case 6:
+            case 0:
                 system("cls");
                 printf("Salvando dados e encerrando modulo...");
                 if (modo == BIN) {
@@ -425,5 +426,5 @@ void interfaceAcomodacao(int modo) {
                 system("pause");
                 break;
         }
-    } while (res != 6);
+    } while (res != 0);
 }
