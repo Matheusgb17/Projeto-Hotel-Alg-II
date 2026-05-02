@@ -1,6 +1,8 @@
 #ifndef CATEGORIAS_H
 #define CATEGORIAS_H
-#include <stdio.h>
+
+#define CategoriasBIN "./data/bin/categorias.dat"
+#define CategoriasTXT "./data/txt/categorias.txt"
 
 typedef struct {
     int id;

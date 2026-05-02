@@ -11,6 +11,8 @@ add_executable(Projeto_Hotel_Alg_II
         service/fornecedores.c
         service/hospedes.c
         main.c
+        service/hotel.c
+        service/operadores.c
         service/categorias.c
         bib/categorias.h
         service/produtos.c
