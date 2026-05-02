@@ -7,11 +7,13 @@
 
 #define AcomodacoesBIN "./data/bin/acomodacoes.dat"
 #define AcomodacoesTXT "./data/txt/acomodacoes.txt"
+#define CategoriasBIN "./data/bin/categorias.bin"
+#define CategoriasTXT "./data/txt/categorias.txt"
 
 #define BIN 1
 #define TXT 2
 
-ListaAcomodacao* iniciaListaAcomodacao() {
+ListaAcomodacao *iniciaListaAcomodacao() {
     ListaAcomodacao *lista = malloc(sizeof(ListaAcomodacao));
 
     if (lista) {
@@ -33,6 +35,7 @@ int escolheIdAcomodacao(ListaAcomodacao *lista) {
     }
     return maiorId + 1;
 }
+
 int inserirAcomodacao(ListaAcomodacao **lista, TipoAcomodacao acomodacao) {
     ListaAcomodacao *aux, *novaAcomodacao = malloc(sizeof(ListaAcomodacao));
 
@@ -51,17 +54,18 @@ int inserirAcomodacao(ListaAcomodacao **lista, TipoAcomodacao acomodacao) {
 }
 
 int buscarAcomodacao(ListaAcomodacao **lista, TipoAcomodacao *acomodacao, int id, ListaAcomodacao **pos) {
-
     if (lista == NULL || *lista == NULL)
         return 1;
 
     ListaAcomodacao *aux = (*lista)->prox;
 
     while (aux != NULL) {
-        //printf("DEBUG: Comparando ID digitado (%d) com ID no no (%d)\n", id, aux->acomodacao.id);
+        // printf("DEBUG: Comparando ID digitado (%d) com ID no no (%d)\n", id, aux->acomodacao.id);
         if (aux->acomodacao.id == id && aux->acomodacao.id != 0) {
-            if (acomodacao != NULL) *acomodacao = aux->acomodacao;
-            if (pos != NULL) *pos = aux;
+            if (acomodacao != NULL)
+                *acomodacao = aux->acomodacao;
+            if (pos != NULL)
+                *pos = aux;
             return 0;
         }
         aux = aux->prox;
@@ -97,18 +101,15 @@ void listarAcomodacao(ListaAcomodacao *lista, ListaCategoria *listaCat) {
     }
 }
 
-void salvaDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo)
-{
+void salvaDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo) {
     FILE *arquivo = fopen(nome_arquivo, "wb");
-    if (arquivo == NULL)
-    {
+    if (arquivo == NULL) {
         printf("Erro ao acessar o arquivo...\n\n");
         system("pause");
         return;
     }
     ListaAcomodacao *aux = lista->prox;
-    while (aux != NULL)
-    {
+    while (aux != NULL) {
         if (aux->acomodacao.id != 0) {
             fwrite(&(aux->acomodacao), sizeof(TipoAcomodacao), 1, arquivo);
         }
@@ -117,8 +118,7 @@ void salvaDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo)
     fclose(arquivo);
 }
 
-ListaAcomodacao *resgataDadosAcomodacoesBin(char *nome_arquivo)
-{
+ListaAcomodacao *resgataDadosAcomodacoesBin(char *nome_arquivo) {
     TipoAcomodacao acomodacao;
     ListaAcomodacao *lista = iniciaListaAcomodacao();
     int res;
@@ -138,24 +138,20 @@ ListaAcomodacao *resgataDadosAcomodacoesBin(char *nome_arquivo)
     return lista;
 }
 
-void salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo)
-{
+void salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo) {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
-    if (arquivo == NULL)
-    {
+    if (arquivo == NULL) {
         printf("Erro ao acessar o arquivo...\n\n");
         system("pause");
         return;
     }
 
-    if (lista->prox != NULL)
-    {
+    if (lista->prox != NULL) {
         ListaAcomodacao *aux = lista->prox;
 
         fprintf(arquivo, "<tabela=acomodacao>\n");
-        while (aux != NULL)
-        {
+        while (aux != NULL) {
             if (aux->acomodacao.id != 0) {
                 fprintf(arquivo, "    <registro>\n");
                 fprintf(arquivo, "        <codigo>%d</codigo>\n", aux->acomodacao.id);
@@ -172,8 +168,7 @@ void salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo)
     printf("Dados salvos em TXT com sucesso!\n");
 }
 
-ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo)
-{
+ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo) {
     ListaAcomodacao *lista = iniciaListaAcomodacao();
     TipoAcomodacao acomod;
 
@@ -184,16 +179,13 @@ ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo)
 
     char linha[256];
 
-    while (fgets(linha, sizeof(linha), arquivo))
-    {
-        if (strstr(linha, "<registro>") != NULL)
-        {
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        if (strstr(linha, "<registro>") != NULL) {
             memset(&acomod, 0, sizeof(TipoAcomodacao));
             continue;
         }
 
-        if (strstr(linha, "</registro>") != NULL)
-        {
+        if (strstr(linha, "</registro>") != NULL) {
             inserirAcomodacao(&lista, acomod);
             continue;
         }
@@ -211,32 +203,24 @@ ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceAcomodacao(int modo) {
-    ListaAcomodacao *pos, *listaAcomod;
-    ListaCategoria *posCat, *listaCat;
+void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat, int modo) {
+    ListaAcomodacao *pos;
+    ListaCategoria *posCat;
     TipoAcomodacao acomodacao;
     TipoCategoria catAux;
     int res = 0;
     int subRes = 0;
 
-    listaCat = iniciaListaCategoria();
-    carregarCategorias(&listaCat);
-    listaAcomod = resgataDadosAcomodacoesBin(AcomodacoesBIN);
+    listaCat = carregarCategoriasTxt(CategoriasTXT);
+    if (listaCat->prox == NULL) {
+        free(listaCat);
+        listaCat = carregarCategoriasBin(CategoriasBIN);
+    }
+
     if (listaAcomod->prox == NULL) {
         free(listaAcomod);
         listaAcomod = resgataDadosAcomodacoesTxt(AcomodacoesTXT);
     }
-
-    if (listaAcomod->prox == NULL) {
-        //printf("DEBUG: A lista de acomodacoes esta VAZIA apos o carregamento!\n");
-        system("pause");
-    } else {
-        printf("DEBUG: Lista carregada com sucesso.\n");
-        system("pause");
-    }
-
-    listaCat = iniciaListaCategoria();
-    carregarCategorias(&listaCat);
 
     do {
         system("cls");
@@ -267,6 +251,8 @@ void interfaceAcomodacao(int modo) {
                 scanf("%d", &acomodacao.idCategoria);
                 fflush(stdin);
 
+                acomodacao.id = escolheIdAcomodacao(listaAcomod);
+
                 // verifica se o idCategoria existe
                 if (buscarCategoria(&listaCat, &catAux, acomodacao.idCategoria, &posCat) == 0) {
                     acomodacao.id = escolheIdAcomodacao(listaAcomod);
@@ -288,8 +274,7 @@ void interfaceAcomodacao(int modo) {
                 fflush(stdin);
 
                 int achou = buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos);
-                if (achou == 0)
-                {
+                if (achou == 0) {
                     printf("\nAcomodacao encontrada!! -------------\n");
                     printf("ID           : %d\n", acomodacao.id);
                     printf("Descricao    : %s\n", acomodacao.descricao);
@@ -297,9 +282,7 @@ void interfaceAcomodacao(int modo) {
                     printf("ID Categoria : %d\n", acomodacao.idCategoria);
 
                     system("pause");
-                }
-                else
-                {
+                } else {
                     printf("\nAcomodacao nao encontrada!\n");
                     system("pause");
                 }
@@ -309,14 +292,14 @@ void interfaceAcomodacao(int modo) {
                 scanf("%d", &acomodacao.id);
                 fflush(stdin);
 
-                if (buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos) == 0){
+                if (buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos) == 0) {
                     subRes = 0;
                     while (subRes != 4 && subRes != 5) {
                         system("cls");
                         printf("\nAcomodacao encontrada! -------------\n");
                         printf("Digite o campo que deseja alterar: \n\n");
                         printf("1 - Descricao                    : %s\n", acomodacao.descricao);
-                        printf("2 - Facilidades                  : R$ %s\n", acomodacao.facilidades);
+                        printf("2 - Facilidades                  : %s\n", acomodacao.facilidades);
                         printf("3 - ID Categoria                 : %d\n", acomodacao.idCategoria);
 
                         printf("4 - Salvar dados\n");
@@ -374,8 +357,7 @@ void interfaceAcomodacao(int modo) {
                 fflush(stdin);
 
                 int buscaRes = buscarAcomodacao(&listaAcomod, &acomodacao, acomodacao.id, &pos);
-                if (buscaRes == 0)
-                {
+                if (buscaRes == 0) {
                     printf("\nAcomodacao encontrada!! -------------\n");
                     printf("ID                      : %d\n", acomodacao.id);
                     printf("Descricao               : %s\n", acomodacao.descricao);
@@ -389,15 +371,12 @@ void interfaceAcomodacao(int modo) {
 
                     scanf("%d", &subRes);
                     fflush(stdin);
-                    if (subRes == 1)
-                    {
+                    if (subRes == 1) {
                         apagarAcomodacao(pos);
                         printf("Acomodacao apagada!\n\n");
                         system("pause");
                     }
-                }
-                else
-                {
+                } else {
                     printf("\nAcomodacao nao encontrada!\n\n");
                     system("pause");
                 }
@@ -413,8 +392,7 @@ void interfaceAcomodacao(int modo) {
                 if (modo == BIN) {
                     salvaDadosAcomodacoesBin(listaAcomod, AcomodacoesBIN);
                     apagaArquivo(AcomodacoesTXT);
-                }
-                else if (modo == TXT) {
+                } else if (modo == TXT) {
                     salvaDadosAcomodacoesTxt(listaAcomod, AcomodacoesTXT);
                     apagaArquivo(AcomodacoesBIN);
                 }

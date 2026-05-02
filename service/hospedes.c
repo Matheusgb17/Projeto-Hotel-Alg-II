@@ -233,16 +233,9 @@ ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceHospedes(int modo)
+void interfaceHospedes(ListaHospede *listaHospedes, int modo)
 {
-    ListaHospede *pos, *listaHospedes;
-
-    listaHospedes = resgataDadosHospedesBin(HospedesBIN);
-    if (listaHospedes->prox == NULL)
-    {
-        free(listaHospedes);
-        listaHospedes = resgataDadosHospedesTxt(HospedesTXT);
-    }
+    ListaHospede *pos;
 
     TipoHospede hospede;
     int res = 0;
@@ -342,7 +335,7 @@ void interfaceHospedes(int modo)
                 printf("\nFalha ao inserir hospede!\n");
                 system("pause");
             }
-
+            res = 1;
             break;
         case 2:
             printf("Insira o cpf do Hospede que deseja buscar: ");
@@ -542,29 +535,6 @@ void interfaceHospedes(int modo)
                 printf("Opá∆o inv†lida!\n");
                 system("pause");
                 fflush(stdin);
-            }
-            else
-            {
-                if (modo == BIN){
-                    if(salvaDadosHospedesBin(listaHospedes, HospedesBIN) == 1)
-                    {
-                        printf("Erro ao salvar dados em formato bin†rio! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
-                        system("pause");
-                    }
-                    else
-                        apagaArquivo(HospedesTXT);
-                }
-                
-                if (modo == TXT)
-                {
-                    if(salvaDadosHospedesTxt(listaHospedes, HospedesTXT) == 1)
-                    {
-                        printf("Erro ao salvar dados em formato texto! Os dados ser∆o mantidos da forma que estavam antes do inicio do sistema.\n");
-                        system("pause");
-                    }
-                    else
-                        apagaArquivo(HospedesBIN);
-                }
             }
             break;
         }
