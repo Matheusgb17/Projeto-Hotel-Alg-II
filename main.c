@@ -46,7 +46,7 @@ int main()
     ListaAcomodacao *listaAcomodacao;
     ListaCategoria *listaCategoria;
     ListaProduto *listaProduto;
-    // ListaFornecedor *listaFornecedor;
+    ListaFornecedor *listaFornecedor;
     ListaOperadores *listaOperadores;
 
     while (1)
@@ -108,11 +108,11 @@ int main()
         listaProduto = resgataDadosProdutosTxt(ProdutosTXT);
     }   
 
-    // listaFornecedor = resgataDadosFornecedoresBin(FornecedoresBIN);
-    // if (listaFornecedor->prox == NULL){    
-    //     free(listaFornecedor);
-    //     listaFornecedor = resgataDadosFornecedoresTxt(FornecedoresTXT);
-    // }
+    listaFornecedor = resgataDadosFornecedoresBin(FornecedoresBIN);
+    if (listaFornecedor->prox == NULL){
+        free(listaFornecedor);
+        listaFornecedor = resgataDadosFornecedoresTxt(FornecedoresTXT);
+    }
 
     listaOperadores = resgataDadosOperadoresBin(OperadoresBIN);
     if (listaOperadores->prox == NULL){    
@@ -172,6 +172,7 @@ int main()
                     interfaceProduto(listaProduto, modo);
                     break;
                 case 6: // fornecedores
+                        interfaceFornecedor(listaFornecedor, modo);
                     break;
                 case 7: // operadores
                     interfaceOperadores(listaOperadores, modo);
@@ -214,7 +215,32 @@ int main()
                 scanf("%d", &res);
 
                 if (res == 1)
+                {
+
+                    if (modo == BIN)
+                    {
+                        salvarDadosHotelBin(*dadosHotel, HotelBIN);
+                        salvaDadosHospedesBin(listaHospedes, HospedesBIN);
+                        salvaDadosAcomodacoesBin(listaAcomodacao, AcomodacoesBIN);
+                        salvarCategoriasBin(listaCategoria, CategoriasBIN);
+                        salvaDadosProdutosBin(listaProduto, ProdutosBIN);
+                        salvaDadosFornecedoresBin(listaFornecedor, FornecedoresBIN);
+                        salvaDadosOperadoresBin(listaOperadores, OperadoresBIN);
+                    }
+                    else if (modo == TXT)
+                    {
+                        salvarDadosHotelTxt(*dadosHotel, HotelTXT);
+                        salvaDadosHospedesTxt(listaHospedes, HospedesTXT);
+                        salvaDadosAcomodacoesTxt(listaAcomodacao, AcomodacoesTXT);
+                        salvarCategoriasTxt(listaCategoria, CategoriasTXT);
+                        salvaDadosProdutosTxt(listaProduto, ProdutosTXT);
+                        salvaDadosFornecedoresTxt(listaFornecedor, FornecedoresTXT);
+                        salvaDadosOperadoresTxt(listaOperadores, OperadoresTXT);
+                    }
+
                     return 0;
+                }
+
                 res = 0;
             }
             break;

@@ -30,7 +30,7 @@ void listarProdutos(ListaProduto *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum Produto cadastrado");
+        printf("Nenhum Produto cadastrado\n");
     }
     else
     {
@@ -40,8 +40,13 @@ void listarProdutos(ListaProduto *lista)
         {
             if (lista->Produto.id != 0)
             {
-                printf("Id: %d\n", lista->Produto.id);
-                printf("Nome: %s\n", lista->Produto.descricao);
+                printf("Id                     : %d\n", lista->Produto.id);
+                printf("Descri√ß√£o              : %s\n\n", lista->Produto.descricao);
+                printf("Estoque                : %d\n", lista->Produto.estoque);
+                printf("Estoque minimo         : %d\n", lista->Produto.estoque_minimo);
+                printf("Preco custo            : %f\n", lista->Produto.preco_custo);
+                printf("Preco venda            : %f\n", lista->Produto.preco_venda);
+                printf("-------------------\n");
             }
             lista = lista->prox;
         }
@@ -122,7 +127,7 @@ void listarProduto(ListaProduto *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum Produto cadastrado");
+        printf("Nenhum Produto cadastrado\n");
         system("pause");
     }
     else
@@ -131,8 +136,13 @@ void listarProduto(ListaProduto *lista)
         printf("\nProduto ---------\n");
         while (lista != NULL)
         {
-            printf("Id   : %d\n", lista->Produto.id);
-            printf("Nome : %s\n\n", lista->Produto.descricao);
+            printf("Id                     : %d\n", lista->Produto.id);
+            printf("Descri√ß√£o              : %s\n\n", lista->Produto.descricao);
+            printf("Estoque                : %d\n", lista->Produto.estoque);
+            printf("Estoque minimo         : %d\n", lista->Produto.estoque_minimo);
+            printf("Preco custo            : %f\n", lista->Produto.preco_custo);
+            printf("Preco venda            : %f\n", lista->Produto.preco_venda);
+            printf("-------------------\n");
             lista = lista->prox;
         }
         system("pause");
@@ -191,7 +201,7 @@ int salvaDadosProdutosTxt(ListaProduto *lista, char *nome_arquivo)
         return 1;
     }
 
-    if (lista->prox == NULL)
+    if (lista->prox != NULL)
     {
         ListaProduto *aux = lista->prox;
         fprintf(arq, "<tabela=produto>\n");
@@ -242,7 +252,7 @@ ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo)
         }
 
         sscanf(linha, " <codigo>%d", &produto.id);
-        sscanf(linha, " <descricao>[^<]", &produto.descricao);
+        sscanf(linha, " <descricao>%[^<]", produto.descricao);
         sscanf(linha, " <estoque>%d", &produto.estoque);
         sscanf(linha, " <estoque_minimo>%d", &produto.estoque_minimo);
         sscanf(linha, " <preco_custo>%f", &produto.preco_custo);
@@ -252,25 +262,16 @@ ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceProduto()
+void interfaceProduto(ListaProduto *listaProduto, int modo)
 {
-
-    ListaProduto *pos, *listaProduto;
+    ListaProduto *pos;
     TipoProduto Produto;
-
-    listaProduto = resgataDadosProdutosBin(ProdutosBIN);
-    if (listaProduto->prox == NULL)
-    {
-        free(listaProduto);
-        listaProduto = resgataDadosProdutosTxt(ProdutosTXT);
-    }
-
     int res = 0;
 
     do
     {
         system("cls");
-        printf("Cadastro e gest∆o de Produtos!\n");
+        printf("Cadastro e gestao de Produtos!\n");
         printf("1 - Inserir Produto\n");
         printf("2 - Buscar Produto\n");
         printf("3 - Alterar Produto\n");
@@ -293,22 +294,22 @@ void interfaceProduto()
         // Inserir Produto
         case 1:
             printf("Insira o nome: ");
-            scanf("%[^\n]", Produto.descricao);
+            scanf(" %[^\n]", Produto.descricao);
             fflush(stdin);
 
             printf("Insira o estoque: ");
             scanf("%d", &Produto.estoque);
             fflush(stdin);
 
-            printf("Insira o estoque m°nimo: ");
+            printf("Insira o estoque minimo: ");
             scanf("%d", &Produto.estoque_minimo);
             fflush(stdin);
 
-            printf("Insira o preáo de custo: ");
+            printf("Insira o preco de custo: ");
             scanf("%f", &Produto.preco_custo);
             fflush(stdin);
 
-            printf("Insira o preáo de venda: ");
+            printf("Insira o preco de venda: ");
             scanf("%f", &Produto.preco_venda);
             fflush(stdin);
 
@@ -318,13 +319,13 @@ void interfaceProduto()
 
             if (res == 0)
             {
-                printf("\nFuncion†rio inserido com sucesso!\n");
-                printf("\nO ID do Produto %s Ç: %d\n", Produto.descricao, Produto.id);
+                printf("\nProduto inserido com sucesso!\n");
+                printf("\nO ID do Produto %s e: %d\n", Produto.descricao, Produto.id);
                 system("pause");
             }
             else
             {
-                printf("\nFalha ao inserir o funcion†rio!\n");
+                printf("\nFalha ao inserir o produto!\n");
                 system("pause");
             }
             res = 1;
@@ -341,16 +342,16 @@ void interfaceProduto()
             {
                 printf("\nProduto encontrado! -------------\n");
                 printf("ID                     : %d\n", Produto.id);
-                printf("Descriá∆o              : %s\n", Produto.descricao);
+                printf("Descricao              : %s\n", Produto.descricao);
                 printf("Estoque                : %d\n", Produto.estoque);
-                printf("Estoque m°nimo         : %d\n", Produto.estoque_minimo);
-                printf("Preáo custo            : %f\n", Produto.preco_custo);
-                printf("Preáo venda            : %f\n", Produto.preco_venda);
+                printf("Estoque minimo         : %d\n", Produto.estoque_minimo);
+                printf("Preco custo            : %f\n", Produto.preco_custo);
+                printf("Preco venda            : %f\n", Produto.preco_venda);
                 system("pause");
             }
             else
             {
-                printf("\nProduto n∆o encontrado!\n");
+                printf("\nProduto nao encontrado!\n");
                 system("pause");
             }
 
@@ -370,12 +371,12 @@ void interfaceProduto()
                 {
                     system("cls");
                     printf("\nProduto encontrado! -------------\n");
-                    printf("ID (fixo)                     : %d\n", Produto.id);
-                    printf("1- Descriá∆o              : %s\n", Produto.descricao);
+                    printf("ID (fixo)                 : %d\n", Produto.id);
+                    printf("1- Descricao              : %s\n", Produto.descricao);
                     printf("2- Estoque                : %d\n", Produto.estoque);
-                    printf("3- Estoque m°nimo         : %d\n", Produto.estoque_minimo);
-                    printf("4- Preáo custo            : %f\n", Produto.preco_custo);
-                    printf("5- Preáo venda            : %f\n", Produto.preco_venda);
+                    printf("3- Estoque minimo         : %d\n", Produto.estoque_minimo);
+                    printf("4- Preco custo            : %f\n", Produto.preco_custo);
+                    printf("5- Preco venda            : %f\n", Produto.preco_venda);
 
                     printf("6- Salvar dados\n");
                     printf("0- Cancelar \n");
@@ -392,8 +393,8 @@ void interfaceProduto()
                     switch (res)
                     {
                     case 1:
-                        printf("Insira a nova descriá∆o: \n");
-                        scanf("%[^\n]", Produto.descricao);
+                        printf("Insira a nova descricao: \n");
+                        scanf(" %[^\n]", Produto.descricao);
                         fflush(stdin);
                         break;
                     case 2:
@@ -402,17 +403,17 @@ void interfaceProduto()
                         fflush(stdin);
                         break;
                     case 3:
-                        printf("Insira o estoque m°nimo: \n");
+                        printf("Insira o estoque minimo: \n");
                         scanf("%d", &Produto.estoque_minimo);
                         fflush(stdin);
                         break;
                     case 4:
-                        printf("Insira o preáo de custo: \n");
+                        printf("Insira o preco de custo: \n");
                         scanf("%f", &Produto.preco_custo);
                         fflush(stdin);
                         break;
                     case 5:
-                        printf("Insira o preáo de venda: \n");
+                        printf("Insira o preco de venda: \n");
                         scanf("%f", &Produto.preco_venda);
                         fflush(stdin);
                         break;
@@ -420,7 +421,7 @@ void interfaceProduto()
                         alterarProduto(pos, Produto);
                         break;
                     default:
-                        printf("Insira uma opá∆o v†lida...");
+                        printf("Insira uma opcao valida...");
                         system("pause");
                         break;
                     }
@@ -428,7 +429,7 @@ void interfaceProduto()
             }
             else
             {
-                printf("\nProduto n∆o encontrado!\n");
+                printf("\nProduto nao encontrado!\n");
                 system("pause");
             }
 
@@ -444,15 +445,15 @@ void interfaceProduto()
             if (res == 0)
             {
                 printf("1- ID                     : %d\n", Produto.id);
-                printf("2- Descriá∆o              : %s\n", Produto.descricao);
+                printf("2- Descricao              : %s\n", Produto.descricao);
                 printf("3- Estoque                : %d\n", Produto.estoque);
-                printf("4- Estoque m°nimo         : %d\n", Produto.estoque_minimo);
-                printf("5- Preáo custo            : %f\n", Produto.preco_custo);
-                printf("6- Preáo venda            : %f\n", Produto.preco_venda);
+                printf("4- Estoque minimo         : %d\n", Produto.estoque_minimo);
+                printf("5- Preco custo            : %f\n", Produto.preco_custo);
+                printf("6- Preco venda            : %f\n", Produto.preco_venda);
 
                 printf("Tem certeza que deseja apagar esse Produto?\n");
                 printf("1- Sim \n");
-                printf("2- N∆o \n");
+                printf("2- Nao \n");
                 printf("=> ");
                 scanf("%d", &res);
                 fflush(stdin);
@@ -467,7 +468,7 @@ void interfaceProduto()
             }
             else
             {
-                printf("Usu†rio n∆o encontrado!\n");
+                printf("Usuario nao encontrado!\n");
                 system("pause");
             }
             break;
@@ -477,7 +478,7 @@ void interfaceProduto()
         default:
             if (res != 6)
             {
-                printf("Selecione uma opá∆o v†lida!\n");
+                printf("Selecione uma opcao valida!\n");
                 system("pause");
                 fflush(stdin);
             }
