@@ -23,13 +23,6 @@ typedef struct listaAcomodacoes {
 ListaAcomodacao *iniciaListaAcomodacao();
 
 /**
- * Percorre a lista por completo para descobrir a quantidade de posições e definir o próximo ID.
- * @param lista Endereço da lista que será percorrida.
- * @return int O novo ID único gerado.
- */
-int escolheIdAcomodacao(ListaAcomodacao *lista);
-
-/**
  * Insere uma nova acomodação no final da lista encadeada.
  * @param lista Ponteiro para o ponteiro da lista (para permitir alteração direta).
  * @param acomodacao Estrutura contendo os dados da acomodação a ser inserida.
@@ -66,6 +59,13 @@ void apagarAcomodacao(ListaAcomodacao *pos);
  * @param listaCat Ponteiro para a lista de categorias (para validação/exibição).
  */
 void listarAcomodacao(ListaAcomodacao *lista, ListaCategoria *listaCat);
+
+/**
+ * Percorre a lista e exibe os IDs já registrados para auxiliar o usuário na escolha de um novo ID.
+ * @param lista Ponteiro para a lista de acomodações.
+ * @return void
+ */
+void listarIdsJaRegistradosAcomodacao(ListaAcomodacao *lista);
 
 /**
  * Guarda dados de uma lista de acomodações encadeada em um arquivo binário.

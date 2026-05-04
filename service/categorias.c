@@ -68,8 +68,10 @@ int buscarCategoria(ListaCategoria **lista, TipoCategoria *categoria, int id, Li
         // printf("DEBUG: Verificando ID %d na lista...\n", aux->categoria.id);
         if (aux->categoria.id == id && aux->categoria.id != 0)
         {
-            *categoria = aux->categoria;
-            *pos = aux;
+            if(categoria != NULL)
+                *categoria = aux->categoria;
+            if(pos != NULL)
+                *pos = aux;
             return 0;
         }
         aux = aux->prox;
@@ -235,13 +237,6 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
     TipoCategoria categoria;
     int res = 0;
     int subRes = 0;
-
-    listaCategorias = carregarCategoriasTxt(CategoriasTXT);
-    if (listaCategorias->prox == NULL)
-    {
-        free(listaCategorias);
-        listaCategorias = carregarCategoriasBin(CategoriasBIN);
-    }
 
     // gestao de categorias
     do

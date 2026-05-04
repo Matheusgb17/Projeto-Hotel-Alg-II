@@ -68,7 +68,8 @@ int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHo
         return 1;
 
     *hospede = aux->Hospedes;
-    *pos = aux;
+    if(pos != NULL)
+        *pos = aux;
     return 0;
 }
 
