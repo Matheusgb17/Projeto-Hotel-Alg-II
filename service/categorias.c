@@ -4,7 +4,7 @@
 #include "../bib/categorias.h"
 #include "../bib/utils.h"
 
-#define CategoriasBIN "./data/bin/categorias.bin"
+#define CategoriasBIN "./data/bin/categorias.dat"
 #define CategoriasTXT "./data/txt/categorias.txt"
 
 #define BIN 1
@@ -189,7 +189,7 @@ ListaCategoria *carregarCategoriasBin(char *nome_arquivo)
         res = inserirCategoria(&lista, categoria);
 
     if (res == 1)
-        printf("Erro ao carregar categorias do arquivo bin rio!\n");
+        printf("Erro ao carregar categorias do arquivo binï¿½rio!\n");
 
     fclose(arquivo);
     return lista;
@@ -221,11 +221,11 @@ ListaCategoria *carregarCategoriasTxt(char *nome_arquivo)
             continue;
         }
 
-        sscanf(linha, " <codigo>%d", &categoria.id);
-        sscanf(linha, " <descricao>%[^<]", categoria.descricao);
-        sscanf(linha, " <valor_diaria>%f", &categoria.valorDiaria);
-        sscanf(linha, " <capacidade_adultos>%d", &categoria.capacidadeAdultos);
-        sscanf(linha, " <capacidade_criancas>%d", &categoria.capacidadeCriancas);
+        if (strstr(linha, "<codigo>")) sscanf(linha, " <codigo>%d", &categoria.id);
+        else if (strstr(linha, "<descricao>")) sscanf(linha, " <descricao>%[^<]", categoria.descricao);
+        else if (strstr(linha, "<valor_diaria>")) sscanf(linha, " <valor_diaria>%f", &categoria.valorDiaria);
+        else if (strstr(linha, "<capacidade_adultos>")) sscanf(linha, " <capacidade_adultos>%d", &categoria.capacidadeAdultos);
+        else if (strstr(linha, "<capacidade_criancas>")) sscanf(linha, " <capacidade_criancas>%d", &categoria.capacidadeCriancas);
     }
     fclose(arquivo);
     return lista;
@@ -412,6 +412,16 @@ void interfaceCategoria(ListaCategoria *listaCategorias)
             listarCategoria(listaCategorias);
             system("pause");
             break;
+        case 0:
+                printf("Salvando dados e saindo...\n");
+                // Adicione as chamadas de salvamento aqui antes de fechar
+                if (modo == BIN) {
+                    salvarCategoriasBin(listaCategorias, CategoriasBIN);
+                } else if (modo == TXT) {
+                    salvarCategoriasTxt(listaCategorias, CategoriasTXT);
+                }
+                system("pause");
+                break;
         default:
             if (res != 0)
             {

@@ -61,7 +61,7 @@ int main()
         printf("Selecione a forma de armazenar os dados no sistema:\n");
         printf("1 - Arquivos Bin\n");
         printf("2 - Arquivos Txt\n");
-        printf("3 - Em mem¢ria (CUIDADO: todos os arquivos serÆo perdidos ap¢s o encerramento do sistema)\n");
+        printf("3 - Em memï¿½ria (CUIDADO: todos os arquivos serï¿½o perdidos apï¿½s o encerramento do sistema)\n");
         printf("4 - Sair\n");
         printf("=> ");
         scanf("%d", &modo);
@@ -75,7 +75,7 @@ int main()
         }
         else
         {
-            printf("Selecione uma op‡Æo v lida!\n");
+            printf("Selecione uma opÃ§Ã£o vÃ¡lida!\n");
             system("pause");
             fflush(stdin);
         }
@@ -141,11 +141,11 @@ int main()
     { // MENU PRINCIPAL =============================================================================
         system("cls");
         printf("Menu principal\n");
-        printf("1 - Cadastro e GestÆo\n");
+        printf("1 - Cadastro e GestÃ£o\n");
         printf("2 - Reservas e Cancelamentos\n");
-        printf("3 - Transa‡äes\n");
+        printf("3 - TransaÃ§Ãµes\n");
         printf("4 - Feedback\n");
-        printf("5 - Importa‡Æo/Exporta‡Æo de dados\n");
+        printf("5 - ImportaÃ§Ã£o/ExportaÃ§Ã£o de dados\n");
         printf("0 - Sair do sistema\n");
         printf("=> ");
 
@@ -154,15 +154,15 @@ int main()
 
         switch (res)
         {
-        case 1: // CADASTRO E GESTÇO ====================================================
+        case 1: // CADASTRO E GESTÃƒO ====================================================
             do
             {
                 system("cls");
-                printf("Cadastro e gestÆo de hospedes\n");
+                printf("Cadastro e gestÃ£o de hospedes\n");
                 printf("1 - Dados do Hotel\n");
                 printf("2 - Hospedes\n");
-                printf("3 - Acomoda‡äes\n");
-                printf("4 - Categorias de Acomoda‡äes\n");
+                printf("3 - Acomodaï¿½ï¿½es\n");
+                printf("4 - Categorias de Acomodaï¿½ï¿½es\n");
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
@@ -197,7 +197,7 @@ int main()
                 default:
                     if (res != 0)
                     {
-                        printf("Selecione uma op‡Æo v lida!");
+                        printf("Selecione uma opÃ§Ã£o vÃ¡lida!");
                         system("pause");
                     }
                     break;
@@ -220,14 +220,14 @@ int main()
         default: // SAIR DO SISTEMA =====================================================
             if (res != 0)
             {
-                printf("Escolha um valor v lido!\n");
+                printf("Escolha um valor vÃ¡lido!\n");
                 system("pause");
             }
             else
             {
                 printf("Tem certeza que deseja sair do sistema?\n");
                 printf("1 - Sim\n");
-                printf("2 - NÆo\n");
+                printf("2 - NÃ£o\n");
                 printf("=> ");
                 scanf("%d", &res);
 
