@@ -174,25 +174,25 @@ int main()
                 switch (res)
                 {
                 case 1: // hotel
-                    interfaceHotel(dadosHotel, modo);
+                    interfaceHotel(dadosHotel);
                     break;
                 case 2: // hospedes
-                    interfaceHospedes(listaHospedes, modo);
+                    interfaceHospedes(listaHospedes);
                     break;
                 case 3: // acomodações
-                    interfaceAcomodacao(listaAcomodacao, listaCategoria, modo);
+                    interfaceAcomodacao(listaAcomodacao, listaCategoria);
                     break;
                 case 4: // categorias de acomodações
-                    interfaceCategoria(listaCategoria, modo);
+                    interfaceCategoria(listaCategoria);
                     break;
                 case 5: // produtos
-                    interfaceProduto(listaProduto, modo);
+                    interfaceProduto(listaProduto);
                     break;
                 case 6: // fornecedores
-                    interfaceFornecedor(listaFornecedor, modo);
+                    interfaceFornecedor(listaFornecedor);
                     break;
                 case 7: // operadores
-                    interfaceOperadores(listaOperadores, modo);
+                    interfaceOperadores(listaOperadores);
                     break;
                 default:
                     if (res != 0)
@@ -271,6 +271,14 @@ int main()
                         apagaArquivo(OperadoresBIN);
                         apagaArquivo(ReservasBIN);
                     }
+                    liberaHotel(dadosHotel);
+                    liberaListaHospedes(listaHospedes);
+                    liberaListaAcomodacoes(listaAcomodacao);
+                    liberaListaCategorias(listaCategoria);
+                    liberaListaProdutos(listaProduto);
+                    liberaListaFornecedores(listaFornecedor);
+                    liberaListaOperadores(listaOperadores);
+                    liberaListaReservas(listaReservas);
                     return 0;
                 }
             }

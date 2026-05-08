@@ -133,6 +133,13 @@ int salvarDadosReservasTxt(ListaReservas *lista, char *nome_arquivo);
 ListaReservas *resgataDadosReservasTxt(char *nome_arquivo);
 
 /**
+ * Função para liberar a memória alocada para a lista de reservas.
+ * @param lista Ponteiro para a lista de reservas a ser liberada.
+ * @return void
+ */
+void liberaListaReservas(ListaReservas *lista);
+
+/**
  * Interface para gerenciar reservas, incluindo listagem, busca, adição e remoção de reservas.
  * @param listaRes Ponteiro para a lista de reservas.
  * @param listaAcom Ponteiro para a lista de acomodações (para validação de reservas).

@@ -263,7 +263,18 @@ ListaFornecedor *resgataDadosFornecedoresTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceFornecedor(ListaFornecedor *listaFornecedor, int modo)
+void liberaListaFornecedores(ListaFornecedor *lista)
+{
+    ListaFornecedor *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+}
+
+void interfaceFornecedor(ListaFornecedor *listaFornecedor)
 {
     ListaFornecedor *pos;
     TipoFornecedor fornecedor;

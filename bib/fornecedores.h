@@ -109,11 +109,18 @@ int salvarDadosFornecedoresTxt(ListaFornecedor *lista, char *nome_arquivo);
 ListaFornecedor *resgataDadosFornecedoresTxt(char *nome_arquivo);
 
 /**
+ * Libera a memoria alocada para a lista de fornecedores.
+ * @param lista Ponteiro para a lista de fornecedores.
+ * @return void
+ */
+void liberaListaFornecedores(ListaFornecedor *lista);
+
+/**
  * Interface interativa via terminal para gestao de fornecedores (CRUD).
  * @param listaFornecedores Ponteiro para a lista de fornecedores carregada na memoria.
  * @param modo Inteiro representando o modo de armazenamento atual do sistema.
  * @return void
  */
-void interfaceFornecedor(ListaFornecedor *listaFornecedores, int modo);
+void interfaceFornecedor(ListaFornecedor *listaFornecedores);
 
 #endif

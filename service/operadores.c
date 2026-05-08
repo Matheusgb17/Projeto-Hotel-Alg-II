@@ -220,7 +220,18 @@ ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceOperadores(ListaOperadores *listaOperadores, int modo)
+void liberaListaOperadores(ListaOperadores *lista)
+{
+    ListaOperadores *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+}
+
+void interfaceOperadores(ListaOperadores *listaOperadores)
 {
     ListaOperadores *pos;
     TipoOperador operador;

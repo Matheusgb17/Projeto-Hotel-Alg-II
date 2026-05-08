@@ -92,6 +92,13 @@ int salvarDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo);
  * @param nome_arquivo String contendo o nome do arquivo de texto a ser lido.
  * @return ListaOperadores* Ponteiro para a lista preenchida com os dados resgatados.
  */
+void liberaListaOperadores(ListaOperadores *lista);
+
+/**
+ * Fun‡Æo para resgatar os dados dos operadores a partir de um arquivo de texto.
+ * @param nome_arquivo String contendo o nome do arquivo de texto a ser lido.
+ * @return ListaOperadores* Ponteiro para a lista preenchida com os dados resgatados.
+ */
 ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo);
 
-void interfaceOperadores(ListaOperadores *listaOperadores, int modo);
+void interfaceOperadores(ListaOperadores *listaOperadores);

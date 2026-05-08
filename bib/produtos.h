@@ -107,11 +107,18 @@ int salvarDadosProdutosTxt(ListaProduto *lista, char *nome_arquivo);
 ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo);
 
 /**
+ * Libera a memoria alocada para a lista de produtos.
+ * @param lista Ponteiro para a lista de produtos.
+ * @return void
+ */
+void liberaListaProdutos(ListaProduto *lista);
+
+/**
  * Interface interativa via terminal para gestao de produtos (CRUD).
  * @param listaProduto Ponteiro para a lista de produtos carregada na memoria.
  * @param modo Inteiro representando o modo de armazenamento atual do sistema.
  * @return void
  */
-void interfaceProduto(ListaProduto *listaProduto, int modo);
+void interfaceProduto(ListaProduto *listaProduto);
 
 #endif

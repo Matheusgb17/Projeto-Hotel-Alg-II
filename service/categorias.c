@@ -231,7 +231,19 @@ ListaCategoria *carregarCategoriasTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
+void liberaListaCategorias(ListaCategoria *lista)
+{
+    ListaCategoria *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+    return;
+}
+
+void interfaceCategoria(ListaCategoria *listaCategorias)
 {
     ListaCategoria *pos;
     TipoCategoria categoria;

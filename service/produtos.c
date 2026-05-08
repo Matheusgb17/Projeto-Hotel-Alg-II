@@ -262,7 +262,18 @@ ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceProduto(ListaProduto *listaProduto, int modo)
+void liberaListaProdutos(ListaProduto *lista)
+{
+    ListaProduto *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+}
+
+void interfaceProduto(ListaProduto *listaProduto)
 {
     ListaProduto *pos;
     TipoProduto Produto;

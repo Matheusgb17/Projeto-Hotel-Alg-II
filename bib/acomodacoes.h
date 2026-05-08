@@ -96,10 +96,17 @@ void salvarDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
 ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo);
 
 /**
+ * Libera a memória alocada para a lista de acomodações.
+ * @param lista Ponteiro para a lista de acomodações.
+ * @return void
+ */
+void liberaListaAcomodacoes(ListaAcomodacao *lista);
+
+/**
  * Interface de menu para gestão do cadastro de acomodações.
  * @param listaAcomod Ponteiro para a lista de acomodações.
  * @param listaCat Ponteiro para a lista de categorias.
  */
-void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat, int modo);
+void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat);
 
 #endif

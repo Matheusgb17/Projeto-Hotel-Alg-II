@@ -250,7 +250,19 @@ ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat, int modo)
+void liberaListaAcomodacoes(ListaAcomodacao *lista)
+{
+    ListaAcomodacao *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+    return;
+}
+
+void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat)
 {
     ListaAcomodacao *pos;
     ListaCategoria *posCat;
@@ -458,6 +470,7 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat,
                 printf("Acomodacao nao encontrada!\n");
                 system("pause");
             }
+            res = 1;
             break;
 
         case 4:
@@ -493,6 +506,7 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat,
                 printf("\nAcomodacao nao encontrada!\n\n");
                 system("pause");
             }
+            res = 1;
             break;
         case 5:
             system("cls");

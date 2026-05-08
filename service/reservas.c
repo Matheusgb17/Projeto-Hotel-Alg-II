@@ -207,8 +207,8 @@ void listarReservasPorHospede(ListaReservas *lista, int idHospede)
             printf("ID               : %d\n", aux->reserva.id);
             printf("ID do H¢spede    : %d\n", aux->reserva.idHospede);
             printf("ID da Acomoda‡Æo : %d\n", aux->reserva.idAcomodacao);
-            printf("Data de Entrada  : %s", ctime(&aux->reserva.dataEntrada));
-            printf("Data de Sa¡da    : %s", ctime(&aux->reserva.dataSaida));
+            printf("Data de Entrada  : %s\n", ctime(&aux->reserva.dataEntrada));
+            printf("Data de Sa¡da    : %s\n", ctime(&aux->reserva.dataSaida));
             printf("-----------------------------\n");
             encontrou = 1;
         }
@@ -369,6 +369,17 @@ ListaReservas *resgataDadosReservasTxt(char *nome_arquivo)
     fclose(arquivo);
 
     return lista;
+}
+
+void liberaListaReservas(ListaReservas *lista)
+{
+    ListaReservas *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
 }
 
 void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaHospede *listaHospedes)
