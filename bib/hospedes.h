@@ -77,7 +77,7 @@ void listarHospedes(ListaHospede *lista);
  * @param nome_arquivo string contendo o caminho do arquivo onde deseja guardar os dados
  * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
  */
-int salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo);
+int salvarDadosHospedesBin(ListaHospede *lista, char *nome_arquivo);
 
 /**
  * Resgata os dados dos hospedes de um arquivo bin†rio
@@ -92,7 +92,7 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo);
  * @param nome_arquivo string contendo o caminho do arquivo onde deseja guardar os dados
  * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
  */
-int salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo);
+int salvarDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo);
 
 /**
  * Resgata os dados dos hospedes de um arquivo txt
@@ -101,9 +101,24 @@ int salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo);
  */
 ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo);
 
+
+/**
+ * libera a mem¢ria alocada para a lista de hospedes
+ * @param lista ponteiro para a lista de hospedes
+ * @return void
+ */
+void liberaListaHospedes(ListaHospede *lista);
+
+/**
+ * Exibe os dados completos de um h¢spede no console, formatados para f†cil leitura.
+ * @param hospede Estrutura contendo os dados do h¢spede a ser exibido.
+ * @return void
+ */
+void imprimeDadosHospede(TipoHospede hospede);
+
 /**
  * Interface para gest∆o de h¢spedes, permitindo cadastro, consulta, alteraá∆o e exclus∆o de dados.
  * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).
  * @return void
  */
-void interfaceHospedes(ListaHospede *listaHospedes, int modo);
+void interfaceHospedes(ListaHospede *listaHospedes);

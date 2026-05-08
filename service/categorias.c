@@ -68,8 +68,10 @@ int buscarCategoria(ListaCategoria **lista, TipoCategoria *categoria, int id, Li
         // printf("DEBUG: Verificando ID %d na lista...\n", aux->categoria.id);
         if (aux->categoria.id == id && aux->categoria.id != 0)
         {
-            *categoria = aux->categoria;
-            *pos = aux;
+            if(categoria != NULL)
+                *categoria = aux->categoria;
+            if(pos != NULL)
+                *pos = aux;
             return 0;
         }
         aux = aux->prox;
@@ -114,7 +116,7 @@ void listarCategoria(ListaCategoria *lista)
     }
 }
 
-int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
+int salvarDadosCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
@@ -147,7 +149,7 @@ int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
     return 0;
 }
 
-int salvarCategoriasBin(ListaCategoria *lista, char *nome_arquivo)
+int salvarDadosCategoriasBin(ListaCategoria *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
 
@@ -229,7 +231,19 @@ ListaCategoria *carregarCategoriasTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
+void liberaListaCategorias(ListaCategoria *lista)
+{
+    ListaCategoria *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+    return;
+}
+
+void interfaceCategoria(ListaCategoria *listaCategorias)
 {
     ListaCategoria *pos;
     TipoCategoria categoria;

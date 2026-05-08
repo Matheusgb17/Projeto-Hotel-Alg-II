@@ -107,7 +107,7 @@ void listarOperadores(ListaOperadores *lista)
     }
 }
 
-int salvaDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo)
+int salvarDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL)
@@ -148,7 +148,7 @@ ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo)
     return lista;
 }
 
-int salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
+int salvarDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
@@ -220,7 +220,18 @@ ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceOperadores(ListaOperadores *listaOperadores, int modo)
+void liberaListaOperadores(ListaOperadores *lista)
+{
+    ListaOperadores *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+}
+
+void interfaceOperadores(ListaOperadores *listaOperadores)
 {
     ListaOperadores *pos;
     TipoOperador operador;

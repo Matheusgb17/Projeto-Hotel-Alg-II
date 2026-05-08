@@ -68,7 +68,8 @@ int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHo
         return 1;
 
     *hospede = aux->Hospedes;
-    *pos = aux;
+    if(pos != NULL)
+        *pos = aux;
     return 0;
 }
 
@@ -88,40 +89,30 @@ void listarHospedes(ListaHospede *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum hospede cadastrado.\n");
+        exibeMensagemAviso("Nenhum hospede cadastrado.");
         return;
     }
     else
     {
         lista = lista->prox;
-        printf("\nHospedes ---------\n");
         while (lista != NULL)
         {
+            exibeMensagemSucesso("H¢spede encontrado:");
             if (lista->Hospedes.id != 0)
             {
-                printf("Id                 : %d\n", lista->Hospedes.id);
-                printf("Nome               : %s\n", lista->Hospedes.nome);
-                printf("Endereco           : %s\n", lista->Hospedes.endereco);
-                printf("CPF                : %s\n", lista->Hospedes.cpf);
-                printf("Telefone           : %s\n", lista->Hospedes.telefone);
-                printf("Email              : %s\n", lista->Hospedes.email);
-                printf("Sexo               : %c\n", lista->Hospedes.sexo);
-                printf("Estado Civil       : %s\n", lista->Hospedes.estado_civil);
-                printf("Data de Nascimento : %s\n", lista->Hospedes.data_nasc);
-                printf("-------------------\n");
+                imprimeDadosHospede(lista->Hospedes);
             }
             lista = lista->prox;
         }
     }
 }
 
-int salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
+int salvarDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL)
     {
-        printf("Erro ao acessar o arquivo...\n\n");
-        system("pause");
+        exibeMensagemErro("Erro ao acessar o arquivo...");
         return 1;
     }
     ListaHospede *aux = lista->prox;
@@ -149,20 +140,19 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
         res = inserirHospede(&lista, hospede);
 
     if (res == 1)
-        printf("Erro ao cadastrar hospede!");
+        exibeMensagemErro("Erro ao carregar hospedes do arquivo bin rio!");
 
     fclose(arquivo);
     return lista;
 }
 
-int salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
+int salvarDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
     if (arquivo == NULL)
     {
-        printf("Erro ao acessar o arquivo...\n\n");
-        system("pause");
+        exibeMensagemErro("Erro ao acessar o arquivo...");
         return 1;
     }
 
@@ -233,7 +223,33 @@ ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceHospedes(ListaHospede *listaHospedes, int modo)
+void liberaListaHospedes(ListaHospede *lista)
+{
+    ListaHospede *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+    return;
+}
+
+void imprimeDadosHospede(TipoHospede hospede)
+{
+    printf("ID H¢spede      : %d\n", hospede.id);
+    printf("nome            : %s\n", hospede.nome);
+    printf("endere‡o        : %s\n", hospede.endereco);
+    printf("cpf             : %s\n", hospede.cpf);
+    printf("telefone        : %s\n", hospede.telefone);
+    printf("sexo            : %c\n", hospede.sexo);
+    printf("email           : %s\n", hospede.email);
+    printf("estado civil    : %s\n", hospede.estado_civil);
+    printf("data nascimento : %s\n", hospede.data_nasc);
+    printf("-----------------------------\n");
+}
+
+void interfaceHospedes(ListaHospede *listaHospedes)
 {
     ListaHospede *pos;
 

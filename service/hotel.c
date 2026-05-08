@@ -149,7 +149,12 @@ TipoHotel *resgataDadosHotelTxt(char *nome_arquivo)
     return hotel;
 }
 
-void interfaceHotel(TipoHotel *dadosHotel, int modo)
+void liberaHotel(TipoHotel *hotel)
+{
+    free(hotel);
+}
+
+void interfaceHotel(TipoHotel *dadosHotel)
 {
     TipoHotel hotel;
 
