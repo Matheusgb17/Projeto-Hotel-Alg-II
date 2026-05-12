@@ -87,20 +87,15 @@ void apagarOperador(ListaOperadores *pos)
 void listarOperadores(ListaOperadores *lista)
 {
     if (lista->prox == NULL)
-        printf("Nenhum operador cadastrado.\n");
+        exibeMensagemAviso("Nenhum operador cadastrado.\n");
     else
     {
         lista = lista->prox;
-        printf("\nOperadores -----------\n");
         while (lista != NULL)
         {
             if (lista->operador.id != 0)
             {
-                printf("Id                 : %d\n", lista->operador.id);
-                printf("Nome               : %s\n", lista->operador.nome);
-                printf("Usu†rio            : %s\n", lista->operador.user);
-                printf("N°vel de Permiss∆o : %d\n", lista->operador.permission);
-                printf("-----------------------------\n");
+                imprimeDadosOperador(lista->operador);
             }
             lista = lista->prox;
         }
@@ -112,8 +107,8 @@ int salvarDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo)
     FILE *arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL)
     {
-        printf("Erro ao acessar o arquivo...\n\n");
-        system("pause");
+        exibeMensagemErro("Erro ao acessar o arquivo...\n\n");
+        pausarTela();
         return 1;
     }
 
@@ -142,7 +137,7 @@ ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo)
         res = inserirOperador(&lista, operador);
 
     if (res == 1)
-        printf("Erro ao carregar operador do arquivo bin†rio!\n");
+        exibeMensagemErro("Erro ao carregar operador do arquivo bin†rio!\n");
 
     fclose(arquivo);
     return lista;
@@ -154,8 +149,8 @@ int salvarDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo)
 
     if (arquivo == NULL)
     {
-        printf("Erro ao acessar o arquivo...\n\n");
-        system("pause");
+        exibeMensagemErro("Erro ao acessar o arquivo...\n\n");
+        pausarTela();
         return 1;
     }
 
@@ -231,6 +226,16 @@ void liberaListaOperadores(ListaOperadores *lista)
     }
 }
 
+void imprimeDadosOperador(TipoOperador operador)
+{
+    printf("Id do operador     : %d\n", operador.id);
+    printf("Nome completo      : %s\n", operador.nome);
+    printf("Nome de usu†rio    : %s\n", operador.user);
+    printf("N°vel de permiss∆o : %d\n\n", operador.permission);
+
+    return;
+}
+
 void interfaceOperadores(ListaOperadores *listaOperadores)
 {
     ListaOperadores *pos;
@@ -247,7 +252,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
 
     do
     {
-        system("cls");
+        limparTela();
         printf("Cadastro e gest∆o de Operadores!\n");
         printf("1 - Cadastrar operador\n");
         printf("2 - Buscar operador\n");
@@ -260,7 +265,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
         scanf("%d", &res);
         fflush(stdin);
 
-        system("cls");
+        limparTela();
         switch (res)
         {
         case 1:
@@ -278,7 +283,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
 
             while (1)
             {
-                system("cls");
+                limparTela();
                 printf("Selecione o n°vel de permiss∆o: \n");
                 printf("0 - Inativo\n");
                 printf("1 - Funcion†rio\n");
@@ -317,7 +322,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                 }
                 else if (res == 5)
                 {
-                    system("cls");
+                    limparTela();
                     printf("Permiss‰es de cada funá∆o: \n");
                     printf("0 - Usu†rio desligado. O sistema bloqueia o login imediatamente.\n");
                     printf("1 - Acesso b†sico: consultar disponibilidade de quartos e ver lista de h¢spedes.\n");
@@ -325,12 +330,12 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                     printf("3 - Tudo do n°vel 2 alÇm de estornar pagamentos, alterar tarifas e gerar relat¢rios mensais.\n");
                     printf("4 - Acesso total: cadastrar novos usu†rios (operadores) e configurar o sistema.\n\n");
 
-                    system("pause");
+                    pausarTela();
                 }
                 else
                 {
                     printf("Opá∆o inv†lida!\n");
-                    system("pause");
+                    pausarTela();
                 }
             }
 
@@ -342,12 +347,12 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
             {
                 printf("Operador %s cadastrado com sucesso!\n", operador.user);
                 printf("Id do operador: %d\n\n", operador.id);
-                system("pause");
+                pausarTela();
             }
             else
             {
                 printf("Erro ao cadastrar operador!\n");
-                system("pause");
+                pausarTela();
             }
 
             break;
@@ -361,17 +366,14 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
             if (res == 0)
             {
                 printf("Usu†rio encontrado!\n");
-                printf("Id do operador     : %d\n", operador.id);
-                printf("Nome completo      : %s\n", operador.nome);
-                printf("Nome de usu†rio    : %s\n", operador.user);
-                printf("N°vel de permiss∆o : %d\n\n", operador.permission);
+                imprimeDadosOperador(operador);
 
-                system("pause");
+                pausarTela();
             }
             else
             {
                 printf("Usu†rio n∆o encontrado!\n");
-                system("pause");
+                pausarTela();
             }
             break;
         case 3:
@@ -385,7 +387,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
             {
                 while (res != 5)
                 {
-                    system("cls");
+                    limparTela();
                     tam = strlen(operador.senha) - 1;
                     printf("Usu†rio encontrado!\n");
                     printf("Digite o campo que deseja alterar: \n\n");
@@ -408,7 +410,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                     if (res == 6)
                     {
                         printf("Operaá∆o cancelada!\n");
-                        system("pause");
+                        pausarTela();
                         break;
                     }
 
@@ -427,7 +429,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                     case 3:
                         while (1)
                         {
-                            system("cls");
+                            limparTela();
                             printf("Selecione o n°vel de permiss∆o: \n");
                             printf("0 - Inativo\n");
                             printf("1 - Funcion†rio\n");
@@ -466,7 +468,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                             }
                             else if (res == 5)
                             {
-                                system("cls");
+                                limparTela();
                                 printf("Permiss‰es de cada funá∆o: \n");
                                 printf("0 - Usu†rio desligado. O sistema bloqueia o login imediatamente.\n");
                                 printf("1 - Acesso b†sico: consultar disponibilidade de quartos e ver lista de h¢spedes.\n");
@@ -474,12 +476,12 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                                 printf("3 - Tudo do n°vel 2 alÇm de estornar pagamentos, alterar tarifas e gerar relat¢rios mensais.\n");
                                 printf("4 - Acesso total: cadastrar novos usu†rios (operadores) e configurar o sistema.\n\n");
 
-                                system("pause");
+                                pausarTela();
                             }
                             else
                             {
                                 printf("Opá∆o inv†lida!\n");
-                                system("pause");
+                                pausarTela();
                             }
                         }
                         break;
@@ -491,12 +493,12 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                     case 5:
                         alterarOperador(pos, operador);
                         printf("Dados atualizados!\n");
-                        system("pause");
+                        pausarTela();
                         break;
 
                     default:
                         printf("Opá∆o inv†lida!\n");
-                        system("pause");
+                        pausarTela();
                         fflush(stdin);
                         break;
                     }
@@ -505,7 +507,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
             else
             {
                 printf("Usu†rio n∆o encontrado!\n");
-                system("pause");
+                pausarTela();
             }
             res = 0;
             break;
@@ -535,25 +537,25 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                 {
                     apagarOperador(pos);
                     printf("Operador apagado com sucesso!\n");
-                    system("pause");
+                    pausarTela();
                     fflush(stdin);
                 }
             }
             else
             {
                 printf("Usu†rio n∆o encontrado!\n");
-                system("pause");
+                pausarTela();
             }
             break;
         case 5:
             listarOperadores(listaOperadores);
-            system("pause");
+            pausarTela();
             break;
         default:
             if (res != 0)
             {
                 printf("Selecione uma opá∆o v†lida!\n");
-                system("pause");
+                pausarTela();
                 fflush(stdin);
             }
             break;
