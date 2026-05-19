@@ -137,7 +137,7 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
         return lista;
 
     while (fread(&hospede, sizeof(TipoHospede), 1, arquivo) == 1)
-        res = insirHospede(&lista, hospede);
+        res = inserirHospede(&lista, hospede);
 
     if (res == 1)
         exibeMensagemErro("Erro ao carregar hospedes do arquivo bin rio!");

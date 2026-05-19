@@ -101,4 +101,11 @@ void liberaListaOperadores(ListaOperadores *lista);
  */
 ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo);
 
+/**
+ * Exibe os dados de um operador no console.
+ * @param operador Estrutura contendo os dados do operador a ser exibido.
+ * @return void
+ */
+void imprimeDadosOperador(TipoOperador operador);
+
 void interfaceOperadores(ListaOperadores *listaOperadores);

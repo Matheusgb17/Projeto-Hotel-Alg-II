@@ -61,7 +61,7 @@ int main()
         printf("Selecione a forma de armazenar os dados no sistema:\n");
         printf("1 - Arquivos Bin\n");
         printf("2 - Arquivos Txt\n");
-        printf("3 - Em memÔøΩria (CUIDADO: todos os arquivos serÔøΩo perdidos apÔøΩs o encerramento do sistema)\n");
+        printf("3 - Em mem¢ria (CUIDADO: todos os arquivos ser∆o perdidos ap¢s o encerramento do sistema)\n");
         printf("4 - Sair\n");
         printf("=> ");
         scanf("%d", &modo);
@@ -75,7 +75,7 @@ int main()
         }
         else
         {
-            printf("Selecione uma op√ß√£o v√°lida!\n");
+            printf("Selecione uma opá∆o v†lida!\n");
             system("pause");
             fflush(stdin);
         }
@@ -141,11 +141,11 @@ int main()
     { // MENU PRINCIPAL =============================================================================
         system("cls");
         printf("Menu principal\n");
-        printf("1 - Cadastro e Gest√£o\n");
+        printf("1 - Cadastro e Gest∆o\n");
         printf("2 - Reservas e Cancelamentos\n");
-        printf("3 - Transa√ß√µes\n");
+        printf("3 - Transaá‰es\n");
         printf("4 - Feedback\n");
-        printf("5 - Importa√ß√£o/Exporta√ß√£o de dados\n");
+        printf("5 - Importaá∆o/Exportaá∆o de dados\n");
         printf("0 - Sair do sistema\n");
         printf("=> ");
 
@@ -154,15 +154,15 @@ int main()
 
         switch (res)
         {
-        case 1: // CADASTRO E GEST√ÉO ====================================================
+        case 1: // CADASTRO E GEST«O ====================================================
             do
             {
                 system("cls");
-                printf("Cadastro e gest√£o de hospedes\n");
+                printf("Cadastro e gest∆o de hospedes\n");
                 printf("1 - Dados do Hotel\n");
                 printf("2 - Hospedes\n");
-                printf("3 - AcomodaÔøΩÔøΩes\n");
-                printf("4 - Categorias de AcomodaÔøΩÔøΩes\n");
+                printf("3 - Acomodaá‰es\n");
+                printf("4 - Categorias de Acomodaá‰es\n");
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
@@ -179,10 +179,10 @@ int main()
                 case 2: // hospedes
                     interfaceHospedes(listaHospedes);
                     break;
-                case 3: // acomoda√ß√µes
+                case 3: // acomodaá‰es
                     interfaceAcomodacao(listaAcomodacao, listaCategoria);
                     break;
-                case 4: // categorias de acomoda√ß√µes
+                case 4: // categorias de acomodaá‰es
                     interfaceCategoria(listaCategoria);
                     break;
                 case 5: // produtos
@@ -197,7 +197,7 @@ int main()
                 default:
                     if (res != 0)
                     {
-                        printf("Selecione uma op√ß√£o v√°lida!");
+                        printf("Selecione uma opá∆o v†lida!");
                         system("pause");
                     }
                     break;

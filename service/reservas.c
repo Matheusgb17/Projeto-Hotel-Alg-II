@@ -7,6 +7,8 @@
 #include "../bib/categorias.h"
 #include "../bib/hospedes.h"
 #include "../bib/reservas.h"
+#include "../bib/utils.h"
+
 #include <stdio.h>
 #include <time.h>
 
@@ -153,6 +155,11 @@ void listarReservas(ListaReservas *lista)
     lista = lista->prox;
     while (lista)
     {
+        if(lista->reserva.id == 0) {
+            lista = lista->prox;
+            continue;
+        }
+        
         printf("ID               : %d\n", lista->reserva.id);
         printf("ID do H¢spede    : %d\n", lista->reserva.idHospede);
         printf("ID da Acomoda‡Æo : %d\n", lista->reserva.idAcomodacao);
@@ -407,12 +414,11 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
         system("cls");
         printf("\nM¢dulo de Reservas ---\n");
         printf("1 - Adicionar reserva (Com Busca)\n");
-        printf("2 - Remover reserva\n");
+        printf("2 - Cancelar reserva\n");
         printf("3 - Listar reservas\n");
         printf("4 - Filtrar Acomoda‡äes Dispon¡veis\n");
         printf("5 - Verificar reservas por acomoda‡Æo\n");
         printf("6 - Verificar reservas por h¢spede\n");
-        printf("7 - Apagar reserva\n");
         printf("0 - Sair\n");
         printf("=> ");
         scanf("%d", &res);
@@ -420,15 +426,9 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
 
         switch (res)
         {
-        case 3: // LISTAR RESERVAS
-            system("cls");
-            printf("--- Lista de Reservas Ativas ---\n\n");
-            listarReservas(listaRes);
-            break;
         case 1: // ADICIONAR RESERVA (FILTROS DE BUSCA)
             system("cls");
             printf("--- Nova Reserva: Filtros de Busca ---\n\n");
-
             // Coleta Data de Entrada
             printf("Data de Entrada (DD/MM/AAAA): ");
             scanf("%d/%d/%d", &dia, &mes, &ano);
@@ -515,6 +515,28 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             res = 1;
             system("pause");
             break;
+        case 2: // CANCELAR RESERVA
+            printf("\nDigite o ID da reserva que deseja cancelar: ");
+            scanf("%d", &idBusca);
+            fflush(stdin);
+
+            if (buscarReserva(&listaRes, &reservaBusca, idBusca, &pos) == 0)
+            {
+                removerReserva(pos);
+                printf("Reserva ID %d removida com sucesso!\n", idBusca);
+                system("pause");
+            }
+            else
+            {
+                printf("Reserva nao encontrada!\n");
+                system("pause");
+            }
+            break;
+        case 3: // LISTAR RESERVAS
+            system("cls");
+            printf("--- Lista de Reservas Ativas ---\n\n");
+            listarReservas(listaRes);
+            break;
         case 4:
             system("cls");
             printf("--- Filtro de Acomoda‡äes Dispon¡veis ---\n\n");
@@ -583,24 +605,6 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
                 system("pause");
             }
             break;
-        case 7: // REMOVER RESERVA
-            printf("\nDigite o ID da reserva que deseja remover: ");
-            scanf("%d", &idBusca);
-            fflush(stdin);
-
-            if (buscarReserva(&listaRes, &reservaBusca, idBusca, &pos) == 0)
-            {
-                removerReserva(pos);
-                printf("Reserva ID %d removida com sucesso!\n", idBusca);
-                system("pause");
-            }
-            else
-            {
-                printf("Reserva nao encontrada!\n");
-                system("pause");
-            }
-            break;
-
         default:
             if (res != 0)
             {

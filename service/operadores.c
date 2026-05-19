@@ -137,7 +137,7 @@ ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo)
         res = inserirOperador(&lista, operador);
 
     if (res == 1)
-        exibeMensagemErro("Erro ao carregar operador do arquivo bin rio!\n");
+        exibeMensagemErro("Erro ao carregar operador do arquivo bin?io!\n");
 
     fclose(arquivo);
     return lista;
@@ -253,7 +253,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
     do
     {
         limparTela();
-        printf("Cadastro e gestÆo de Operadores!\n");
+        printf("Cadastro e gest? de Operadores!\n");
         printf("1 - Cadastrar operador\n");
         printf("2 - Buscar operador\n");
         printf("3 - Alterar operador\n");
@@ -273,7 +273,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
             scanf("%[^\n]", operador.nome);
             fflush(stdin);
 
-            printf("Insira o nome de usu rio do operador: ");
+            printf("Insira o nome de usu?io do operador: ");
             scanf("%[^\n]", operador.user);
             fflush(stdin);
 
@@ -284,13 +284,13 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
             while (1)
             {
                 limparTela();
-                printf("Selecione o n¡vel de permissÆo: \n");
+                printf("Selecione o n?el de permiss?: \n");
                 printf("0 - Inativo\n");
-                printf("1 - Funcion rio\n");
+                printf("1 - Funcion?io\n");
                 printf("2 - Recepcionista\n");
-                printf("3 - Gerente de opera‡äes\n");
+                printf("3 - Gerente de opera?es\n");
                 printf("4 - Administrador\n\n");
-                printf("5 - Verificar permissäes espec¡ficas de cada um!\n");
+                printf("5 - Verificar permiss?s espec?icas de cada um!\n");
                 printf("=> ");
                 scanf("%d", &res);
                 fflush(stdin);
@@ -323,18 +323,18 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                 else if (res == 5)
                 {
                     limparTela();
-                    printf("Permissäes de cada fun‡Æo: \n");
-                    printf("0 - Usu rio desligado. O sistema bloqueia o login imediatamente.\n");
-                    printf("1 - Acesso b sico: consultar disponibilidade de quartos e ver lista de h¢spedes.\n");
-                    printf("2 - Tudo do n¡vel 1 al‚m de realizar Check-in, Check-out e cadastrar novos h¢spedes.\n");
-                    printf("3 - Tudo do n¡vel 2 al‚m de estornar pagamentos, alterar tarifas e gerar relat¢rios mensais.\n");
-                    printf("4 - Acesso total: cadastrar novos usu rios (operadores) e configurar o sistema.\n\n");
+                    printf("Permiss?s de cada fun?o: \n");
+                    printf("0 - Usu?io desligado. O sistema bloqueia o login imediatamente.\n");
+                    printf("1 - Acesso b?ico: consultar disponibilidade de quartos e ver lista de hÂpedes.\n");
+                    printf("2 - Tudo do n?el 1 al? de realizar Check-in, Check-out e cadastrar novos hÂpedes.\n");
+                    printf("3 - Tudo do n?el 2 al? de estornar pagamentos, alterar tarifas e gerar relatÁios mensais.\n");
+                    printf("4 - Acesso total: cadastrar novos usu?ios (operadores) e configurar o sistema.\n\n");
 
                     pausarTela();
                 }
                 else
                 {
-                    printf("Op‡Æo inv lida!\n");
+                    printf("Op?o inv?ida!\n");
                     pausarTela();
                 }
             }
@@ -357,7 +357,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
 
             break;
         case 2:
-            printf("Digite o usu rio do operador que deseja buscar: ");
+            printf("Digite o usu?io do operador que deseja buscar: ");
             scanf("%[^\n]", operador.user);
             fflush(stdin);
 
@@ -365,19 +365,19 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
 
             if (res == 0)
             {
-                printf("Usu rio encontrado!\n");
+                printf("Usu?io encontrado!\n");
                 imprimeDadosOperador(operador);
 
                 pausarTela();
             }
             else
             {
-                printf("Usu rio nÆo encontrado!\n");
+                printf("Usu?io n? encontrado!\n");
                 pausarTela();
             }
             break;
         case 3:
-            printf("Digite o usu rio do operador que deseja alterar: ");
+            printf("Digite o usu?io do operador que deseja alterar: ");
             scanf("%[^\n]", operador.user);
             fflush(stdin);
 
@@ -389,19 +389,19 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                 {
                     limparTela();
                     tam = strlen(operador.senha) - 1;
-                    printf("Usu rio encontrado!\n");
+                    printf("Usu?io encontrado!\n");
                     printf("Digite o campo que deseja alterar: \n\n");
 
                     printf("Id (fixo)              : %d\n", operador.id);
                     printf("1 - Nome completo      : %s\n", operador.nome);
-                    printf("2 - Nome de usu rio    : %s\n", operador.user);
-                    printf("3 - N¡vel de permissÆo : %d\n", operador.permission);
+                    printf("2 - Nome de usu?io    : %s\n", operador.user);
+                    printf("3 - N?el de permiss? : %d\n", operador.permission);
                     printf("4 - Senha              : %c%c", operador.senha[0], operador.senha[1]);
                     for (int i = 1; i < tam; i++)
                         printf("*");
                     printf("\n\n");
 
-                    printf("5 - Salvar altera‡äes\n");
+                    printf("5 - Salvar altera?es\n");
                     printf("6 - Cancelar\n");
                     printf("=> ");
                     scanf("%d", &res);
@@ -409,7 +409,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
 
                     if (res == 6)
                     {
-                        printf("Opera‡Æo cancelada!\n");
+                        printf("Opera?o cancelada!\n");
                         pausarTela();
                         break;
                     }
@@ -422,7 +422,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                         fflush(stdin);
                         break;
                     case 2:
-                        printf("Insira o nome de usu rio do operador: ");
+                        printf("Insira o nome de usu?io do operador: ");
                         scanf("%[^\n]", operador.user);
                         fflush(stdin);
                         break;
@@ -430,13 +430,13 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                         while (1)
                         {
                             limparTela();
-                            printf("Selecione o n¡vel de permissÆo: \n");
+                            printf("Selecione o n?el de permiss?: \n");
                             printf("0 - Inativo\n");
-                            printf("1 - Funcion rio\n");
+                            printf("1 - Funcion?io\n");
                             printf("2 - Recepcionista\n");
-                            printf("3 - Gerente de opera‡äes\n");
+                            printf("3 - Gerente de opera?es\n");
                             printf("4 - Administrador\n\n");
-                            printf("5 - Verificar permissäes espec¡ficas de cada um!\n");
+                            printf("5 - Verificar permiss?s espec?icas de cada um!\n");
                             printf("=> ");
                             scanf("%d", &res);
                             fflush(stdin);
@@ -469,18 +469,18 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                             else if (res == 5)
                             {
                                 limparTela();
-                                printf("Permissäes de cada fun‡Æo: \n");
-                                printf("0 - Usu rio desligado. O sistema bloqueia o login imediatamente.\n");
-                                printf("1 - Acesso b sico: consultar disponibilidade de quartos e ver lista de h¢spedes.\n");
-                                printf("2 - Tudo do n¡vel 1 al‚m de realizar Check-in, Check-out e cadastrar novos h¢spedes.\n");
-                                printf("3 - Tudo do n¡vel 2 al‚m de estornar pagamentos, alterar tarifas e gerar relat¢rios mensais.\n");
-                                printf("4 - Acesso total: cadastrar novos usu rios (operadores) e configurar o sistema.\n\n");
+                                printf("Permiss?s de cada fun?o: \n");
+                                printf("0 - Usu?io desligado. O sistema bloqueia o login imediatamente.\n");
+                                printf("1 - Acesso b?ico: consultar disponibilidade de quartos e ver lista de hÂpedes.\n");
+                                printf("2 - Tudo do n?el 1 al? de realizar Check-in, Check-out e cadastrar novos hÂpedes.\n");
+                                printf("3 - Tudo do n?el 2 al? de estornar pagamentos, alterar tarifas e gerar relatÁios mensais.\n");
+                                printf("4 - Acesso total: cadastrar novos usu?ios (operadores) e configurar o sistema.\n\n");
 
                                 pausarTela();
                             }
                             else
                             {
-                                printf("Op‡Æo inv lida!\n");
+                                printf("Op?o inv?ida!\n");
                                 pausarTela();
                             }
                         }
@@ -497,7 +497,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
                         break;
 
                     default:
-                        printf("Op‡Æo inv lida!\n");
+                        printf("Op?o inv?ida!\n");
                         pausarTela();
                         fflush(stdin);
                         break;
@@ -506,13 +506,13 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
             }
             else
             {
-                printf("Usu rio nÆo encontrado!\n");
+                printf("Usu?io n? encontrado!\n");
                 pausarTela();
             }
             res = 0;
             break;
         case 4:
-            printf("Digite o usu rio do operador que deseja apagar: ");
+            printf("Digite o usu?io do operador que deseja apagar: ");
             scanf("%[^\n]", operador.user);
             fflush(stdin);
 
@@ -520,15 +520,15 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
 
             if (res == 0)
             {
-                printf("Usu rio encontrado!\n");
+                printf("Usu?io encontrado!\n");
                 printf("Id do operador     : %d\n", operador.id);
                 printf("Nome completo      : %s\n", operador.nome);
-                printf("Nome de usu rio    : %s\n", operador.user);
-                printf("N¡vel de permissÆo : %d\n\n", operador.permission);
+                printf("Nome de usu?io    : %s\n", operador.user);
+                printf("N?el de permiss? : %d\n\n", operador.permission);
 
-                printf("Tem certeza que deseja apagar esse usu rio?\n");
+                printf("Tem certeza que deseja apagar esse usu?io?\n");
                 printf("1 - Sim\n");
-                printf("2 - NÆo\n");
+                printf("2 - N?\n");
                 printf("=> ");
                 scanf("%d", &res);
                 fflush(stdin);
@@ -543,7 +543,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
             }
             else
             {
-                printf("Usu rio nÆo encontrado!\n");
+                printf("Usu?io n? encontrado!\n");
                 pausarTela();
             }
             break;
@@ -554,7 +554,7 @@ void interfaceOperadores(ListaOperadores *listaOperadores)
         default:
             if (res != 0)
             {
-                printf("Selecione uma op‡Æo v lida!\n");
+                printf("Selecione uma op?o v?ida!\n");
                 pausarTela();
                 fflush(stdin);
             }
