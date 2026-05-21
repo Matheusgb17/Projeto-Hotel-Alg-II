@@ -227,7 +227,7 @@ int main()
             {
                 printf("Tem certeza que deseja sair do sistema?\n");
                 printf("1 - Sim\n");
-                printf("2 - NÃ£o\n");
+                printf("2 - NÆo\n");
                 printf("=> ");
                 scanf("%d", &res);
 

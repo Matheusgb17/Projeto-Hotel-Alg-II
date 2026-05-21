@@ -17,6 +17,7 @@ typedef struct listaReservas {
 typedef struct {
     time_t dataEntrada;
     time_t dataSaida;
+    char facilidades[200]; // Envie uma string vazia "" se não quiser filtrar por facilidades
     int idCategoria;       // Envie 0 se o operador não quiser filtrar por categoria
     int qtdAdultos;        // Envie 0 se não quiser filtrar
     int qtdCriancas;       // Envie 0 se não quiser filtrar
@@ -76,9 +77,9 @@ int verificarDisponibilidadeID(ListaReservas *lista, int idAcomodacao, time_t da
  * @param listaAcom Ponteiro para a lista de acomodações (para validação de reservas).
  * @param listaCat Ponteiro para a lista de categorias (para validação de reservas).
  * @param listaHospedes Ponteiro para a lista de hóspedes (para validação de reservas).
- * @return void
+ * @return int Retorna 0 para sucesso ou 1 caso ocorra falha.
  */
-void listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, FiltroBusca filtro);
+int listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, FiltroBusca filtro);
 
 /**
  * listar reservas por acomodação, mostrando detalhes de cada reserva vinculada a um ID de acomodação específico.
