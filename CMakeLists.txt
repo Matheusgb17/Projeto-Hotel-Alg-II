@@ -23,4 +23,6 @@ add_executable(marismar-plaza
         service/reservas.c
         bib/vendas.h
         service/vendas.c
+        bib/compras.h
+        service/compras.c
 )

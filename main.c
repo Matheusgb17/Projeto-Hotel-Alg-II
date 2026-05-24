@@ -13,6 +13,8 @@
 #include "bib/operadores.h"
 #include "bib/reservas.h"
 #include "bib/utils.h"
+#include "bib/vendas.h"
+#include "bib/compras.h"
 
 #define HotelBIN "./data/bin/hotel.dat"
 #define HotelTXT "./data/txt/hotel.txt"
@@ -38,6 +40,12 @@
 #define ReservasBIN "./data/bin/reservas.dat"
 #define ReservasTXT "./data/txt/reservas.txt"
 
+#define VendasBIN "./data/bin/vendas.dat"
+#define VendasTXT "./data/txt/vendas.txt"
+
+#define ComprasBIN "./data/bin/compras.dat"
+#define ComprasTXT "./data/txt/compras.txt"
+
 #define BIN 1
 #define TXT 2
 #define MEM 3
@@ -55,13 +63,18 @@ int main()
 
     ListaReservas *listaReservas;
 
+    ListaVendas *listaVendas;
+    ListaNotasFiscais *listaNotasFiscais;
+    ListaContasPagar *listaContasPagar;
+
+
     while (1)
     {
         system("cls");
         printf("Selecione a forma de armazenar os dados no sistema:\n");
         printf("1 - Arquivos Bin\n");
         printf("2 - Arquivos Txt\n");
-        printf("3 - Em mem¢ria (CUIDADO: todos os arquivos serÆo perdidos ap¢s o encerramento do sistema)\n");
+        printf("3 - Em memï¿½ria (CUIDADO: todos os arquivos serï¿½o perdidos apï¿½s o encerramento do sistema)\n");
         printf("4 - Sair\n");
         printf("=> ");
         scanf("%d", &modo);
@@ -75,7 +88,7 @@ int main()
         }
         else
         {
-            printf("Selecione uma op‡Æo v lida!\n");
+            printf("Selecione uma opï¿½ï¿½o vï¿½lida!\n");
             system("pause");
             fflush(stdin);
         }
@@ -137,15 +150,36 @@ int main()
         listaReservas = resgataDadosReservasTxt(ReservasTXT);
     }
 
+    listaVendas = resgataDadosVendasBin(VendasBIN);
+    if (listaVendas->prox == NULL)
+    {
+        free(listaVendas);
+        listaVendas = resgataDadosVendasTxt(VendasTXT);
+    }
+
+    listaNotasFiscais = resgataDadosNotasBin(ComprasBIN);
+    if (listaNotasFiscais->prox == NULL)
+    {
+        free(listaNotasFiscais);
+        listaNotasFiscais = resgataDadosNotasBin(ComprasTXT);
+    }
+
+    listaContasPagar = resgataDadosContasPagarBin(ComprasBIN);
+    if (listaContasPagar->prox == NULL)
+    {
+        free(listaContasPagar);
+        listaContasPagar = resgataDadosContasPagarBin(ComprasTXT);
+    }
+
     do
     { // MENU PRINCIPAL =============================================================================
         system("cls");
         printf("Menu principal\n");
-        printf("1 - Cadastro e GestÆo\n");
+        printf("1 - Cadastro e Gestï¿½o\n");
         printf("2 - Reservas e Cancelamentos\n");
-        printf("3 - Transa‡äes\n");
+        printf("3 - Transaï¿½ï¿½es\n");
         printf("4 - Feedback\n");
-        printf("5 - Importa‡Æo/Exporta‡Æo de dados\n");
+        printf("5 - Importaï¿½ï¿½o/Exportaï¿½ï¿½o de dados\n");
         printf("0 - Sair do sistema\n");
         printf("=> ");
 
@@ -154,15 +188,15 @@ int main()
 
         switch (res)
         {
-        case 1: // CADASTRO E GESTÇO ====================================================
+        case 1: // CADASTRO E GESTï¿½O ====================================================
             do
             {
                 system("cls");
-                printf("Cadastro e gestÆo de hospedes\n");
+                printf("Cadastro e gestï¿½o de hospedes\n");
                 printf("1 - Dados do Hotel\n");
                 printf("2 - Hospedes\n");
-                printf("3 - Acomoda‡äes\n");
-                printf("4 - Categorias de Acomoda‡äes\n");
+                printf("3 - Acomodaï¿½ï¿½es\n");
+                printf("4 - Categorias de Acomodaï¿½ï¿½es\n");
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
@@ -179,10 +213,10 @@ int main()
                 case 2: // hospedes
                     interfaceHospedes(listaHospedes);
                     break;
-                case 3: // acomoda‡äes
+                case 3: // acomodaï¿½ï¿½es
                     interfaceAcomodacao(listaAcomodacao, listaCategoria);
                     break;
-                case 4: // categorias de acomoda‡äes
+                case 4: // categorias de acomodaï¿½ï¿½es
                     interfaceCategoria(listaCategoria);
                     break;
                 case 5: // produtos
@@ -197,7 +231,7 @@ int main()
                 default:
                     if (res != 0)
                     {
-                        printf("Selecione uma op‡Æo v lida!");
+                        printf("Selecione uma opï¿½ï¿½o vï¿½lida!");
                         system("pause");
                     }
                     break;
@@ -227,7 +261,7 @@ int main()
             {
                 printf("Tem certeza que deseja sair do sistema?\n");
                 printf("1 - Sim\n");
-                printf("2 - NÆo\n");
+                printf("2 - Nï¿½o\n");
                 printf("=> ");
                 scanf("%d", &res);
 
