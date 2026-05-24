@@ -17,6 +17,7 @@ typedef struct listaProduto
 } ListaProduto;
 //;)
 
+
 /**
  * Calcula e retorna o proximo ID disponivel para cadastro de um novo produto.
  * @param lista Ponteiro para a lista encadeada de produtos.
