@@ -114,6 +114,14 @@ ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo);
 void liberaListaProdutos(ListaProduto *lista);
 
 /**
+ * Exibe os dados completos de um produto no console, formatados para f�cil leitura.
+ * @param produto Estrutura contendo os dados do produto a ser exibido.
+ * @return void
+ */
+void imprimeDadosProduto(TipoProduto produto);
+
+
+/**
  * Interface interativa via terminal para gestao de produtos (CRUD).
  * @param listaProduto Ponteiro para a lista de produtos carregada na memoria.
  * @param modo Inteiro representando o modo de armazenamento atual do sistema.
