@@ -15,6 +15,7 @@ typedef struct listaProduto
     TipoProduto Produto;
     struct listaProduto *prox;
 } ListaProduto;
+//;)
 
 /**
  * Calcula e retorna o proximo ID disponivel para cadastro de um novo produto.

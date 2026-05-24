@@ -17,6 +17,7 @@ typedef struct listaFornecedor
     TipoFornecedor Fornecedor;
     struct listaFornecedor *prox;
 } ListaFornecedor;
+// ;)
 
 /**
  * Calcula e retorna o proximo ID disponivel para cadastro de um novo fornecedor.
