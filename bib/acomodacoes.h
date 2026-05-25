@@ -72,7 +72,7 @@ void listarAcomodacao(ListaAcomodacao *lista, ListaCategoria *listaCat);
  * @param lista Nó de início da lista que deseja guardar.
  * @param nome_arquivo String contendo o caminho do arquivo.
  */
-void salvaDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo);
+int salvaDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo);
 
 /**
  * Resgata os dados das acomodações de um arquivo binário.
@@ -86,7 +86,7 @@ ListaAcomodacao *resgataDadosAcomodacoesBin(char *nome_arquivo);
  * @param lista Nó de início da lista que deseja guardar.
  * @param nome_arquivo String contendo o caminho do arquivo.
  */
-void salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
+int salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
 
 /**
  * Resgata os dados das acomodações de um arquivo TXT (Tags).
@@ -94,6 +94,13 @@ void salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
  * @return ListaAcomodacao* Retorna o ponteiro para a lista encadeada gerada.
  */
 ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo);
+
+/**
+ * Exibe os dados completos de uma acomodacao no console, formatados para facil leitura.
+ * @param acomodacao Estrutura contendo os dados da acomodacao a ser exibido.
+ * @return void
+ */
+void imprimeDadosAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria);
 
 /**
  * Interface de menu para gestão do cadastro de acomodações.

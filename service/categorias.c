@@ -65,11 +65,17 @@ int buscarCategoria(ListaCategoria **lista, TipoCategoria *categoria, int id, Li
 
     while (aux != NULL)
     {
-        // printf("DEBUG: Verificando ID %d na lista...\n", aux->categoria.id);
         if (aux->categoria.id == id && aux->categoria.id != 0)
         {
-            *categoria = aux->categoria;
-            *pos = aux;
+            if (categoria != NULL)
+            {
+                *categoria = aux->categoria;
+            }
+
+            if (pos != NULL)
+            {
+                *pos = aux;
+            }
             return 0;
         }
         aux = aux->prox;
@@ -87,41 +93,34 @@ void apagarCategoria(ListaCategoria *pos)
     pos->categoria.id = 0;
 }
 
-void listarCategoria(ListaCategoria *lista)
+void listarCategorias(ListaCategoria *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhuma categoria cadastrada.\n");
+        exibeMensagemAviso("Nenhuma categoria cadastrada.");
     }
     else
     {
+        exibeMensagemSucesso("Categorias de acomodacao:");
         lista = lista->prox;
-        printf("\nCategorias de acomodacao:\n");
-
         while (lista != NULL)
         {
             if (lista->categoria.id != 0)
             {
-                printf("Id                    : %d\n", lista->categoria.id);
-                printf("Descricao             : %s\n", lista->categoria.descricao);
-                printf("Valor da diaria       : %.2f\n", lista->categoria.valorDiaria);
-                printf("Capacidade de adultos : %d\n", lista->categoria.capacidadeAdultos);
-                printf("Capacidade de criancas: %d\n", lista->categoria.capacidadeCriancas);
-                printf("-----------------------------------\n");
+                imprimeDadosCategoria(lista->categoria);
             }
             lista = lista->prox;
         }
     }
 }
 
-int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
+int salvarDadosCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
     if (arquivo == NULL)
     {
-        printf("Erro ao abrir o arquivo!\n");
-        system("pause");
+        exibeMensagemErro("Erro ao abrir o arquivo!");
         return 1;
     }
 
@@ -147,14 +146,13 @@ int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
     return 0;
 }
 
-int salvarCategoriasBin(ListaCategoria *lista, char *nome_arquivo)
+int salvarDadosCategoriasBin(ListaCategoria *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
 
     if (arquivo == NULL)
     {
-        printf("Erro ao abrir o arquivo!\n");
-        system("pause");
+        exibeMensagemErro("Erro ao abrir o arquivo!");
         return 1;
     }
 
@@ -187,7 +185,7 @@ ListaCategoria *carregarCategoriasBin(char *nome_arquivo)
         res = inserirCategoria(&lista, categoria);
 
     if (res == 1)
-        printf("Erro ao carregar categorias do arquivo bin�rio!\n");
+        exibeMensagemErro("Erro ao carregar categorias do arquivo binario!");
 
     fclose(arquivo);
     return lista;
@@ -229,6 +227,17 @@ ListaCategoria *carregarCategoriasTxt(char *nome_arquivo)
     return lista;
 }
 
+void imprimeDadosCategoria(TipoCategoria categoria)
+{
+    printf("Id                    : %d\n", categoria.id);
+    printf("Descricao             : %s\n", categoria.descricao);
+    printf("Valor da diaria       : %.2f\n", categoria.valorDiaria);
+    printf("Capacidade de adultos : %d\n", categoria.capacidadeAdultos);
+    printf("Capacidade de criancas: %d\n", categoria.capacidadeCriancas);
+    printf("-----------------------------------\n");
+    return;
+}
+
 void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
 {
     ListaCategoria *pos;
@@ -239,7 +248,7 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
     // gestao de categorias
     do
     {
-        system("cls");
+        limparTela();
 
         printf("--- Gestao de Categorias ---\n");
         printf("1 - Inserir categoria\n");
@@ -251,11 +260,11 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
         printf("=> ");
         scanf("%d", &res);
         fflush(stdin);
+        limparTela();
 
         switch (res)
         {
         case 1:
-            system("cls");
             printf("Descricao da categoria (ex: Luxo): ");
             scanf("%[^\n]", categoria.descricao);
             fflush(stdin);
@@ -282,7 +291,7 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
             {
                 printf("\nErro ao cadastrar!\n");
             }
-            system("pause");
+            pausarTela();
             break;
         case 2:
             printf("Insira o id da categoria que deseja buscar: ");
@@ -299,12 +308,12 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
                 printf("Capacidade de adultos : %d\n", categoria.capacidadeAdultos);
                 printf("Capacidade de criancas: %d\n", categoria.capacidadeCriancas);
 
-                system("pause");
+                pausarTela();
             }
             else
             {
                 printf("\nCategoria nao encontrada!\n");
-                system("pause");
+                pausarTela();
             }
             break;
         case 3:
@@ -317,7 +326,7 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
                 subRes = 0;
                 while (subRes != 5 && subRes != 6)
                 {
-                    system("cls");
+                    limparTela();
                     printf("\nCategoria encontrada! -------------\n");
                     printf("Digite o campo que deseja alterar: \n\n");
                     printf("1 - Descricao                    : %s\n", categoria.descricao);
@@ -357,15 +366,15 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
                     case 5:
                         alterarCategoria(pos, categoria);
                         printf("Dados atualizados com sucesso!\n");
-                        system("pause");
+                        pausarTela();
                         break;
                     case 6:
                         printf("Alteracao cancelada:\n");
-                        system("pause");
+                        pausarTela();
                         break;
                     default:
                         printf("Escolha um valor valido...\n");
-                        system("pause");
+                        pausarTela();
                         break;
                     }
                 }
@@ -373,7 +382,7 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
             else
             {
                 printf("Categoria nao encontrada!\n");
-                system("pause");
+                pausarTela();
             }
             break;
 
@@ -391,28 +400,28 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
             {
                 printf("Categoria nao encontrada!\n");
             }
-            system("pause");
+            pausarTela();
             break;
         case 5:
-            system("cls");
-            listarCategoria(listaCategorias);
-            system("pause");
+            limparTela();
+            listarCategorias(listaCategorias);
+            pausarTela();
             break;
         case 0:
                 printf("Salvando dados e saindo...\n");
                 // Adicione as chamadas de salvamento aqui antes de fechar
                 if (modo == BIN) {
-                    salvarCategoriasBin(listaCategorias, CategoriasBIN);
+                    salvarDadosCategoriasBin(listaCategorias, CategoriasBIN);
                 } else if (modo == TXT) {
-                    salvarCategoriasTxt(listaCategorias, CategoriasTXT);
+                    salvarDadosCategoriasTxt(listaCategorias, CategoriasTXT);
                 }
-                system("pause");
+                pausarTela();
                 break;
         default:
             if (res != 0)
             {
                 printf("Escolha um valor valido...\n");
-                system("pause");
+                pausarTela();
             }
             break;
         }

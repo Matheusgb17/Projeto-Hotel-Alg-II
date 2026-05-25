@@ -67,7 +67,7 @@ void apagarCategoria(ListaCategoria *pos);
  * Percorre a lista e exibe todas as categorias no console.
  * @param lista Ponteiro para a lista a ser exibida.
  */
-void listarCategoria(ListaCategoria *lista);
+void listarCategorias(ListaCategoria *lista);
 
 /**
  * Salva a lista encadeada em um arquivo de texto legível.
@@ -75,7 +75,7 @@ void listarCategoria(ListaCategoria *lista);
  * @param nome_arquivo Nome do arquivo onde os dados serão salvos.
  * @return int Retorna 0 para sucesso ou 1 para falha de acesso ao arquivo.
  */
-int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo);
+int salvarDadosCategoriasTxt(ListaCategoria *lista, char *nome_arquivo);
 
 /**
  * Salva a lista encadeada em formato binário (idêntico à memória).
@@ -83,7 +83,7 @@ int salvarCategoriasTxt(ListaCategoria *lista, char *nome_arquivo);
  * @param nome_arquivo Nome do arquivo onde os dados serão salvos.
  * @return int Retorna 0 para sucesso ou 1 para falha de acesso ao arquivo.
  */
-int salvarCategoriasBin(ListaCategoria *lista, char *nome_arquivo);
+int salvarDadosCategoriasBin(ListaCategoria *lista, char *nome_arquivo);
 
 /**
  * Carrega os dados salvos do arquivo para a memória ao iniciar o programa.
@@ -99,6 +99,18 @@ ListaCategoria *carregarCategoriasBin(char *nome_arquivo);
  */
 ListaCategoria *carregarCategoriasTxt(char *nome_arquivo);
 
+/**
+ * Exibe os dados completos de um categoria no console, formatados para facil leitura.
+ * @param categoria Estrutura contendo os dados da categoria a ser exibido.
+ * @return void
+ */
+void imprimeDadosCategoria(TipoCategoria categoria);
+
+/**
+ * Interface para gestÆo de categoria, permitindo cadastro, consulta, altera‡Æo e exclusÆo de dados.
+ * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).
+ * @return void
+ */
 void interfaceCategoria(ListaCategoria *listaCategorias, int modo);
 
 #endif
