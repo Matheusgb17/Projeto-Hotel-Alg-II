@@ -76,8 +76,15 @@ int salvarDadosHotelTxt(TipoHotel h, char *nome_arquivo);
 TipoHotel *resgataDadosHotelTxt(char *nome_arquivo);
 
 /**
+ * Libera a mem¢ria alocada para a estrutura do hotel.
+ * @param hotel Ponteiro para a estrutura do hotel a ser liberada.
+ * @return void
+ */
+void liberaHotel(TipoHotel *hotel);
+
+/**
  * Interface para gest∆o de hotÇis, permitindo cadastro, consulta, alteraá∆o e exclus∆o de dados.
  * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).
  * @return void
  */
-void interfaceHotel(TipoHotel *hotel, int modo);
+void interfaceHotel(TipoHotel *hotel);

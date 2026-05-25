@@ -68,7 +68,8 @@ int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHo
         return 1;
 
     *hospede = aux->Hospedes;
-    *pos = aux;
+    if(pos != NULL)
+        *pos = aux;
     return 0;
 }
 
@@ -88,40 +89,30 @@ void listarHospedes(ListaHospede *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum hospede cadastrado.\n");
+        exibeMensagemAviso("Nenhum hospede cadastrado."); // <----------
         return;
     }
     else
     {
         lista = lista->prox;
-        printf("\nHospedes ---------\n");
         while (lista != NULL)
         {
+            exibeMensagemSucesso("H¢spede encontrado:"); // <----------
             if (lista->Hospedes.id != 0)
             {
-                printf("Id                 : %d\n", lista->Hospedes.id);
-                printf("Nome               : %s\n", lista->Hospedes.nome);
-                printf("Endereco           : %s\n", lista->Hospedes.endereco);
-                printf("CPF                : %s\n", lista->Hospedes.cpf);
-                printf("Telefone           : %s\n", lista->Hospedes.telefone);
-                printf("Email              : %s\n", lista->Hospedes.email);
-                printf("Sexo               : %c\n", lista->Hospedes.sexo);
-                printf("Estado Civil       : %s\n", lista->Hospedes.estado_civil);
-                printf("Data de Nascimento : %s\n", lista->Hospedes.data_nasc);
-                printf("-------------------\n");
+                imprimeDadosHospede(lista->Hospedes);
             }
             lista = lista->prox;
         }
     }
 }
 
-int salvaDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
+int salvarDadosHospedesBin(ListaHospede *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "wb");
     if (arquivo == NULL)
     {
-        printf("Erro ao acessar o arquivo...\n\n");
-        system("pause");
+        exibeMensagemErro("Erro ao acessar o arquivo...");
         return 1;
     }
     ListaHospede *aux = lista->prox;
@@ -149,20 +140,19 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
         res = inserirHospede(&lista, hospede);
 
     if (res == 1)
-        printf("Erro ao cadastrar hospede!");
+        exibeMensagemErro("Erro ao carregar hospedes do arquivo bin rio!");
 
     fclose(arquivo);
     return lista;
 }
 
-int salvaDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
+int salvarDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
 
     if (arquivo == NULL)
     {
-        printf("Erro ao acessar o arquivo...\n\n");
-        system("pause");
+        exibeMensagemErro("Erro ao acessar o arquivo...");
         return 1;
     }
 
@@ -233,7 +223,34 @@ ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceHospedes(ListaHospede *listaHospedes, int modo)
+void liberaListaHospedes(ListaHospede *lista)
+{
+    ListaHospede *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+    return;
+}
+
+void imprimeDadosHospede(TipoHospede hospede)
+{
+    printf("ID H¢spede      : %d\n", hospede.id);
+    printf("nome            : %s\n", hospede.nome);
+    printf("endere‡o        : %s\n", hospede.endereco);
+    printf("cpf             : %s\n", hospede.cpf);
+    printf("telefone        : %s\n", hospede.telefone);
+    printf("sexo            : %c\n", hospede.sexo);
+    printf("email           : %s\n", hospede.email);
+    printf("estado civil    : %s\n", hospede.estado_civil);
+    printf("data nascimento : %s\n", hospede.data_nasc);
+    printf("-----------------------------\n");
+    return;
+}
+
+void interfaceHospedes(ListaHospede *listaHospedes)
 {
     ListaHospede *pos;
 
@@ -243,7 +260,7 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
     // Cadastro e GestÆo de Hospedes
     do
     {
-        system("cls");
+        limparTela();
         printf("Cadastro e gestÆo de Hospedes!\n");
         printf("1 - Inserir hospede\n");
         printf("2 - Buscar hospede\n");
@@ -255,7 +272,7 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
         printf("=> ");
         scanf("%d", &res);
         fflush(stdin);
-        system("cls");
+        limparTela();
 
         switch (res)
         {
@@ -303,7 +320,7 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
                 else
                 {
                     printf("Op‡Æo inv lida");
-                    system("pause");
+                    pausarTela();
                     fflush(stdin);
                 }
             }
@@ -328,12 +345,12 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
             {
                 printf("\nHospede inserido com sucesso!\n");
                 printf("O ID do hospede %s: %d\n", hospede.nome, hospede.id);
-                system("pause");
+                pausarTela();
             }
             else
             {
                 printf("\nFalha ao inserir hospede!\n");
-                system("pause");
+                pausarTela();
             }
             res = 1;
             break;
@@ -356,12 +373,12 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
                 printf("estado civil    : %s\n", hospede.estado_civil);
                 printf("data nascimento : %s\n\n", hospede.data_nasc);
 
-                system("pause");
+                pausarTela();
             }
             else
             {
                 printf("\nHospede nÆo encontrado!\n");
-                system("pause");
+                pausarTela();
             }
 
             break;
@@ -375,7 +392,7 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
             {
                 while (res != 9)
                 {
-                    system("cls");
+                    limparTela();
                     printf("\nHospede encontrado!! -------------\n");
                     printf("Digite o campo que deseja alterar: \n\n");
                     printf("ID (fixo)           : %d\n", hospede.id);
@@ -448,7 +465,7 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
                             else
                             {
                                 printf("Op‡Æo inv lida");
-                                system("pause");
+                                pausarTela();
                                 fflush(stdin);
                             }
                         }
@@ -474,7 +491,7 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
 
                     default:
                         printf("Escolha um valor v lido...\n");
-                        system("pause");
+                        pausarTela();
                         break;
                     }
                 }
@@ -482,7 +499,7 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
             else
             {
                 printf("\nHospede nÆo encontrado!\n");
-                system("pause");
+                pausarTela();
             }
 
             break;
@@ -512,28 +529,28 @@ void interfaceHospedes(ListaHospede *listaHospedes, int modo)
                 {
                     apagarHospede(pos);
                     printf("Hospede apagado!\n\n");
-                    system("pause");
+                    pausarTela();
                 }
             }
             else
             {
                 printf("\nHospede nÆo encontrado!\n\n");
-                system("pause");
+                pausarTela();
             }
             break;
         case 5:
             listarHospedes(listaHospedes);
-            system("pause");
+            pausarTela();
             break;
         case 35:
             printf("\n=> %d\n", escolheIdHospede(listaHospedes));
-            system("pause");
+            pausarTela();
             break;
         default:
             if (res != 0)
             {
                 printf("Op‡Æo inv lida!\n");
-                system("pause");
+                pausarTela();
                 fflush(stdin);
             }
             break;

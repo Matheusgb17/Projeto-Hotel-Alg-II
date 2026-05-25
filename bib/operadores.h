@@ -70,7 +70,7 @@ void listarOperadores(ListaOperadores *lista);
  * @param nome_arquivo String contendo o nome do arquivo bin†rio onde os dados ser∆o salvos.
  * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
  */
-int salvaDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo);
+int salvarDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo);
 
 /**
  * Funá∆o para resgatar os dados dos operadores a partir de um arquivo bin†rio.
@@ -85,7 +85,14 @@ ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo);
  * @param nome_arquivo String contendo o nome do arquivo de texto onde os dados ser∆o salvos.
  * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
  */
-int salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo);
+int salvarDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo);
+
+/**
+ * Funá∆o para resgatar os dados dos operadores a partir de um arquivo de texto.
+ * @param nome_arquivo String contendo o nome do arquivo de texto a ser lido.
+ * @return ListaOperadores* Ponteiro para a lista preenchida com os dados resgatados.
+ */
+void liberaListaOperadores(ListaOperadores *lista);
 
 /**
  * Funá∆o para resgatar os dados dos operadores a partir de um arquivo de texto.
@@ -94,4 +101,11 @@ int salvaDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo);
  */
 ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo);
 
-void interfaceOperadores(ListaOperadores *listaOperadores, int modo);
+/**
+ * Exibe os dados de um operador no console.
+ * @param operador Estrutura contendo os dados do operador a ser exibido.
+ * @return void
+ */
+void imprimeDadosOperador(TipoOperador operador);
+
+void interfaceOperadores(ListaOperadores *listaOperadores);

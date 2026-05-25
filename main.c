@@ -11,6 +11,7 @@
 #include "bib/fornecedores.h"
 #include "bib/acomodacoes.h"
 #include "bib/operadores.h"
+#include "bib/reservas.h"
 #include "bib/utils.h"
 
 #define HotelBIN "./data/bin/hotel.dat"
@@ -34,6 +35,9 @@
 #define OperadoresBIN "./data/bin/operadores.dat"
 #define OperadoresTXT "./data/txt/operadores.txt"
 
+#define ReservasBIN "./data/bin/reservas.dat"
+#define ReservasTXT "./data/txt/reservas.txt"
+
 #define BIN 1
 #define TXT 2
 #define MEM 3
@@ -46,8 +50,10 @@ int main()
     ListaAcomodacao *listaAcomodacao;
     ListaCategoria *listaCategoria;
     ListaProduto *listaProduto;
-    // ListaFornecedor *listaFornecedor;
+    ListaFornecedor *listaFornecedor;
     ListaOperadores *listaOperadores;
+
+    ListaReservas *listaReservas;
 
     while (1)
     {
@@ -55,7 +61,7 @@ int main()
         printf("Selecione a forma de armazenar os dados no sistema:\n");
         printf("1 - Arquivos Bin\n");
         printf("2 - Arquivos Txt\n");
-        printf("3 - Em mem√≥ria (CUIDADO: todos os arquivos ser¬¥‚îê¬¢o perdidos ap¬¥‚îê¬¢s o encerramento do sistema)\n");
+        printf("3 - Em mem¢ria (CUIDADO: todos os arquivos ser∆o perdidos ap¢s o encerramento do sistema)\n");
         printf("4 - Sair\n");
         printf("=> ");
         scanf("%d", &modo);
@@ -69,7 +75,7 @@ int main()
         }
         else
         {
-            printf("Selecione uma op√ß√£o v√°lida!\n");
+            printf("Selecione uma opá∆o v†lida!\n");
             system("pause");
             fflush(stdin);
         }
@@ -97,38 +103,49 @@ int main()
     }
 
     listaCategoria = carregarCategoriasBin(CategoriasBIN);
-    if (listaCategoria->prox == NULL)    {
+    if (listaCategoria->prox == NULL)
+    {
         free(listaCategoria);
         listaCategoria = carregarCategoriasTxt(CategoriasTXT);
     }
 
     listaProduto = resgataDadosProdutosBin(ProdutosBIN);
-    if (listaProduto->prox == NULL){    
+    if (listaProduto->prox == NULL)
+    {
         free(listaProduto);
         listaProduto = resgataDadosProdutosTxt(ProdutosTXT);
-    }   
+    }
 
-    // listaFornecedor = resgataDadosFornecedoresBin(FornecedoresBIN);
-    // if (listaFornecedor->prox == NULL){    
-    //     free(listaFornecedor);
-    //     listaFornecedor = resgataDadosFornecedoresTxt(FornecedoresTXT);
-    // }
+    listaFornecedor = resgataDadosFornecedoresBin(FornecedoresBIN);
+    if (listaFornecedor->prox == NULL)
+    {
+        free(listaFornecedor);
+        listaFornecedor = resgataDadosFornecedoresTxt(FornecedoresTXT);
+    }
 
     listaOperadores = resgataDadosOperadoresBin(OperadoresBIN);
-    if (listaOperadores->prox == NULL){    
+    if (listaOperadores->prox == NULL)
+    {
         free(listaOperadores);
         listaOperadores = resgataDadosOperadoresTxt(OperadoresTXT);
+    }
+
+    listaReservas = resgataDadosReservasBin(ReservasBIN);
+    if (listaReservas->prox == NULL)
+    {
+        free(listaReservas);
+        listaReservas = resgataDadosReservasTxt(ReservasTXT);
     }
 
     do
     { // MENU PRINCIPAL =============================================================================
         system("cls");
         printf("Menu principal\n");
-        printf("1 - Cadastro e Gest√£o\n");
+        printf("1 - Cadastro e Gest∆o\n");
         printf("2 - Reservas e Cancelamentos\n");
-        printf("3 - Transa√ß√µes\n");
+        printf("3 - Transaá‰es\n");
         printf("4 - Feedback\n");
-        printf("5 - Importa√ß√£o/Exporta√ß√£o de dados\n");
+        printf("5 - Importaá∆o/Exportaá∆o de dados\n");
         printf("0 - Sair do sistema\n");
         printf("=> ");
 
@@ -137,15 +154,15 @@ int main()
 
         switch (res)
         {
-        case 1: // CADASTRO E GEST√ÉO ====================================================
+        case 1: // CADASTRO E GEST«O ====================================================
             do
             {
                 system("cls");
-                printf("Cadastro e gest√£o de hospedes\n");
+                printf("Cadastro e gest∆o de hospedes\n");
                 printf("1 - Dados do Hotel\n");
-                printf("2 - H√≥spedes\n");
-                printf("3 - Acomoda√ß√µes\n");
-                printf("4 - Categorias de Acomoda√ß√£o\n");
+                printf("2 - Hospedes\n");
+                printf("3 - Acomodaá‰es\n");
+                printf("4 - Categorias de Acomodaá‰es\n");
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
@@ -157,29 +174,30 @@ int main()
                 switch (res)
                 {
                 case 1: // hotel
-                    interfaceHotel(dadosHotel, modo);
+                    interfaceHotel(dadosHotel);
                     break;
                 case 2: // hospedes
-                    interfaceHospedes(listaHospedes, modo);
+                    interfaceHospedes(listaHospedes);
                     break;
-                case 3: // acomoda√ß√µes
-                    interfaceAcomodacao(listaAcomodacao, listaCategoria, modo);
+                case 3: // acomodaá‰es
+                    interfaceAcomodacao(listaAcomodacao, listaCategoria);
                     break;
-                case 4: // categorias de acomoda√ß√µes
-                    interfaceCategoria(listaCategoria, modo);
+                case 4: // categorias de acomodaá‰es
+                    interfaceCategoria(listaCategoria);
                     break;
                 case 5: // produtos
-                    interfaceProduto(listaProduto, modo);
+                    interfaceProduto(listaProduto);
                     break;
                 case 6: // fornecedores
+                    interfaceFornecedor(listaFornecedor);
                     break;
                 case 7: // operadores
-                    interfaceOperadores(listaOperadores, modo);
+                    interfaceOperadores(listaOperadores);
                     break;
                 default:
                     if (res != 0)
                     {
-                        printf("Selecione uma op√ß√£o v√°lida!");
+                        printf("Selecione uma opá∆o v†lida!");
                         system("pause");
                     }
                     break;
@@ -188,7 +206,7 @@ int main()
             res = 1;
             break;
         case 2: // RESERVAS E CANCELAMENTOS =============================================
-
+            interfaceReservas(listaReservas, listaAcomodacao, listaCategoria, listaHospedes);
             break;
         case 3: // TRANSACOES ===========================================================
 
@@ -214,8 +232,55 @@ int main()
                 scanf("%d", &res);
 
                 if (res == 1)
+                {
+                    if (modo == BIN)
+                    {
+                        salvarDadosHotelBin(*dadosHotel, HotelBIN);
+                        salvarDadosHospedesBin(listaHospedes, HospedesBIN);
+                        salvarDadosAcomodacoesBin(listaAcomodacao, AcomodacoesBIN);
+                        salvarDadosCategoriasBin(listaCategoria, CategoriasBIN);
+                        salvarDadosProdutosBin(listaProduto, ProdutosBIN);
+                        salvarDadosFornecedoresBin(listaFornecedor, FornecedoresBIN);
+                        salvarDadosOperadoresBin(listaOperadores, OperadoresBIN);
+                        salvarDadosReservasBin(listaReservas, ReservasBIN);
+                        apagaArquivo(HotelTXT);
+                        apagaArquivo(HospedesTXT);
+                        apagaArquivo(AcomodacoesTXT);
+                        apagaArquivo(CategoriasTXT);
+                        apagaArquivo(ProdutosTXT);
+                        apagaArquivo(FornecedoresTXT);
+                        apagaArquivo(OperadoresTXT);
+                        apagaArquivo(ReservasTXT);
+                    }
+                    else if (modo == TXT)
+                    {
+                        salvarDadosHotelTxt(*dadosHotel, HotelTXT);
+                        salvarDadosHospedesTxt(listaHospedes, HospedesTXT);
+                        salvarDadosAcomodacoesTxt(listaAcomodacao, AcomodacoesTXT);
+                        salvarDadosCategoriasTxt(listaCategoria, CategoriasTXT);
+                        salvarDadosProdutosTxt(listaProduto, ProdutosTXT);
+                        salvarDadosFornecedoresTxt(listaFornecedor, FornecedoresTXT);
+                        salvarDadosOperadoresTxt(listaOperadores, OperadoresTXT);
+                        salvarDadosReservasTxt(listaReservas, ReservasTXT);
+                        apagaArquivo(HotelBIN);
+                        apagaArquivo(HospedesBIN);
+                        apagaArquivo(AcomodacoesBIN);
+                        apagaArquivo(CategoriasBIN);
+                        apagaArquivo(ProdutosBIN);
+                        apagaArquivo(FornecedoresBIN);
+                        apagaArquivo(OperadoresBIN);
+                        apagaArquivo(ReservasBIN);
+                    }
+                    liberaHotel(dadosHotel);
+                    liberaListaHospedes(listaHospedes);
+                    liberaListaAcomodacoes(listaAcomodacao);
+                    liberaListaCategorias(listaCategoria);
+                    liberaListaProdutos(listaProduto);
+                    liberaListaFornecedores(listaFornecedor);
+                    liberaListaOperadores(listaOperadores);
+                    liberaListaReservas(listaReservas);
                     return 0;
-                res = 0;
+                }
             }
             break;
         }

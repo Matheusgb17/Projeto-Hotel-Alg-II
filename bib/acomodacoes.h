@@ -23,13 +23,6 @@ typedef struct listaAcomodacoes {
 ListaAcomodacao *iniciaListaAcomodacao();
 
 /**
- * Percorre a lista por completo para descobrir a quantidade de posições e definir o próximo ID.
- * @param lista Endereço da lista que será percorrida.
- * @return int O novo ID único gerado.
- */
-int escolheIdAcomodacao(ListaAcomodacao *lista);
-
-/**
  * Insere uma nova acomodação no final da lista encadeada.
  * @param lista Ponteiro para o ponteiro da lista (para permitir alteração direta).
  * @param acomodacao Estrutura contendo os dados da acomodação a ser inserida.
@@ -68,11 +61,18 @@ void apagarAcomodacao(ListaAcomodacao *pos);
 void listarAcomodacao(ListaAcomodacao *lista, ListaCategoria *listaCat);
 
 /**
+ * Percorre a lista e exibe os IDs já registrados para auxiliar o usuário na escolha de um novo ID.
+ * @param lista Ponteiro para a lista de acomodações.
+ * @return void
+ */
+void listarIdsJaRegistradosAcomodacao(ListaAcomodacao *lista);
+
+/**
  * Guarda dados de uma lista de acomodações encadeada em um arquivo binário.
  * @param lista Nó de início da lista que deseja guardar.
  * @param nome_arquivo String contendo o caminho do arquivo.
  */
-int salvaDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo);
+void salvarDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo);
 
 /**
  * Resgata os dados das acomodações de um arquivo binário.
@@ -86,7 +86,7 @@ ListaAcomodacao *resgataDadosAcomodacoesBin(char *nome_arquivo);
  * @param lista Nó de início da lista que deseja guardar.
  * @param nome_arquivo String contendo o caminho do arquivo.
  */
-int salvaDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
+void salvarDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
 
 /**
  * Resgata os dados das acomodações de um arquivo TXT (Tags).
@@ -102,11 +102,17 @@ ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo);
  */
 void imprimeDadosAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria);
 
+ * Libera a memória alocada para a lista de acomodações.
+ * @param lista Ponteiro para a lista de acomodações.
+ * @return void
+ */
+void liberaListaAcomodacoes(ListaAcomodacao *lista);
+
 /**
  * Interface de menu para gestão do cadastro de acomodações.
  * @param listaAcomod Ponteiro para a lista de acomodações.
  * @param listaCat Ponteiro para a lista de categorias.
  */
-void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat, int modo);
+void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat);
 
 #endif

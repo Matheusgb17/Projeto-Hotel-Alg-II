@@ -112,5 +112,12 @@ void imprimeDadosCategoria(TipoCategoria categoria);
  * @return void
  */
 void interfaceCategoria(ListaCategoria *listaCategorias, int modo);
+ * Libera a memória alocada para a lista de categorias.
+ * @param lista Ponteiro para a lista de categorias.
+ * @return void
+ */
+void liberaListaCategorias(ListaCategoria *lista);
+
+void interfaceCategoria(ListaCategoria *listaCategorias);
 
 #endif

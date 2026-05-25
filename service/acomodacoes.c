@@ -116,6 +116,26 @@ void listarIdsJaRegistradosAcomodacao(ListaAcomodacao *lista)
             if (lista->acomodacao.id != 0)
             {
                 printf("%d ", lista->acomodacao.id);
+        printf("Nenhuma acomodacao cadastrada.\n");
+    }
+    else
+    {
+        lista = lista->prox;
+        printf("\nAcomodacoes cadastradas:\n");
+
+        while (lista != NULL)
+        {
+            if (lista->acomodacao.id != 0)
+            {
+                buscarCategoria(&listaCat, &categoriaTemp, lista->acomodacao.idCategoria, NULL);
+                printf("ID                  : %d\n", lista->acomodacao.id);
+                printf("Descricao           : %s\n", lista->acomodacao.descricao);
+                printf("Facilidades         : %s\n", lista->acomodacao.facilidades);
+                printf("Descricao           : %s\n", categoriaTemp.descricao);
+                printf("Valor diaria        : R$%.2f\n", categoriaTemp.valorDiaria);
+                printf("Capacidade adultos  : %d\n", categoriaTemp.capacidadeAdultos);
+                printf("Capacidade criancas : %d\n", categoriaTemp.capacidadeCriancas);
+                printf("-----------------------------------\n");
             }
             lista = lista->prox;
             if (cont % 10 == 0)
@@ -290,8 +310,8 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat,
             while (1)
             {
                 limparTela();
-                printf("ID (n£mero de quarto) da acomoda‡Æo: \n");
-                printf("1 - Listar acomoda‡äes j  cadastradas\n");
+                printf("ID (nÂ£mero de quarto) da acomodaâ¡Ão: \n");
+                printf("1 - Listar acomodaâ¡Ã¤es jÂ  cadastradas\n");
                 printf("2 - Digitar ID\n");
                 printf("=> ");
                 scanf("%d", &res);
@@ -303,7 +323,7 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat,
                 }
                 else if (res == 2)
                 {
-                    printf("ID da acomoda‡Æo: ");
+                    printf("ID da acomodaâ¡Ão: ");
                     scanf("%d", &acomodacao.id);
                     fflush(stdin);
 
@@ -313,7 +333,7 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat,
                     }
                     else
                     {
-                        printf("Acomoda‡Æo j  cadastrada, tente novamente!\n");
+                        printf("Acomodaâ¡Ão jÂ  cadastrada, tente novamente!\n");
                         pausarTela();
                     }
                 }
@@ -324,7 +344,7 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat,
                 }
             }
 
-            printf("Descricao da acomoda‡Æo: ");
+            printf("Descricao da acomodaâ¡Ão: ");
             scanf("%[^\n]", acomodacao.descricao);
             fflush(stdin);
 
@@ -356,7 +376,7 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat,
             if (res == 0)
             {
                 printf("\nAcomodacao inserida com sucesso!\n");
-                printf("O ID da acomodacao ‚: %d\n", acomodacao.id);
+                printf("O ID da acomodacao â: %d\n", acomodacao.id);
             }
             else
             {
@@ -379,7 +399,7 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat,
                 printf("ID                  : %d\n", acomodacao.id);
                 printf("Descricao           : %s\n", acomodacao.descricao);
                 printf("Facilidades         : %s\n", acomodacao.facilidades);
-                printf("Descri‡Æo           : %s\n", catAux.descricao);
+                printf("Descriâ¡Ão           : %s\n", catAux.descricao);
                 printf("Valor diaria        : R$%.2f\n", catAux.valorDiaria);
                 printf("Capacidade adultos  : %d\n", catAux.capacidadeAdultos);
                 printf("Capacidade criancas : %d\n\n", catAux.capacidadeCriancas);
