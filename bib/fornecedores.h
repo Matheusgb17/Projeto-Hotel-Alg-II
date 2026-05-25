@@ -17,6 +17,7 @@ typedef struct listaFornecedor
     TipoFornecedor Fornecedor;
     struct listaFornecedor *prox;
 } ListaFornecedor;
+// ;)
 
 /**
  * Calcula e retorna o proximo ID disponivel para cadastro de um novo fornecedor.
@@ -114,6 +115,13 @@ ListaFornecedor *resgataDadosFornecedoresTxt(char *nome_arquivo);
  * @return void
  */
 void liberaListaFornecedores(ListaFornecedor *lista);
+
+/**
+ * Exibe os dados completos de um forncedor no console, formatados para f�cil leitura.
+ * @param fornecedor Estrutura contendo os dados do fornecedor a ser exibido.
+ * @return void
+ */
+void imprimeDadosFornecedor(TipoFornecedor fornecedor);
 
 /**
  * Interface interativa via terminal para gestao de fornecedores (CRUD).

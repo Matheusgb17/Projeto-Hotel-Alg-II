@@ -15,6 +15,7 @@ typedef struct listaProduto
     TipoProduto Produto;
     struct listaProduto *prox;
 } ListaProduto;
+//;)
 
 /**
  * Calcula e retorna o proximo ID disponivel para cadastro de um novo produto.
@@ -112,6 +113,14 @@ ListaProduto *resgataDadosProdutosTxt(char *nome_arquivo);
  * @return void
  */
 void liberaListaProdutos(ListaProduto *lista);
+
+/**
+ * Exibe os dados completos de um produto no console, formatados para f�cil leitura.
+ * @param produto Estrutura contendo os dados do produto a ser exibido.
+ * @return void
+ */
+void imprimeDadosProduto(TipoProduto produto);
+
 
 /**
  * Interface interativa via terminal para gestao de produtos (CRUD).

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <windows.h>
 #include "../bib/produtos.h"
+#include "utils.h"
 
 #define ProdutosBIN "./data/bin/produtos.dat"
 #define ProdutosTXT "./data/txt/produtos.txt"
@@ -11,7 +12,6 @@
 #define TXT 2
 #define MEM 3
 
-// ;)
 int escolheIdProduto(ListaProduto *lista)
 {
     int cont = 0;
@@ -30,23 +30,17 @@ void listarProdutos(ListaProduto *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum Produto cadastrado\n");
+        exibeMensagemAviso("Nenhum produto cadastrado.");
     }
     else
     {
         lista = lista->prox;
-        printf("\nProduto ---------\n");
+        exibeMensagemSucesso("Produto encontrado:");
         while (lista != NULL)
         {
             if (lista->Produto.id != 0)
             {
-                printf("Id                     : %d\n", lista->Produto.id);
-                printf("Descri‡Æo              : %s\n\n", lista->Produto.descricao);
-                printf("Estoque                : %d\n", lista->Produto.estoque);
-                printf("Estoque minimo         : %d\n", lista->Produto.estoque_minimo);
-                printf("Preco custo            : R$%.2f\n", lista->Produto.preco_custo);
-                printf("Preco venda            : R$%.2f\n", lista->Produto.preco_venda);
-                printf("-------------------\n");
+                imprimeDadosProduto(lista->Produto);
             }
             lista = lista->prox;
         }
@@ -79,7 +73,7 @@ int inserirProduto(ListaProduto **lista, TipoProduto Produto)
         aux->prox = novoProduto;
         return 0;
     }
-    printf("Erro ao inserir...\n");
+    exibeMensagemErro("Erro ao inserir produto.");
     return 1;
 }
 
@@ -127,22 +121,16 @@ void listarProduto(ListaProduto *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum Produto cadastrado\n");
+        exibeMensagemErro("Nenhum Produto cadastrado.");
         system("pause");
     }
     else
     {
         lista = lista->prox;
-        printf("\nProduto ---------\n");
+        exibeMensagemSucesso("Produto encontrado:");
         while (lista != NULL)
         {
-            printf("Id                     : %d\n", lista->Produto.id);
-            printf("Descri‡Æo              : %s\n\n", lista->Produto.descricao);
-            printf("Estoque                : %d\n", lista->Produto.estoque);
-            printf("Estoque minimo         : %d\n", lista->Produto.estoque_minimo);
-            printf("Preco custo            : %f\n", lista->Produto.preco_custo);
-            printf("Preco venda            : %f\n", lista->Produto.preco_venda);
-            printf("-------------------\n");
+            imprimeDadosProduto(lista->Produto);
             lista = lista->prox;
         }
         system("pause");
@@ -154,7 +142,7 @@ int salvarDadosProdutosBin(ListaProduto *lista, char *nome_arquivo)
     FILE *arq = fopen(nome_arquivo, "wb");
     if (arq == NULL)
     {
-        printf("Erro ao abrir arquivo...\n\n");
+        exibeMensagemErro("Erro ao abrir arquivo...");
         system("pause");
         return 1;
     }
@@ -185,7 +173,7 @@ ListaProduto *resgataDadosProdutosBin(char *nome_arquivo)
         res = inserirProduto(&lista, produto);
 
     if (res == 1)
-        printf("Erro ao carregar produto do arquivo binario!\n");
+        exibeMensagemErro("Erro ao carregar produto do arquivo binario!");
 
     fclose(arq);
     return lista;
@@ -196,7 +184,7 @@ int salvarDadosProdutosTxt(ListaProduto *lista, char *nome_arquivo)
     FILE *arq = fopen(nome_arquivo, "w");
     if (arq == NULL)
     {
-        printf("Erro ao abrir arquivo...\n\n");
+        exibeMensagemErro("Erro ao abrir arquivo...");
         system("pause");
         return 1;
     }
@@ -271,6 +259,18 @@ void liberaListaProdutos(ListaProduto *lista)
         aux = aux->prox;
         free(temp);
     }
+}
+
+void imprimeDadosProduto(TipoProduto produto)
+{
+    printf("ID                     : %d\n", produto.id);
+    printf("Descricao              : %s\n", produto.descricao);
+    printf("Estoque                : %d\n", produto.estoque);
+    printf("Estoque minimo         : %d\n", produto.estoque_minimo);
+    printf("Preco custo            : R$%.2f\n", produto.preco_custo);
+    printf("Preco venda            : R$%.2f\n", produto.preco_venda);
+    printf("-----------------------------\n");
+    return;
 }
 
 void interfaceProduto(ListaProduto *listaProduto)
@@ -352,12 +352,7 @@ void interfaceProduto(ListaProduto *listaProduto)
             if (res == 0)
             {
                 printf("\nProduto encontrado! -------------\n");
-                printf("ID                     : %d\n", Produto.id);
-                printf("Descricao              : %s\n", Produto.descricao);
-                printf("Estoque                : %d\n", Produto.estoque);
-                printf("Estoque minimo         : %d\n", Produto.estoque_minimo);
-                printf("Preco custo            : R$%.2f\n", Produto.preco_custo);
-                printf("Preco venda            : R$%.2f\n", Produto.preco_venda);
+                imprimeDadosProduto(Produto);
                 system("pause");
             }
             else
@@ -455,12 +450,7 @@ void interfaceProduto(ListaProduto *listaProduto)
 
             if (res == 0)
             {
-                printf("1- ID                     : %d\n", Produto.id);
-                printf("2- Descricao              : %s\n", Produto.descricao);
-                printf("3- Estoque                : %d\n", Produto.estoque);
-                printf("4- Estoque minimo         : %d\n", Produto.estoque_minimo);
-                printf("5- Preco custo            : R$%.2f\n", Produto.preco_custo);
-                printf("6- Preco venda            : R$%.2f\n", Produto.preco_venda);
+                imprimeDadosProduto(Produto);
 
                 printf("Tem certeza que deseja apagar esse Produto?\n");
                 printf("1- Sim \n");

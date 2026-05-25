@@ -44,7 +44,25 @@ int adicionarReserva(ListaReservas **lista, TipoReserva novaReserva)
     return 1;
 }
 
-void listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, FiltroBusca filtro)
+int validarSombreamento(ListaReservas *listaRes, int idAcomodacao, time_t entrada, time_t saida)
+{
+    ListaReservas *aux = listaRes->prox;
+
+    while (aux != NULL)
+    {
+        if (aux->reserva.idAcomodacao == idAcomodacao && aux->reserva.id != 0)
+        {
+            if (entrada < aux->reserva.dataSaida && saida > aux->reserva.dataEntrada)
+            {
+                return 1;
+            }
+        }
+        aux = aux->prox;
+    }
+    return 0;
+}
+
+int listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, FiltroBusca filtro)
 {
     // 1. DECLARA€ÇO DE TODAS AS VARIµVEIS NO INÖCIO
     ListaAcomodacao *auxAcom;
@@ -52,7 +70,11 @@ void listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *li
     ListaCategoria *posCat; // Vari vel para receber a posi‡Æo da categoria na busca
     int encontrouAlgum;
     int conflito;
+    int temTodasFacilidades;
     ListaReservas *auxRes;
+
+    char faclidadesFiltro[200];
+    char *facilidade;
 
     // 2. INICIALIZA€ÇO
     auxAcom = listaAcom->prox;
@@ -108,6 +130,35 @@ void listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *li
             continue;
         }
 
+        // filtro de facilidades
+        if (strlen(filtro.facilidades) > 0)
+        {
+            strcpy(faclidadesFiltro, filtro.facilidades);
+
+            facilidade = strtok(faclidadesFiltro, ",");
+            temTodasFacilidades = 1;
+
+            while (facilidade != NULL)
+            {
+                // Remove espa‡o em branco no in¡cio da fatia
+                while (*facilidade == ' ')
+                    facilidade++;
+
+                if (strstr(auxAcom->acomodacao.facilidades, facilidade) == NULL)
+                {
+                    temTodasFacilidades = 0;
+                    break;
+                }
+                facilidade = strtok(NULL, ",");
+            }
+
+            if (temTodasFacilidades == 0)
+            {
+                auxAcom = auxAcom->prox;
+                continue;
+            }
+        }
+
         // Exibi‡Æo detalhada para o operador com os dados mesclados
         printf("ID                  : %d\n", auxAcom->acomodacao.id);
         printf("Descricao           : %s\n", auxAcom->acomodacao.descricao);
@@ -124,9 +175,10 @@ void listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *li
 
     if (encontrouAlgum == 0)
     {
-        printf("Nenhuma acomodacao atende aos criterios essenciais nestas datas.\n");
+        exibeMensagemAviso("Nenhuma acomodacao atende aos criterios essenciais nestas datas.\n");
+        return 1;
     }
-    printf("=========================================================\n");
+    return 0;
 }
 
 void removerReserva(ListaReservas *pos)
@@ -155,11 +207,12 @@ void listarReservas(ListaReservas *lista)
     lista = lista->prox;
     while (lista)
     {
-        if(lista->reserva.id == 0) {
+        if (lista->reserva.id == 0)
+        {
             lista = lista->prox;
             continue;
         }
-        
+
         printf("ID               : %d\n", lista->reserva.id);
         printf("ID do H¢spede    : %d\n", lista->reserva.idHospede);
         printf("ID da Acomoda‡Æo : %d\n", lista->reserva.idAcomodacao);
@@ -286,7 +339,7 @@ ListaReservas *resgataDadosReservasBin(char *nome_arquivo)
     }
 
     if (res == 1)
-        printf("Erro ao carregar reservas do arquivo binario!\n");
+        exibeMensagemErro("Erro ao carregar reservas do arquivo binario!\n");
 
     fclose(arquivo);
     return lista;
@@ -438,14 +491,25 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             dataEntrada_tm.tm_year = ano - 1900;
             filtro.dataEntrada = mktime(&dataEntrada_tm);
 
-            // Coleta Data de Sa¡da
-            printf("Data de Saida (DD/MM/AAAA): ");
-            scanf("%d/%d/%d", &dia, &mes, &ano);
-            fflush(stdin);
-            dataSaida_tm.tm_mday = dia;
-            dataSaida_tm.tm_mon = mes - 1;
-            dataSaida_tm.tm_year = ano - 1900;
-            filtro.dataSaida = mktime(&dataSaida_tm);
+            while (1)
+            {
+                // Coleta Data de Sa¡da
+                printf("Data de Saida (DD/MM/AAAA): ");
+                scanf("%d/%d/%d", &dia, &mes, &ano);
+                fflush(stdin);
+                dataSaida_tm.tm_mday = dia;
+                dataSaida_tm.tm_mon = mes - 1;
+                dataSaida_tm.tm_year = ano - 1900;
+                filtro.dataSaida = mktime(&dataSaida_tm);
+
+                if (filtro.dataSaida <= filtro.dataEntrada)
+                {
+                    printf("Data de sa¡da deve ser posterior … data de entrada. Tente novamente.\n");
+                    pausarTela();
+                }
+                else
+                    break;
+            }
 
             // Coleta Filtros Opcionais
             printf("ID da Categoria desejada (0 para ignorar): \n");
@@ -462,58 +526,83 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             scanf("%d", &filtro.qtdCriancas);
             fflush(stdin);
 
-            system("cls");
-            listarAcomodacoesParaReserva(listaAcom, listaCat, listaRes, filtro);
-
-            printf("\nDigite o ID do quarto escolhido: ");
-            scanf("%d", &idEscolhido);
+            printf("Facilidades desejadas (separe por virgula ou digite 0 para pular, ex: Ar-Condicionado, Wi-Fi): ");
+            scanf(" %[^\n]", filtro.facilidades);
             fflush(stdin);
 
-            if (idEscolhido == 0)
-            {
-                printf("Operacao cancelada.\n");
-                system("pause");
-                break;
-            }
+            if (strcmp(filtro.facilidades, "0") == 0)
+                strcpy(filtro.facilidades, "");
 
-            while (1)
-            {
-                printf("Digite o CPF do Hospede vinculado a reserva: ");
-                scanf("%s", hospedeTemp.cpf);
-                fflush(stdin);
+            system("cls");
 
-                if (buscarHospede(&listaHospedes, &hospedeTemp, hospedeTemp.cpf, &posHospede) == 0)
-                {
-                    idHospede = hospedeTemp.id;
-                    break;
-                }
-                else
-                {
-                    printf("Hospede nao encontrado, tente novamente.\n");
-                    system("pause");
-                }
-            }
+            res = listarAcomodacoesParaReserva(listaAcom, listaCat, listaRes, filtro);
 
-            novaReserva.id = escolheIdReserva(listaRes); // Chama a fun‡Æo para gerar ID incremental
-            novaReserva.idHospede = idHospede;
-            novaReserva.idAcomodacao = idEscolhido;
-            novaReserva.dataEntrada = filtro.dataEntrada;
-            novaReserva.dataSaida = filtro.dataSaida;
-
-            printf("\nHospede da reserva: %s\n", hospedeTemp.nome);
-            printf("CPF: %s\n", hospedeTemp.cpf);
-
-            res = adicionarReserva(&listaRes, novaReserva);
             if (res == 0)
             {
-                printf("\nReserva cadastrada com sucesso! ID: %d\n", novaReserva.id);
-            }
-            else
-            {
-                printf("\nErro ao cadastrar reserva!\n");
+                while (1)
+                {
+                    printf("\nDigite o ID do quarto escolhido: ");
+                    scanf("%d", &idEscolhido);
+                    fflush(stdin);
+
+                    if (idEscolhido == 0)
+                    {
+                        printf("Operacao cancelada.\n");
+                        pausarTela();
+                        break;
+                    }
+
+                    if (validarSombreamento(listaRes, idEscolhido, filtro.dataEntrada, filtro.dataSaida) == 1)
+                    {
+                        exibeMensagemErro("\nEste quarto ja possui uma reserva nesse periodo!\n");
+                        pausarTela();
+                        continue;
+                    }
+                    else
+                        break;
+                }
+
+                if (idEscolhido != 0)
+                {
+                    while (1)
+                    {
+                        printf("Digite o CPF do Hospede vinculado a reserva: ");
+                        scanf("%s", hospedeTemp.cpf);
+                        fflush(stdin);
+
+                        if (buscarHospede(&listaHospedes, &hospedeTemp, hospedeTemp.cpf, &posHospede) == 0)
+                        {
+                            idHospede = hospedeTemp.id;
+                            break;
+                        }
+                        else
+                        {
+                            printf("Hospede nao encontrado, tente novamente.\n");
+                            pausarTela();
+                        }
+                    }
+                    novaReserva.id = escolheIdReserva(listaRes); // Chama a fun‡Æo para gerar ID incremental
+                    novaReserva.idHospede = idHospede;
+                    novaReserva.idAcomodacao = idEscolhido;
+                    novaReserva.dataEntrada = filtro.dataEntrada;
+                    novaReserva.dataSaida = filtro.dataSaida;
+
+                    printf("\nHospede da reserva: %s\n", hospedeTemp.nome);
+                    printf("CPF: %s\n", hospedeTemp.cpf);
+
+                    res = adicionarReserva(&listaRes, novaReserva);
+                    if (res == 0)
+                    {
+                        printf("\nReserva cadastrada com sucesso! ID: %d\n", novaReserva.id);
+                    }
+                    else
+                    {
+                        printf("\nErro ao cadastrar reserva!\n");
+                    }
+                }
             }
             res = 1;
-            system("pause");
+            pausarTela();
             break;
         case 2: // CANCELAR RESERVA
             printf("\nDigite o ID da reserva que deseja cancelar: ");
@@ -524,12 +613,12 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             {
                 removerReserva(pos);
                 printf("Reserva ID %d removida com sucesso!\n", idBusca);
-                system("pause");
+                pausarTela();
             }
             else
             {
                 printf("Reserva nao encontrada!\n");
-                system("pause");
+                pausarTela();
             }
             break;
         case 3: // LISTAR RESERVAS
@@ -576,7 +665,7 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
 
             system("cls");
             listarAcomodacoesParaReserva(listaAcom, listaCat, listaRes, filtro);
-            system("pause");
+            pausarTela();
             break;
         case 5:
             printf("Digite o ID da acomodacao para listar as reservas vinculadas a ela: ");
@@ -585,6 +674,7 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             system("cls");
             printf("--- Reservas para Acomoda‡Æo ID %d ---\n\n", idBusca);
             listarReservasPorAcomodacao(listaRes, idBusca);
+            pausarTela();
             break;
         case 6:
             printf("Digite o cpf do h¢spede para listar suas reservas: ");
@@ -602,6 +692,7 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             else
             {
                 printf("H¢spede nÆo encontrado!\n");
+                pausarTela();
                 system("pause");
             }
             break;

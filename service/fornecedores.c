@@ -3,6 +3,7 @@
 #include <string.h>
 #include <windows.h>
 #include "../bib/fornecedores.h"
+#include "utils.h"
 
 #define FornecedoresBIN "./data/bin/fornecedores.dat"
 #define FornecedoresTXT "./data/txt/fornecedores.txt"
@@ -11,7 +12,6 @@
 #define TXT 2
 #define MEM 3
 
-// ;)
 int escolheIdFornecedor(ListaFornecedor *lista)
 {
     int cont = 0;
@@ -30,24 +30,17 @@ int listarFornecedores(ListaFornecedor *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum fornecedor cadastrado\n");
+        exibeMensagemErro("Nenhum fornecedor cadastrado");
     }
     else
     {
         lista = lista->prox;
-        printf("\nFornecedor ---------\n");
+        exibeMensagemSucesso("Fornecedores: ");
         while (lista != NULL)
         {
             if (lista->Fornecedor.id != 0)
             {
-                printf("Id               : %d\n", lista->Fornecedor.id);
-                printf("Nome             : %s\n", lista->Fornecedor.nome_fantasia);
-                printf("Razao social     : %s\n", lista->Fornecedor.razao_social);
-                printf("CNPJ             : %s\n", lista->Fornecedor.cnpj);
-                printf("Endereco         : %s\n", lista->Fornecedor.endereco_completo);
-                printf("Telefone         : %s\n", lista->Fornecedor.telefone);
-                printf("E-mail           : %s\n", lista->Fornecedor.email);
-                printf("-------------------\n");
+                imprimeDadosFornecedor(lista->Fornecedor);
             }
             lista = lista->prox;
         }
@@ -81,7 +74,7 @@ int inserirFornecedor(ListaFornecedor **lista, TipoFornecedor Fornecedor)
         aux->prox = novoFornecedor;
         return 0;
     }
-    printf("Erro ao inserir...\n");
+    exibeMensagemErro("Erro ao inserir...");
     return 1;
 }
 
@@ -124,23 +117,16 @@ void listarFornecedor(ListaFornecedor *lista)
 {
     if (lista->prox == NULL)
     {
-        printf("Nenhum Fornecedor cadastrado\n");
+        exibeMensagemErro("Nenhum Fornecedor cadastrado.");
         system("pause");
     }
     else
     {
         lista = lista->prox;
-        printf("\nFornecedor ---------\n");
+        exibeMensagemSucesso("Fornecedores: ");
         while (lista != NULL)
         {
-            printf("Id               : %d\n", lista->Fornecedor.id);
-            printf("Nome             : %s\n", lista->Fornecedor.nome_fantasia);
-            printf("Razao social     : %s\n", lista->Fornecedor.razao_social);
-            printf("CNPJ             : %s\n", lista->Fornecedor.cnpj);
-            printf("Endereco         : %s\n", lista->Fornecedor.endereco_completo);
-            printf("Telefone         : %s\n", lista->Fornecedor.telefone);
-            printf("E-mail           : %s\n", lista->Fornecedor.email);
-            printf("-------------------\n");
+            imprimeDadosFornecedor(lista->Fornecedor);
             lista = lista->prox;
         }
         system("pause");
@@ -152,7 +138,7 @@ int salvarDadosFornecedoresBin(ListaFornecedor *lista, char *nome_arquivo)
     FILE *arq = fopen(nome_arquivo, "wb");
     if (arq == NULL)
     {
-        printf("Erro ao abrir arquivo...\n\n");
+        exibeMensagemErro("Erro ao abrir arquivo...");
         system("pause");
         return 1;
     }
@@ -183,7 +169,7 @@ ListaFornecedor *resgataDadosFornecedoresBin(char *nome_arquivo)
         res = inserirFornecedor(&lista, fornecedor);
 
     if (res == 1)
-        printf("Erro ao carregar fornecedor do arquivo binario!\n");
+        exibeMensagemErro("Erro ao carregar fornecedor do arquivo binario!");
 
     fclose(arq);
     return lista;
@@ -194,7 +180,7 @@ int salvarDadosFornecedoresTxt(ListaFornecedor *lista, char *nome_arquivo)
     FILE *arq = fopen(nome_arquivo, "w");
     if (arq == NULL)
     {
-        printf("Erro ao abrir arquivo...\n\n");
+        exibeMensagemErro("Erro ao abrir arquivo...");
         system("pause");
         return 1;
     }
@@ -272,6 +258,19 @@ void liberaListaFornecedores(ListaFornecedor *lista)
         aux = aux->prox;
         free(temp);
     }
+}
+
+void imprimeDadosFornecedor(TipoFornecedor fornecedor)
+{
+    printf("Id               : %d\n", fornecedor.id);
+    printf("Nome             : %s\n", fornecedor.nome_fantasia);
+    printf("Razao social     : %s\n", fornecedor.razao_social);
+    printf("CNPJ             : %s\n", fornecedor.cnpj);
+    printf("Endereco         : %s\n", fornecedor.endereco_completo);
+    printf("Telefone         : %s\n", fornecedor.telefone);
+    printf("E-mail           : %s\n", fornecedor.email);
+    printf("-----------------------------\n");
+    return;
 }
 
 void interfaceFornecedor(ListaFornecedor *listaFornecedor)
@@ -360,16 +359,7 @@ void interfaceFornecedor(ListaFornecedor *listaFornecedor)
             res = buscarFornecedor(&listaFornecedor, &fornecedor, fornecedor.cnpj, &pos);
             if (res == 0)
             {
-                printf("\nFornecedor encontrado! -------------\n");
-                printf("ID                     : %d\n", fornecedor.id);
-                printf("Nome                   : %s\n", fornecedor.nome_fantasia);
-                printf("Razao social           : %s\n", fornecedor.razao_social);
-                printf("Inscricao estadual     : %s\n", fornecedor.inscricao_estadual);
-                printf("CNPJ                   : %s\n", fornecedor.cnpj);
-                printf("Endereco completo      : %s\n", fornecedor.endereco_completo);
-                printf("Telefone               : %s\n", fornecedor.telefone);
-                printf("Email                  : %s\n", fornecedor.email);
-                system("pause");
+               imprimeDadosFornecedor(fornecedor);
             }
             else
             {
@@ -476,15 +466,7 @@ void interfaceFornecedor(ListaFornecedor *listaFornecedor)
 
             if (res == 0)
             {
-                printf("Fornecedor encontrado!\n");
-                printf("1- ID                     : %d\n", fornecedor.id);
-                printf("2- Nome                   : %s\n", fornecedor.nome_fantasia);
-                printf("3- Razao social           : %s\n", fornecedor.razao_social);
-                printf("4- Inscricao estadual     : %s\n", fornecedor.inscricao_estadual);
-                printf("5- CNPJ                   : %s\n", fornecedor.cnpj);
-                printf("6- Endereco completo      : %s\n", fornecedor.endereco_completo);
-                printf("7- Telefone               : %s\n", fornecedor.telefone);
-                printf("8- Email                  : %s\n", fornecedor.email);
+                imprimeDadosFornecedor(fornecedor);
 
                 printf("\nTem certeza que deseja apagar esse fornecedor?\n");
                 printf("1- Sim \n");
