@@ -96,6 +96,12 @@ void salvarDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
 ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo);
 
 /**
+ * Exibe os dados completos de uma acomodacao no console, formatados para facil leitura.
+ * @param acomodacao Estrutura contendo os dados da acomodacao a ser exibido.
+ * @return void
+ */
+void imprimeDadosAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria);
+
  * Libera a memória alocada para a lista de acomodações.
  * @param lista Ponteiro para a lista de acomodações.
  * @return void
