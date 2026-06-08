@@ -1,10 +1,9 @@
 #ifndef ACOMODACOES_H
 #define ACOMODACOES_H
 
-#include <stdio.h>
 #include "categorias.h"
 
-typedef struct {
+typedef struct tipoAcomodacao {
     int id;
     char descricao[100];
     char facilidades[200];
@@ -103,10 +102,18 @@ ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo);
 void liberaListaAcomodacoes(ListaAcomodacao *lista);
 
 /**
+ * Função para imprimir os dados de uma única acomodação formatados na tela
+ * @param acomodacao Estrutura do tipo TipoAcomodacao a ser impressa
+ * @param categoria Estrutura do tipo TipoCategoria vinculada a ela
+ * @return void
+ */
+void imprimeAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria);
+
+/**
  * Interface de menu para gestão do cadastro de acomodações.
  * @param listaAcomod Ponteiro para a lista de acomodações.
  * @param listaCat Ponteiro para a lista de categorias.
  */
 void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat);
 
-#endif
+#endif // ACOMODACOES_H

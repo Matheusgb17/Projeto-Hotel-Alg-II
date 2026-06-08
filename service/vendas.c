@@ -7,9 +7,9 @@
 #include "../bib/vendas.h"
 #include "../bib/produtos.h"
 #include "../bib/hospedes.h"
-#include "utils.h"
-// #include "../bib/caixa.h"
-
+#include "../bib/controleDeCaixa.h"
+#include "../bib/contas.h"
+#include "../bib/utils.h"
 
 ListaVendas *iniciaListaVendas()
 {
@@ -222,7 +222,18 @@ ListaVendas *resgataDadosVendasTxt(char *nome_arquivo)
     return lista;
 }
 
-void interfaceVendas(ListaVendas *listaVendas, ListaProduto *listaProdutos, ListaHospede *listaHospedes)
+void liberaListaVendas(ListaVendas *lista)
+{
+    ListaVendas *aux = lista;
+    while (aux != NULL)
+    {
+        ListaVendas *temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+}
+
+void interfaceVendas(ListaVendas *listaVendas, ListaProduto *listaProdutos, ListaHospede *listaHospedes, ListaHistoricoCaixa *historicoCaixa, ListaContas *listaContasReceber)
 {
     int res = 0;
 
@@ -308,7 +319,7 @@ void interfaceVendas(ListaVendas *listaVendas, ListaProduto *listaProdutos, List
                 printf("Total a pagar: R$ %.2f\n\n", novaVenda.valorTotal);
                 printf("Forma de Pagamento:\n");
                 printf("1 - A vista\n");
-                printf("2 - Para anotar\n");
+                printf("2 - Para anotar (Fiado/Hospede)\n");
                 printf("=> ");
                 scanf("%d", &novaVenda.formaPagamento);
                 fflush(stdin);
@@ -321,9 +332,11 @@ void interfaceVendas(ListaVendas *listaVendas, ListaProduto *listaProdutos, List
                     novaVenda.idHospede = 0;
                     novaVenda.statusPagamento = 1;
 
-                    //MATHEUS KKK AQUI:
-                    // registrarEntradaCaixa(novaVenda.valorTotal);
-                    //n precisa ser esse nome de função, botei so um exemplo
+                    TipoHistoricoCaixa movimentacao;
+                    movimentacao.valor = novaVenda.valorTotal;
+                    sprintf(movimentacao.descricao, "Venda a vista no balcao ID %d", novaVenda.id);
+                    movimentacao.data = time(NULL);
+                    registrarEntradaCaixa(&historicoCaixa, movimentacao);
 
                     printf("\nPagamento a vista confirmado! O valor foi enviado ao Caixa.\n");
                     vendaConfirmada = 1;
@@ -345,7 +358,20 @@ void interfaceVendas(ListaVendas *listaVendas, ListaProduto *listaProdutos, List
                             novaVenda.idHospede = hospedeTemp.id;
                             novaVenda.statusPagamento = 0;
 
+                            TipoConta novaContaReceber;
+                            novaContaReceber.id = escolheIdConta(listaContasReceber);
+                            novaContaReceber.idNota = novaVenda.id;
+                            novaContaReceber.valorParcela = novaVenda.valorTotal;
+                            novaContaReceber.numeroParcela = 1;
+                            
+                            printf("\nDigite a Data de Vencimento do fiado (DD/MM/AAAA): ");
+                            scanf(" %10[^\n]", novaContaReceber.dataVencimento);
+                            fflush(stdin);
+
+                            inserirContaReceber(&listaContasReceber, novaContaReceber);
+
                             gerarReciboVenda(novaVenda, hospedeTemp, listaProdutos);
+                            printf("\nConta a Receber gerada para o hospede %s!\n", hospedeTemp.nome);
                             vendaConfirmada = 1;
                             break;
                         }
@@ -389,3 +415,4 @@ void interfaceVendas(ListaVendas *listaVendas, ListaProduto *listaProdutos, List
         }
     } while (res != 0);
 }
+

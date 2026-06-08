@@ -1,7 +1,13 @@
-#include <stdio.h>
+#ifndef RESERVAS_H
+#define RESERVAS_H
+
 #include <time.h>
 
-typedef struct {
+typedef struct listaAcomodacoes ListaAcomodacao;
+typedef struct listaCategorias ListaCategoria;
+typedef struct listaHospede ListaHospede;
+
+typedef struct tipoReserva {
     int id;
     int idHospede;
     int idAcomodacao;
@@ -14,7 +20,7 @@ typedef struct listaReservas {
     struct listaReservas *prox;
 } ListaReservas;
 
-typedef struct {
+typedef struct filtroBusca {
     time_t dataEntrada;
     time_t dataSaida;
     char facilidades[200]; // Envie uma string vazia "" se não quiser filtrar por facilidades
@@ -149,3 +155,5 @@ void liberaListaReservas(ListaReservas *lista);
  * @return void
  */
 void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaHospede *listaHospedes);
+
+#endif // RESERVAS_H

@@ -1,4 +1,7 @@
-typedef struct{
+#ifndef OPERADORES_H
+#define OPERADORES_H
+
+typedef struct tipoOperador {
     int id;
     char nome[100];
     char user[20];
@@ -108,4 +111,11 @@ ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo);
  */
 void imprimeDadosOperador(TipoOperador operador);
 
+/**
+ * Fun‡Æo que exibe e gerencia o menu de itera‡Æo com o usu rio para o m¢dulo de Operadores
+ * @param listaOperadores Ponteiro para a lista de operadores a ser manipulada.
+ * @return void
+ */
 void interfaceOperadores(ListaOperadores *listaOperadores);
+
+#endif // OPERADORES_H

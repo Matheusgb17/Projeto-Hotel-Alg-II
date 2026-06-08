@@ -1,8 +1,7 @@
 #ifndef HOSPEDES_H
 #define HOSPEDES_H
 
-typedef struct
-{
+typedef struct tipoHospede {
     int id;
     char nome[100];
     char endereco[100];
@@ -14,10 +13,10 @@ typedef struct
     char data_nasc[11];
 } TipoHospede;
 
-typedef struct listaHospedes
+typedef struct listaHospede
 {
     TipoHospede Hospedes;
-    struct listaHospedes *prox;
+    struct listaHospede *prox;
 } ListaHospede;
 
 /**
@@ -125,4 +124,4 @@ void imprimeDadosHospede(TipoHospede hospede);
  */
 void interfaceHospedes(ListaHospede *listaHospedes);
 
-#endif
+#endif // HOSPEDES_H

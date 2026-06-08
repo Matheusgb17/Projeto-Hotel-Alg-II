@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include <stdbool.h>
+
 #include "../bib/hotel.h"
 #include "../bib/utils.h"
 

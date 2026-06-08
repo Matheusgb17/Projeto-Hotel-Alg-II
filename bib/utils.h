@@ -1,3 +1,5 @@
+#ifndef UTILS_H
+#define UTILS_H
 
 /**
  * Essa função é responsável por apagar um arquivo do sistema, caso ele exista.
@@ -41,3 +43,5 @@ void pausarTela();
  * @return void
  */
 void limparTela();
+
+#endif // UTILS_H

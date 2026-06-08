@@ -8,8 +8,9 @@
 #include "../bib/produtos.h"
 #include "../bib/fornecedores.h"
 #include "../bib/hotel.h"
-#include "utils.h"
-// #include "../bib/caixa.h"
+#include "../bib/contas.h"
+#include "../bib/controleDeCaixa.h"
+#include "../bib/utils.h"
 
 
 ListaNotasFiscais *iniciaListaNotasFiscais() {
@@ -46,39 +47,6 @@ int inserirNotaFiscal(ListaNotasFiscais **lista, TipoNotaFiscal nota) {
     return 1;
 }
 
-ListaContasPagar *iniciaListaContasPagar() {
-    ListaContasPagar *lista = malloc(sizeof(ListaContasPagar));
-    if(lista != NULL) {
-        lista->conta.id = 0;
-        lista->prox = NULL;
-    }
-    return lista;
-}
-
-int escolheIdContaPagar(ListaContasPagar *lista) {
-    int cont = 0;
-    lista = lista->prox;
-    while (lista != NULL) {
-        cont++;
-        lista = lista->prox;
-    }
-    return cont + 1;
-}
-
-int inserirContaPagar(ListaContasPagar **lista, TipoContaPagar conta) {
-    ListaContasPagar *aux, *nova = malloc(sizeof(ListaContasPagar));
-    if (nova != NULL) {
-        aux = *lista;
-        nova->conta = conta;
-        nova->prox = NULL;
-        while (aux->prox != NULL) aux = aux->prox;
-        aux->prox = nova;
-        return 0;
-    }
-    return 1;
-}
-
-
 int salvarDadosNotasBin(ListaNotasFiscais *lista, char *nome_arquivo) {
 
     FILE *arquivo = fopen(nome_arquivo, "wb");
@@ -113,38 +81,6 @@ ListaNotasFiscais *resgataDadosNotasBin(char *nome_arquivo)
     return lista;
 }
 
-int salvarDadosContasPagarBin(ListaContasPagar *lista, char *nome_arquivo) {
-
-    FILE *arquivo = fopen(nome_arquivo, "wb");
-    if (arquivo ==  NULL) return 1;
-
-    ListaContasPagar *aux = lista->prox;
-    while (aux != NULL) {
-        if (aux->conta.id != 0) fwrite(&(aux->conta), sizeof(TipoContaPagar), 1, arquivo);
-        aux = aux->prox;
-    }
-
-    fclose(arquivo);
-    return 0;
-}
-
-ListaContasPagar *resgataDadosContasPagarBin(char *nome_arquivo) {
-
-    TipoContaPagar conta;
-    ListaContasPagar *lista = iniciaListaContasPagar();
-    FILE *arquivo = fopen(nome_arquivo, "rb");
-
-    if (arquivo == NULL) return lista;
-
-    while (fread(&conta, sizeof(TipoContaPagar), 1, arquivo) == 1)
-    {
-        inserirContaPagar(&lista, conta);
-    }
-
-    fclose(arquivo);
-    return lista;
-}
-
 int salvarDadosNotasTxt(ListaNotasFiscais *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
@@ -166,7 +102,7 @@ int salvarDadosNotasTxt(ListaNotasFiscais *lista, char *nome_arquivo)
                 fprintf(arquivo, "        <quantidadeTotalUnidades>%d</quantidadeTotalUnidades>\n", aux->nota.quantidadeTotalUnidades);
                 fprintf(arquivo, "        <valorTotalNota>%.2f</valorTotalNota>\n", aux->nota.valorTotalNota);
                 fprintf(arquivo, "        <qtdItensDiferentes>%d</qtdItensDiferentes>\n", aux->nota.qtdItensDiferentes);
-                fprintf(arquivo, "        <dataEmissao>%lld</dataEmissao>\n", (long long)aux->nota.dataEmissao);
+                fprintf(arquivo, "        <dataEmissao>%I64d</dataEmissao>\n", (long long)aux->nota.dataEmissao);
 
                 // Salvar os itens do vetor de compras da nota
                 for(int i = 0; i < aux->nota.qtdItensDiferentes; i++) {
@@ -217,8 +153,8 @@ ListaNotasFiscais *resgataDadosNotasTxt(char *nome_arquivo)
         sscanf(linha, " <valorTotalNota>%f", &nota.valorTotalNota);
         sscanf(linha, " <qtdItensDiferentes>%d", &nota.qtdItensDiferentes);
 
-        if (sscanf(linha, " <dataEmissao>%lld", &tempData) == 1) {
-            nota.dataEmissao = (time_t)tempData;
+        if (sscanf(linha, " <dataEmissao>%I64d", &tempData) == 1) {
+            nota.dataEmissao = tempData;
         }
 
         for(int i = 0; i < 50; i++) {
@@ -236,71 +172,18 @@ ListaNotasFiscais *resgataDadosNotasTxt(char *nome_arquivo)
     return lista;
 }
 
-int salvarDadosContasPagarTxt(ListaContasPagar *lista, char *nome_arquivo)
+void liberaListaNotasFiscais(ListaNotasFiscais *lista)
 {
-    FILE *arquivo = fopen(nome_arquivo, "w");
-    if (arquivo == NULL) return 1;
-
-    if (lista->prox != NULL)
+    ListaNotasFiscais *aux = lista;
+    while (aux != NULL)
     {
-        ListaContasPagar *aux = lista->prox;
-        fprintf(arquivo, "<tabela=contas_pagar>\n");
-        while (aux != NULL)
-        {
-            if (aux->conta.id != 0)
-            {
-                fprintf(arquivo, "    <registro>\n");
-                fprintf(arquivo, "        <codigo>%d</codigo>\n", aux->conta.id);
-                fprintf(arquivo, "        <idNota>%d</idNota>\n", aux->conta.idNota);
-                fprintf(arquivo, "        <valorParcela>%.2f</valorParcela>\n", aux->conta.valorParcela);
-                fprintf(arquivo, "        <numeroParcela>%d</numeroParcela>\n", aux->conta.numeroParcela);
-                fprintf(arquivo, "        <dataVencimento>%s</dataVencimento>\n", aux->conta.dataVencimento);
-                fprintf(arquivo, "        <statusPago>%d</statusPago>\n", aux->conta.statusPago);
-                fprintf(arquivo, "    </registro>\n");
-            }
-            aux = aux->prox;
-        }
-        fprintf(arquivo, "</tabela>\n");
+        ListaNotasFiscais *temp = aux;
+        aux = aux->prox;
+        free(temp);
     }
-    fclose(arquivo);
-    return 0;
 }
 
-ListaContasPagar *resgataDadosContasPagarTxt(char *nome_arquivo)
-{
-    ListaContasPagar *lista = iniciaListaContasPagar();
-    TipoContaPagar conta;
-    FILE *arquivo = fopen(nome_arquivo, "r");
-
-    if (arquivo == NULL) return lista;
-
-    char linha[256];
-
-    while (fgets(linha, sizeof(linha), arquivo))
-    {
-        if (strstr(linha, "<registro>") != NULL)
-        {
-            memset(&conta, 0, sizeof(TipoContaPagar));
-            continue;
-        }
-
-        if (strstr(linha, "</registro>") != NULL)
-        {
-            inserirContaPagar(&lista, conta);
-            continue;
-        }
-
-        sscanf(linha, " <codigo>%d", &conta.id);
-        sscanf(linha, " <idNota>%d", &conta.idNota);
-        sscanf(linha, " <valorParcela>%f", &conta.valorParcela);
-        sscanf(linha, " <numeroParcela>%d", &conta.numeroParcela);
-        sscanf(linha, " <dataVencimento>%[^<]", conta.dataVencimento); // %[^<] pega a string toda ate a tag fechar
-        sscanf(linha, " <statusPago>%d", &conta.statusPago);
-    }
-    fclose(arquivo);
-    return lista;
-}
-void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContasPagar *listaContas, ListaProduto *listaProdutos, ListaFornecedor *listaFornecedores, TipoHotel *dadosHotel) {
+void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContas *listaContas, ListaProduto *listaProdutos, ListaFornecedor *listaFornecedores, TipoHotel *dadosHotel, ListaHistoricoCaixa *historicoCaixa) {
     int res = 0;
 
     do {
@@ -419,8 +302,8 @@ void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContasPagar *listaCont
                     TipoProduto prodAtualiza;
                     ListaProduto *posProdAtualiza;
                     
+                    // Formula Exata do Trabalho (Markup por absorção)
                     if(buscarProduto(&listaProdutos, &prodAtualiza, nota.itens[i].idProduto, &posProdAtualiza) == 0) {
-                        // Formula Exata do Trabalho (Markup por absorção)
                         float custoBase = nota.itens[i].precoCusto + freteUnitario + impostoUnitario;
                         float lucroRateado = custoBase * margemLucroReal;
                         float novoPrecoVenda = custoBase + lucroRateado;
@@ -447,10 +330,11 @@ void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContasPagar *listaCont
                 fflush(stdin);
 
                 if (formaPgto == 1) {
-                    
-                    //AQUI MATHEUS:
-                    // registrarSaidaCaixa(nota.valorTotalNota);
-
+                    TipoHistoricoCaixa movimentacao;
+                    movimentacao.valor = nota.valorTotalNota;
+                    sprintf(movimentacao.descricao, "Pagamento a vista NF %d", nota.id);
+                    movimentacao.data = time(NULL);
+                    registrarSaidaCaixa(&historicoCaixa, movimentacao);
                     
                     printf("\n[!] Pagamento a vista registrado. Valor deduzido do Caixa!\n");
                 } 
@@ -462,9 +346,14 @@ void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContasPagar *listaCont
                     scanf("%f", &valorEntrada);
                     fflush(stdin);
 
-                    //AQUI TB MATHEUS:
-                    // registrarSaidaCaixa(valorEntrada);
-
+                    if (valorEntrada > 0) {
+                        TipoHistoricoCaixa movimentacao;
+                        movimentacao.valor = valorEntrada;
+                        sprintf(movimentacao.descricao, "Entrada a vista NF %d", nota.id);
+                        movimentacao.data = time(NULL);
+                        registrarSaidaCaixa(&historicoCaixa, movimentacao);
+                        printf("[!] Entrada deduzida do Caixa!\n");
+                    }
                     
                     float restante = nota.valorTotalNota - valorEntrada;
                     printf("Quantidade de parcelas para o restante (R$ %.2f): ", restante);
@@ -475,21 +364,23 @@ void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContasPagar *listaCont
 
                     printf("\nGerando boletos no Contas a Pagar...\n");
                     for (int p = 1; p <= parcelas; p++) {
-                        TipoContaPagar novaConta;
-                        novaConta.id = escolheIdContaPagar(listaContas);
+                        TipoConta novaConta;
+                        novaConta.id = escolheIdConta(listaContas);
                         novaConta.idNota = nota.id;
                         novaConta.valorParcela = valorDaParcela;
                         novaConta.numeroParcela = p;
                         novaConta.statusPago = 0;
                         
-                        sprintf(novaConta.dataVencimento, "30/12/2026");
+                        printf("Data de Vencimento da Parcela %d (DD/MM/AAAA): ", p);
+                        scanf(" %10[^\n]", novaConta.dataVencimento);
+                        fflush(stdin);
 
                         inserirContaPagar(&listaContas, novaConta);
                         printf("- Parcela %d/%d (R$ %.2f) gerada com sucesso.\n", p, parcelas, valorDaParcela);
                     }
                 }
                 
-                inserirNotaFiscal(&listaNotas, nota); //
+                inserirNotaFiscal(&listaNotas, nota); 
                 printf("\nOperacao de Entrada concluida!\n");
                 system("pause");
             } else {
@@ -501,7 +392,7 @@ void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContasPagar *listaCont
             //relatorio de contas a pagar
             system("cls");
             printf("--- CONTAS A PAGAR (PENDENTES) ---\n");
-            ListaContasPagar *aux = listaContas->prox;
+            ListaContas *aux = listaContas->prox;
             int temConta = 0;
             
             while (aux != NULL) {

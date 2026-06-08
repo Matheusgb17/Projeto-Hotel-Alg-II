@@ -1,80 +1,106 @@
 #ifndef COMPRAS_H
 #define COMPRAS_H
 
-#include "produtos.h"
-#include "fornecedores.h"
-#include "hotel.h"
+#include <time.h>
 
-//struct de nota fiscal
-typedef struct {
+typedef struct listaContas ListaContas;
+typedef struct listaProduto ListaProduto;
+typedef struct listaFornecedor ListaFornecedor;
+typedef struct tipoHotel TipoHotel;
+typedef struct listaHistoricoCaixa ListaHistoricoCaixa;
+
+typedef struct itemCompra {
     int idProduto;
     int quantidade;
     float precoCusto;
-} ItemNota;
+} ItemCompra;
 
-typedef struct {
+typedef struct tipoNotaFiscal {
     int id;
-    char cnpjFornecedor[15];
+    char cnpjFornecedor[20];
     float freteTotal;
     float impostoTotal;
-    int quantidadeTotalUnidades; 
-    float valorTotalNota;        
-    ItemNota itens[50];          
+    int quantidadeTotalUnidades;
+    float valorTotalNota;
     int qtdItensDiferentes;
     time_t dataEmissao;
+    ItemCompra itens[50]; // Suporta até 50 produtos diferentes por nota
 } TipoNotaFiscal;
 
+// Estrutura do nó da lista encadeada de notas fiscais
 typedef struct listaNotasFiscais {
     TipoNotaFiscal nota;
     struct listaNotasFiscais *prox;
 } ListaNotasFiscais;
 
-//struct de contas a pagar
-typedef struct {
-    int id;
-    int idNota;
-    float valorParcela;
-    int numeroParcela;
-    char dataVencimento[11];
-    int statusPago;
-} TipoContaPagar;
-
-typedef struct listaContasPagar {
-    TipoContaPagar conta;
-    struct listaContasPagar *prox;
-} ListaContasPagar;
-
-//nota fiscal
+/**
+ * Função para inicializar a lista de notas fiscais
+ * @return Ponteiro para a lista de notas fiscais alocada e inicializada
+ */
 ListaNotasFiscais *iniciaListaNotasFiscais();
 
+/**
+ * Função para escolher o próximo ID disponível para uma nova nota fiscal
+ * @param lista Ponteiro para a lista de notas fiscais
+ * @return Próximo ID disponível (inteiro)
+ */
 int escolheIdNota(ListaNotasFiscais *lista);
 
+/**
+ * Função para inserir uma nova nota fiscal na lista
+ * @param lista Ponteiro para a lista de notas fiscais
+ * @param nota Estrutura do tipo TipoNotaFiscal contendo os dados da nova nota
+ * @return 0 se a inserção for bem-sucedida, 1 caso contrário
+ */
 int inserirNotaFiscal(ListaNotasFiscais **lista, TipoNotaFiscal nota);
 
+/**
+ * Função para salvar os dados das notas fiscais em um arquivo binário
+ * @param lista Ponteiro para a lista de notas fiscais a ser salva
+ * @param nome_arquivo Nome do arquivo onde os dados serão salvos
+ * @return 0 se a operação for bem-sucedida, 1 caso contrário
+ */
 int salvarDadosNotasBin(ListaNotasFiscais *lista, char *nome_arquivo);
 
+/**
+ * Função para resgatar os dados das notas fiscais de um arquivo binário
+ * @param nome_arquivo Nome do arquivo de onde os dados serão resgatados
+ * @return Ponteiro para a lista de notas fiscais resgatada
+ */
 ListaNotasFiscais *resgataDadosNotasBin(char *nome_arquivo);
 
+/**
+ * Função para salvar os dados das notas fiscais em um arquivo de texto
+ * @param lista Ponteiro para a lista de notas fiscais a ser salva
+ * @param nome_arquivo Nome do arquivo onde os dados serão salvos
+ * @return 0 se a operação for bem-sucedida, 1 caso contrário
+ */
 int salvarDadosNotasTxt(ListaNotasFiscais *lista, char *nome_arquivo);
 
+/**
+ * Função para resgatar os dados das notas fiscais de um arquivo de texto
+ * @param nome_arquivo Nome do arquivo de onde os dados serão resgatados
+ * @return Ponteiro para a lista de notas fiscais resgatada
+ */
 ListaNotasFiscais *resgataDadosNotasTxt(char *nome_arquivo);
 
-//contas a pagar
-ListaContasPagar *iniciaListaContasPagar();
+/**
+ * Função para liberar toda a memória alocada para a lista de notas fiscais, percorrendo e desalocando cada nó
+ * @param lista Ponteiro para a lista de notas fiscais a ser liberada
+ * @return void
+ */
+void liberaListaNotasFiscais(ListaNotasFiscais *lista);
 
-int escolheIdContaPagar(ListaContasPagar *lista);
+/**
+ * Função que exibe e gerencia o menu de iteração com o usuário para o módulo de Compras
+ * @param listaNotas Ponteiro para a lista de notas fiscais
+ * @param listaContas Ponteiro para a lista unificada de contas a pagar
+ * @param listaProdutos Ponteiro para a lista de produtos (estoque)
+ * @param listaFornecedores Ponteiro para a lista de fornecedores
+ * @param dadosHotel Ponteiro para a estrutura com as configurações e dados gerais do hotel
+ * @param historicoCaixa Ponteiro para o fluxo financeiro do caixa
+ * @return void
+ */
+void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContas *listaContas, ListaProduto *listaProdutos, ListaFornecedor *listaFornecedores, TipoHotel *dadosHotel, ListaHistoricoCaixa *historicoCaixa);
 
-int inserirContaPagar(ListaContasPagar **lista, TipoContaPagar conta);
-
-int salvarDadosContasPagarBin(ListaContasPagar *lista, char *nome_arquivo);
-
-ListaContasPagar *resgataDadosContasPagarBin(char *nome_arquivo);
-
-int salvarDadosContasPagarTxt(ListaContasPagar *lista, char *nome_arquivo);
-
-ListaContasPagar *resgataDadosContasPagarTxt(char *nome_arquivo);
-
-//interface
-void interfaceCompras(ListaNotasFiscais *listaNotas, ListaContasPagar *listaContas, ListaProduto *listaProdutos, ListaFornecedor *listaFornecedores, TipoHotel *dadosHotel);
-
-#endif
+#endif // COMPRAS_H

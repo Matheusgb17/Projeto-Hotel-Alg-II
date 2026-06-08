@@ -1,10 +1,7 @@
 #ifndef CATEGORIAS_H
 #define CATEGORIAS_H
 
-#define CategoriasBIN "./data/bin/categorias.dat"
-#define CategoriasTXT "./data/txt/categorias.txt"
-
-typedef struct {
+typedef struct tipoCategoria {
     int id;
     char descricao[100];
     float valorDiaria;
@@ -106,6 +103,17 @@ ListaCategoria *carregarCategoriasTxt(char *nome_arquivo);
  */
 void liberaListaCategorias(ListaCategoria *lista);
 
+/**
+ * Função para imprimir os dados de uma única categoria formatados na tela
+ * @param categoria Estrutura do tipo TipoCategoria a ser impressa
+ * @return void
+ */
+void imprimeCategoria(TipoCategoria categoria);
+
+/**
+ * Interface de menu para gestão do cadastro de categorias.
+ * @param listaCategorias Ponteiro para a lista de categorias.
+ */
 void interfaceCategoria(ListaCategoria *listaCategorias);
 
-#endif
+#endif // CATEGORIAS_H

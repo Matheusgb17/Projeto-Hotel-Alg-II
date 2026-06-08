@@ -15,19 +15,16 @@ void apagaArquivo(char *nome_arquivo)
 void exibeMensagemErro(char *mensagem)
 {
     printf("\n[ERRO] %s\n", mensagem);
-    pausarTela();
 }
 
 void exibeMensagemSucesso(char *mensagem)
 {
     printf("\n[SUCESSO] %s\n", mensagem);
-    pausarTela();
 }
 
 void exibeMensagemAviso(char *mensagem)
 {
     printf("\n[AVISO] %s\n", mensagem);
-    pausarTela();
 }
 
 void pausarTela()

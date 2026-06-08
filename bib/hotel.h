@@ -3,8 +3,7 @@
 
 #include <stdbool.h>
 
-typedef struct
-{
+typedef struct tipoHotel {
     bool cadastrado;
     char nomeFantasia[100];
     char razaoSocial[150];
@@ -92,4 +91,4 @@ void liberaHotel(TipoHotel *hotel);
  */
 void interfaceHotel(TipoHotel *hotel);
 
-#endif
+#endif // HOTEL_H

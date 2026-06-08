@@ -101,12 +101,7 @@ void listarCategoria(ListaCategoria *lista)
         {
             if (lista->categoria.id != 0)
             {
-                printf("Id                    : %d\n", lista->categoria.id);
-                printf("Descricao             : %s\n", lista->categoria.descricao);
-                printf("Valor da diaria       : %.2f\n", lista->categoria.valorDiaria);
-                printf("Capacidade de adultos : %d\n", lista->categoria.capacidadeAdultos);
-                printf("Capacidade de criancas: %d\n", lista->categoria.capacidadeCriancas);
-                printf("-----------------------------------\n");
+                imprimeCategoria(lista->categoria);
             }
             lista = lista->prox;
         }
@@ -238,6 +233,16 @@ void liberaListaCategorias(ListaCategoria *lista)
         free(temp);
     }
     return;
+}
+
+void imprimeCategoria(TipoCategoria categoria)
+{
+    printf("ID                    : %d\n", categoria.id);
+    printf("Descricao             : %s\n", categoria.descricao);
+    printf("Valor da diaria       : %.2f\n", categoria.valorDiaria);
+    printf("Capacidade de adultos : %d\n", categoria.capacidadeAdultos);
+    printf("Capacidade de criancas: %d\n", categoria.capacidadeCriancas);
+    printf("-----------------------------------\n");
 }
 
 void interfaceCategoria(ListaCategoria *listaCategorias)

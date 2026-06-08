@@ -89,7 +89,7 @@ void listarHospedes(ListaHospede *lista)
 {
     if (lista->prox == NULL)
     {
-        exibeMensagemAviso("Nenhum hospede cadastrado."); // <----------
+        exibeMensagemAviso("Nenhum hospede cadastrado.");
         return;
     }
     else
@@ -97,7 +97,6 @@ void listarHospedes(ListaHospede *lista)
         lista = lista->prox;
         while (lista != NULL)
         {
-            exibeMensagemSucesso("H¢spede encontrado:"); // <----------
             if (lista->Hospedes.id != 0)
             {
                 imprimeDadosHospede(lista->Hospedes);
@@ -140,7 +139,7 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
         res = inserirHospede(&lista, hospede);
 
     if (res == 1)
-        exibeMensagemErro("Erro ao carregar hospedes do arquivo bin rio!");
+        exibeMensagemErro("Erro ao carregar hospedes do arquivo binï¿½rio!");
 
     fclose(arquivo);
     return lista;
@@ -237,9 +236,9 @@ void liberaListaHospedes(ListaHospede *lista)
 
 void imprimeDadosHospede(TipoHospede hospede)
 {
-    printf("ID H¢spede      : %d\n", hospede.id);
+    printf("ID Hï¿½spede      : %d\n", hospede.id);
     printf("nome            : %s\n", hospede.nome);
-    printf("endere‡o        : %s\n", hospede.endereco);
+    printf("endereï¿½o        : %s\n", hospede.endereco);
     printf("cpf             : %s\n", hospede.cpf);
     printf("telefone        : %s\n", hospede.telefone);
     printf("sexo            : %c\n", hospede.sexo);
@@ -257,11 +256,11 @@ void interfaceHospedes(ListaHospede *listaHospedes)
     TipoHospede hospede;
     int res = 0;
 
-    // Cadastro e GestÆo de Hospedes
+    // Cadastro e Gestï¿½o de Hospedes
     do
     {
         limparTela();
-        printf("Cadastro e gestÆo de Hospedes!\n");
+        printf("Cadastro e gestï¿½o de Hospedes!\n");
         printf("1 - Inserir hospede\n");
         printf("2 - Buscar hospede\n");
         printf("3 - Alterar hospede\n");
@@ -281,7 +280,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
             scanf(" %[^\n]", hospede.nome);
             fflush(stdin);
 
-            printf("Insira o endere‡o: ");
+            printf("Insira o endereï¿½o: ");
             scanf(" %[^\n]", hospede.endereco);
             fflush(stdin);
 
@@ -319,7 +318,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                 }
                 else
                 {
-                    printf("Op‡Æo inv lida");
+                    printf("Opï¿½ï¿½o invï¿½lida");
                     pausarTela();
                     fflush(stdin);
                 }
@@ -365,7 +364,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                 printf("\nHospede encontrado!! -------------\n");
                 printf("ID              : %d\n", hospede.id);
                 printf("nome            : %s\n", hospede.nome);
-                printf("endere‡o        : %s\n", hospede.endereco);
+                printf("endereï¿½o        : %s\n", hospede.endereco);
                 printf("cpf             : %s\n", hospede.cpf);
                 printf("telefone        : %s\n", hospede.telefone);
                 printf("sexo            : %c\n", hospede.sexo);
@@ -377,7 +376,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
             }
             else
             {
-                printf("\nHospede nÆo encontrado!\n");
+                printf("\nHospede nï¿½o encontrado!\n");
                 pausarTela();
             }
 
@@ -397,7 +396,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                     printf("Digite o campo que deseja alterar: \n\n");
                     printf("ID (fixo)           : %d\n", hospede.id);
                     printf("1 - nome            : %s\n", hospede.nome);
-                    printf("2 - endere‡o        : %s\n", hospede.endereco);
+                    printf("2 - endereï¿½o        : %s\n", hospede.endereco);
                     printf("3 - cpf             : %s\n", hospede.cpf);
                     printf("4 - telefone        : %s\n", hospede.telefone);
                     printf("5 - sexo            : %c\n", hospede.sexo);
@@ -423,7 +422,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                         fflush(stdin);
                         break;
                     case 2:
-                        printf("Insira o novo endere‡o: ");
+                        printf("Insira o novo endereï¿½o: ");
                         scanf(" %[^\n]", hospede.endereco);
                         fflush(stdin);
                         break;
@@ -464,7 +463,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                             }
                             else
                             {
-                                printf("Op‡Æo inv lida");
+                                printf("Opï¿½ï¿½o invï¿½lida");
                                 pausarTela();
                                 fflush(stdin);
                             }
@@ -490,7 +489,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                         break;
 
                     default:
-                        printf("Escolha um valor v lido...\n");
+                        printf("Escolha um valor vï¿½lido...\n");
                         pausarTela();
                         break;
                     }
@@ -498,7 +497,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
             }
             else
             {
-                printf("\nHospede nÆo encontrado!\n");
+                printf("\nHospede nï¿½o encontrado!\n");
                 pausarTela();
             }
 
@@ -534,7 +533,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
             }
             else
             {
-                printf("\nHospede nÆo encontrado!\n\n");
+                printf("\nHospede nï¿½o encontrado!\n\n");
                 pausarTela();
             }
             break;
@@ -549,7 +548,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
         default:
             if (res != 0)
             {
-                printf("Op‡Æo inv lida!\n");
+                printf("Opï¿½ï¿½o invï¿½lida!\n");
                 pausarTela();
                 fflush(stdin);
             }

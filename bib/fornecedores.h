@@ -1,7 +1,7 @@
 #ifndef FORNECEDORES_H
 #define FORNECEDORES_H
 
-typedef struct {
+typedef struct tipoFornecedor {
     int id;
     char nome_fantasia[100];
     char razao_social[100];

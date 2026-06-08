@@ -1,7 +1,7 @@
 #ifndef PRODUTOS_H
 #define PRODUTOS_H
 
-typedef struct {
+typedef struct tipoProduto {
     int id;
     char descricao[100];
     int estoque;
@@ -15,8 +15,6 @@ typedef struct listaProduto
     TipoProduto Produto;
     struct listaProduto *prox;
 } ListaProduto;
-//;)
-
 
 /**
  * Calcula e retorna o proximo ID disponivel para cadastro de um novo produto.
@@ -131,4 +129,4 @@ void imprimeDadosProduto(TipoProduto produto);
  */
 void interfaceProduto(ListaProduto *listaProduto);
 
-#endif
+#endif // PRODUTOS_H
