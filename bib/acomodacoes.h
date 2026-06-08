@@ -72,7 +72,7 @@ void listarIdsJaRegistradosAcomodacao(ListaAcomodacao *lista);
  * @param lista Nó de início da lista que deseja guardar.
  * @param nome_arquivo String contendo o caminho do arquivo.
  */
-void salvarDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo);
+int salvarDadosAcomodacoesBin(ListaAcomodacao *lista, char *nome_arquivo);
 
 /**
  * Resgata os dados das acomodações de um arquivo binário.
@@ -86,7 +86,7 @@ ListaAcomodacao *resgataDadosAcomodacoesBin(char *nome_arquivo);
  * @param lista Nó de início da lista que deseja guardar.
  * @param nome_arquivo String contendo o caminho do arquivo.
  */
-void salvarDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
+int salvarDadosAcomodacoesTxt(ListaAcomodacao *lista, char *nome_arquivo);
 
 /**
  * Resgata os dados das acomodações de um arquivo TXT (Tags).
@@ -102,6 +102,7 @@ ListaAcomodacao *resgataDadosAcomodacoesTxt(char *nome_arquivo);
  */
 void imprimeDadosAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria);
 
+/**
  * Libera a memória alocada para a lista de acomodações.
  * @param lista Ponteiro para a lista de acomodações.
  * @return void

@@ -98,7 +98,6 @@ void listarCategorias(ListaCategoria *lista)
     }
     else
     {
-        exibeMensagemSucesso("Categorias de acomodacao:");
         lista = lista->prox;
         while (lista != NULL)
         {
@@ -118,6 +117,7 @@ int salvarDadosCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
     if (arquivo == NULL)
     {
         exibeMensagemErro("Erro ao abrir o arquivo!");
+        pausarTela();
         return 1;
     }
 
@@ -150,6 +150,7 @@ int salvarDadosCategoriasBin(ListaCategoria *lista, char *nome_arquivo)
     if (arquivo == NULL)
     {
         exibeMensagemErro("Erro ao abrir o arquivo!");
+        pausarTela();
         return 1;
     }
 
@@ -224,6 +225,18 @@ ListaCategoria *carregarCategoriasTxt(char *nome_arquivo)
     return lista;
 }
 
+void liberaListaCategorias(ListaCategoria *lista)
+{
+    ListaCategoria *temp, *aux = lista;
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+    return;
+}
+
 void imprimeDadosCategoria(TipoCategoria categoria)
 {
     printf("Id                    : %d\n", categoria.id);
@@ -235,7 +248,7 @@ void imprimeDadosCategoria(TipoCategoria categoria)
     return;
 }
 
-void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
+void interfaceCategoria(ListaCategoria *listaCategorias)
 {
     ListaCategoria *pos;
     TipoCategoria categoria;
@@ -401,19 +414,10 @@ void interfaceCategoria(ListaCategoria *listaCategorias, int modo)
             break;
         case 5:
             limparTela();
+            printf("Categorias de acomodacao:\n");
             listarCategorias(listaCategorias);
             pausarTela();
             break;
-        case 0:
-                printf("Salvando dados e saindo...\n");
-                // Adicione as chamadas de salvamento aqui antes de fechar
-                if (modo == BIN) {
-                    salvarDadosCategoriasBin(listaCategorias, CategoriasBIN);
-                } else if (modo == TXT) {
-                    salvarDadosCategoriasTxt(listaCategorias, CategoriasTXT);
-                }
-                pausarTela();
-                break;
         default:
             if (res != 0)
             {

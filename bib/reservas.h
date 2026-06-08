@@ -1,3 +1,6 @@
+#ifndef RESERVAS_H
+#define RESERVAS_H
+
 #include <stdio.h>
 #include <time.h>
 
@@ -148,3 +151,5 @@ void liberaListaReservas(ListaReservas *lista);
  * @return void
  */
 void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaHospede *listaHospedes);
+
+#endif

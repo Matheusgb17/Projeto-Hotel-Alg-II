@@ -107,17 +107,15 @@ ListaCategoria *carregarCategoriasTxt(char *nome_arquivo);
 void imprimeDadosCategoria(TipoCategoria categoria);
 
 /**
- * Interface para gestÆo de categoria, permitindo cadastro, consulta, altera‡Æo e exclusÆo de dados.
- * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).
- * @return void
- */
-void interfaceCategoria(ListaCategoria *listaCategorias, int modo);
  * Libera a memória alocada para a lista de categorias.
  * @param lista Ponteiro para a lista de categorias.
  * @return void
  */
 void liberaListaCategorias(ListaCategoria *lista);
 
+
 void interfaceCategoria(ListaCategoria *listaCategorias);
+
+
 
 #endif

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <windows.h>
 
+#include "estadias.h"
 #include "bib/hotel.h"
 #include "bib/hospedes.h"
 #include "bib/acomodacoes.h"
@@ -13,6 +14,7 @@
 #include "bib/operadores.h"
 #include "bib/reservas.h"
 #include "bib/utils.h"
+
 
 #define HotelBIN "./data/bin/hotel.dat"
 #define HotelTXT "./data/txt/hotel.txt"
@@ -44,6 +46,8 @@
 
 int main()
 {
+    SetConsoleOutputCP(CP_UTF8);
+
     int res = 0, modo;
     TipoHotel *dadosHotel;
     ListaHospede *listaHospedes;
@@ -54,6 +58,7 @@ int main()
     ListaOperadores *listaOperadores;
 
     ListaReservas *listaReservas;
+    ListaEstadia *listaEstadia;
 
     while (1)
     {
@@ -61,7 +66,7 @@ int main()
         printf("Selecione a forma de armazenar os dados no sistema:\n");
         printf("1 - Arquivos Bin\n");
         printf("2 - Arquivos Txt\n");
-        printf("3 - Em mem¢ria (CUIDADO: todos os arquivos serÆo perdidos ap¢s o encerramento do sistema)\n");
+        printf("3 - Em memï¿½ria (CUIDADO: todos os arquivos serï¿½o perdidos apï¿½s o encerramento do sistema)\n");
         printf("4 - Sair\n");
         printf("=> ");
         scanf("%d", &modo);
@@ -75,7 +80,7 @@ int main()
         }
         else
         {
-            printf("Selecione uma op‡Æo v lida!\n");
+            printf("Selecione uma opï¿½ï¿½o vï¿½lida!\n");
             system("pause");
             fflush(stdin);
         }
@@ -137,15 +142,16 @@ int main()
         listaReservas = resgataDadosReservasTxt(ReservasTXT);
     }
 
+
     do
     { // MENU PRINCIPAL =============================================================================
         system("cls");
         printf("Menu principal\n");
-        printf("1 - Cadastro e GestÆo\n");
+        printf("1 - Cadastro e Gestï¿½o\n");
         printf("2 - Reservas e Cancelamentos\n");
-        printf("3 - Transa‡äes\n");
+        printf("3 - Transaï¿½ï¿½es\n");
         printf("4 - Feedback\n");
-        printf("5 - Importa‡Æo/Exporta‡Æo de dados\n");
+        printf("5 - Importaï¿½ï¿½o/Exportaï¿½ï¿½o de dados\n");
         printf("0 - Sair do sistema\n");
         printf("=> ");
 
@@ -154,15 +160,15 @@ int main()
 
         switch (res)
         {
-        case 1: // CADASTRO E GESTÇO ====================================================
+        case 1: // CADASTRO E GESTï¿½O ====================================================
             do
             {
                 system("cls");
-                printf("Cadastro e gestÆo de hospedes\n");
+                printf("Cadastro e gestï¿½o de hospedes\n");
                 printf("1 - Dados do Hotel\n");
                 printf("2 - Hospedes\n");
-                printf("3 - Acomoda‡äes\n");
-                printf("4 - Categorias de Acomoda‡äes\n");
+                printf("3 - Acomodaï¿½ï¿½es\n");
+                printf("4 - Categorias de Acomodaï¿½ï¿½es\n");
                 printf("5 - Produtos\n");
                 printf("6 - Fornecedores\n");
                 printf("7 - Operadores\n");
@@ -179,10 +185,10 @@ int main()
                 case 2: // hospedes
                     interfaceHospedes(listaHospedes);
                     break;
-                case 3: // acomoda‡äes
+                case 3: // acomodaï¿½ï¿½es
                     interfaceAcomodacao(listaAcomodacao, listaCategoria);
                     break;
-                case 4: // categorias de acomoda‡äes
+                case 4: // categorias de acomodaï¿½ï¿½es
                     interfaceCategoria(listaCategoria);
                     break;
                 case 5: // produtos
@@ -197,7 +203,7 @@ int main()
                 default:
                     if (res != 0)
                     {
-                        printf("Selecione uma op‡Æo v lida!");
+                        printf("Selecione uma opï¿½ï¿½o vï¿½lida!");
                         system("pause");
                     }
                     break;
@@ -209,8 +215,8 @@ int main()
             interfaceReservas(listaReservas, listaAcomodacao, listaCategoria, listaHospedes);
             break;
         case 3: // TRANSACOES ===========================================================
-
-            break;
+           interfaceEstadias(&listaEstadia, listaHospedes, listaAcomodacao, listaCategoria, listaReservas);
+           break;
         case 4: // FEEDBACK =============================================================
 
             break;
@@ -279,6 +285,7 @@ int main()
                     liberaListaFornecedores(listaFornecedor);
                     liberaListaOperadores(listaOperadores);
                     liberaListaReservas(listaReservas);
+
                     return 0;
                 }
             }

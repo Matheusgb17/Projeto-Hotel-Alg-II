@@ -1,3 +1,5 @@
+#ifndef HOSPEDES_H
+#define HOSPEDES_H
 
 typedef struct
 {
@@ -19,76 +21,76 @@ typedef struct listaHospedes
 } ListaHospede;
 
 /**
- * Percorre a lista por completo para descobrir a quantidade de posi‡äes
- * @param lista endere‡o da lista que ser  percorrida,
+ * Percorre a lista por completo para descobrir a quantidade de posiï¿½ï¿½es
+ * @param lista endereï¿½o da lista que serï¿½ percorrida,
  * @return retorna a quantidade de individuos inseridos
  */
 int escolheIdHospede(ListaHospede *lista);
 
 /**
- * Aloca mem¢ria e inicializa o n¢ sentinela (cabecalho) da lista de h¢spedes.
- * @return ListaHospede* Ponteiro para a lista inicializada com ID 0 e pr¢ximo nulo.
+ * Aloca memï¿½ria e inicializa o nï¿½ sentinela (cabecalho) da lista de hï¿½spedes.
+ * @return ListaHospede* Ponteiro para a lista inicializada com ID 0 e prï¿½ximo nulo.
  */
 ListaHospede *iniciaListaHospede();
 
 /**
- * Insere um novo h¢spede no final da lista encadeada.
- * @param lista Ponteiro para o ponteiro da lista (para permitir altera‡Æo direta).
- * @param hospede Estrutura contendo os dados do h¢spede a ser inserido.
- * @return int Retorna 0 para sucesso ou 1 caso ocorra falha na aloca‡Æo.
+ * Insere um novo hï¿½spede no final da lista encadeada.
+ * @param lista Ponteiro para o ponteiro da lista (para permitir alteraï¿½ï¿½o direta).
+ * @param hospede Estrutura contendo os dados do hï¿½spede a ser inserido.
+ * @return int Retorna 0 para sucesso ou 1 caso ocorra falha na alocaï¿½ï¿½o.
  */
 int inserirHospede(ListaHospede **lista, TipoHospede hospede);
 
 /**
- * Localiza um h¢spede na lista atrav‚s do n£mero de CPF.
+ * Localiza um hï¿½spede na lista atravï¿½s do nï¿½mero de CPF.
  * @param lista Ponteiro para o ponteiro da lista de busca.
- * @param hospede Ponteiro para armazenar os dados do h¢spede encontrado.
+ * @param hospede Ponteiro para armazenar os dados do hï¿½spede encontrado.
  * @param cpf String contendo o CPF a ser comparado.
- * @param pos Ponteiro para armazenar o endere‡o do n¢ (Node) encontrado na lista.
- * @return int Retorna 0 se encontrado ou 1 caso a lista esteja vazia ou o CPF nÆo exista.
+ * @param pos Ponteiro para armazenar o endereï¿½o do nï¿½ (Node) encontrado na lista.
+ * @return int Retorna 0 se encontrado ou 1 caso a lista esteja vazia ou o CPF nï¿½o exista.
  */
 int buscarHospede(ListaHospede **lista, TipoHospede *hospede, char *cpf, ListaHospede **pos);
 
 /**
- * Sobrescreve os dados de um h¢spede em uma posi‡Æo espec¡fica da lista.
- * @param pos Ponteiro para o n¢ da lista que ser  alterado.
+ * Sobrescreve os dados de um hï¿½spede em uma posiï¿½ï¿½o especï¿½fica da lista.
+ * @param pos Ponteiro para o nï¿½ da lista que serï¿½ alterado.
  * @param hospede Estrutura com os novos dados a serem gravados.
  * @return void
  */
 void alterarHospede(ListaHospede *pos, TipoHospede hospede);
 
 /**
- * Realiza a exclusÆo l¢gica de um h¢spede definindo seu ID como 0.
- * @param pos Ponteiro para o n¢ da lista que ter  o h¢spede "apagado".
+ * Realiza a exclusï¿½o lï¿½gica de um hï¿½spede definindo seu ID como 0.
+ * @param pos Ponteiro para o nï¿½ da lista que terï¿½ o hï¿½spede "apagado".
  * @return void
  */
 void apagarHospede(ListaHospede *pos);
 
 /**
- * Percorre a lista e exibe no console o ID e Nome de todos os h¢spedes cadastrados.
- * @param lista Ponteiro para a lista de h¢spedes.
+ * Percorre a lista e exibe no console o ID e Nome de todos os hï¿½spedes cadastrados.
+ * @param lista Ponteiro para a lista de hï¿½spedes.
  * @return void
  */
 void listarHospedes(ListaHospede *lista);
 
 /**
- * Guarda dados de uma lista de hospedes encadeada em um arquivo bin rio
- * @param lista n¢ de inicio da lista de hospedes que deseja guardar
+ * Guarda dados de uma lista de hospedes encadeada em um arquivo binï¿½rio
+ * @param lista nï¿½ de inicio da lista de hospedes que deseja guardar
  * @param nome_arquivo string contendo o caminho do arquivo onde deseja guardar os dados
  * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
  */
 int salvarDadosHospedesBin(ListaHospede *lista, char *nome_arquivo);
 
 /**
- * Resgata os dados dos hospedes de um arquivo bin rio
+ * Resgata os dados dos hospedes de um arquivo binï¿½rio
  * @param nome_arquivo string contendo o caminho do arquivo de onde deseja resgatar os dados
- * @return retorna o n¢ para a primeira posi‡Æo da lista encadeada gerada
+ * @return retorna o nï¿½ para a primeira posiï¿½ï¿½o da lista encadeada gerada
  */
 ListaHospede *resgataDadosHospedesBin(char *nome_arquivo);
 
 /**
  * Guarda dados de uma lista de hospedes encadeada em um arquivo txt
- * @param lista n¢ de inicio da lista de hospedes que deseja guardar
+ * @param lista nï¿½ de inicio da lista de hospedes que deseja guardar
  * @param nome_arquivo string contendo o caminho do arquivo onde deseja guardar os dados
  * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
  */
@@ -97,28 +99,30 @@ int salvarDadosHospedesTxt(ListaHospede *lista, char *nome_arquivo);
 /**
  * Resgata os dados dos hospedes de um arquivo txt
  * @param nome_arquivo string contendo o caminho do arquivo de onde deseja resgatar os dados
- * @return retorna o n¢ para a primeira posi‡Æo da lista encadeada gerada
+ * @return retorna o nï¿½ para a primeira posiï¿½ï¿½o da lista encadeada gerada
  */
 ListaHospede *resgataDadosHospedesTxt(char *nome_arquivo);
 
 
 /**
- * libera a mem¢ria alocada para a lista de hospedes
+ * libera a memï¿½ria alocada para a lista de hospedes
  * @param lista ponteiro para a lista de hospedes
  * @return void
  */
 void liberaListaHospedes(ListaHospede *lista);
 
 /**
- * Exibe os dados completos de um h¢spede no console, formatados para f cil leitura.
- * @param hospede Estrutura contendo os dados do h¢spede a ser exibido.
+ * Exibe os dados completos de um hï¿½spede no console, formatados para fï¿½cil leitura.
+ * @param hospede Estrutura contendo os dados do hï¿½spede a ser exibido.
  * @return void
  */
 void imprimeDadosHospede(TipoHospede hospede);
 
 /**
- * Interface para gestÆo de h¢spedes, permitindo cadastro, consulta, altera‡Æo e exclusÆo de dados.
+ * Interface para gestï¿½o de hï¿½spedes, permitindo cadastro, consulta, alteraï¿½ï¿½o e exclusï¿½o de dados.
  * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).
  * @return void
  */
 void interfaceHospedes(ListaHospede *listaHospedes);
+
+#endif
