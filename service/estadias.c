@@ -279,8 +279,6 @@ void imprimeDadosEstadia(TipoEstadia estadia)
     return;
 }
 
-
-
 void interfaceEstadias(ListaEstadia *listaEstad, ListaHospede *listaHospede, ListaAcomodacao *listaAcomod, ListaCategoria *listaCat, ListaReservas *listaReservas, ListaHistoricoCaixa *historicoCaixa)
 {
     ListaEstadia *pos;
@@ -290,13 +288,20 @@ void interfaceEstadias(ListaEstadia *listaEstad, ListaHospede *listaHospede, Lis
     TipoReserva reservaAux;
     TipoHospede hospedeAux;
     ListaHospede *posHospede;
+    ListaHospede *auxH;
+    ListaEstadia *auxE;
     int res = 0;
     int subRes = 0;
+    int quartoOcupado = 0;
 
+    ListaAcomodacao *auxListAcomod;
     TipoAcomodacao acomodAux;
+    ListaCategoria *auxListCat;
     TipoCategoria catAux;
     int idBusca, dias, opcaoPagamento;
     float valorDiariasTotal, consumoFrigobar, saldoDevedor;
+
+    struct tm *tmPtr;
 
     TipoHistoricoCaixa registroCaixa;
 
@@ -315,12 +320,12 @@ void interfaceEstadias(ListaEstadia *listaEstad, ListaHospede *listaHospede, Lis
         printf("=> ");
         scanf("%d", &res);
         fflush(stdin);
-        limparTela();
+        // limparTela();
 
         switch (res)
         {
         case 1: // ----------------- INSERIR ESTADIA (CHECK-IN) -----------------
-            if(listaReservas->prox == NULL || listaReservas->prox == 0)
+            if (listaReservas->prox == NULL || listaReservas->prox == 0)
             {
                 printf("Nenhuma reserva cadastrada no sistema! Nao e possivel fazer Check-in.\n");
                 pausarTela();
@@ -344,9 +349,11 @@ void interfaceEstadias(ListaEstadia *listaEstad, ListaHospede *listaHospede, Lis
 
                 if (buscarReserva(&listaReservas, &reservaAux, estadia.idReserva, &posReserva) == 0)
                 {
+                    printf("Encontrou reserva!\n");
                     // Verifica se o quarto ja possui uma estadia ativa
-                    int quartoOcupado = 0;
-                    ListaEstadia *auxE = listaEstad->prox;
+                    quartoOcupado = 0;
+                    auxE = listaEstad->prox;
+
                     while (auxE != NULL)
                     {
                         if (auxE->estadia.idAcomodacao == reservaAux.idAcomodacao &&
@@ -358,17 +365,8 @@ void interfaceEstadias(ListaEstadia *listaEstad, ListaHospede *listaHospede, Lis
                         auxE = auxE->prox;
                     }
 
-                    if (quartoOcupado)
-                    {
-                        printf("Erro: Acomodacao %d ja esta ocupada! Escolha outra reserva.\n",
-                               reservaAux.idAcomodacao);
-                        pausarTela();
-                    }
-                    else
-                    {
-                        limparTela();
-                        break;
-                    }
+                    printf("procurou");
+                    break;
                 }
                 else
                 {
@@ -377,14 +375,20 @@ void interfaceEstadias(ListaEstadia *listaEstad, ListaHospede *listaHospede, Lis
                 }
             }
 
-            // preencher os campos da estadia a partir da reserva encontrada
-            estadia.idAcomodacao = reservaAux.idAcomodacao;
-            estadia.idHospede    = reservaAux.idHospede;
-            estadia.status       = 1; // 1 = ativa
-
-            // Percorre a lista de hospedes para achar o CPF pelo idHospede da reserva
+            if (quartoOcupado)
             {
-                ListaHospede *auxH = listaHospede->prox;
+                printf("Erro: Acomodacao %d ja possui uma estadia ativa! Nao e possivel fazer Check-in.\n", reservaAux.idAcomodacao);
+                pausarTela();
+                break;
+            }
+            else
+            {
+                // preencher os campos da estadia a partir da reserva encontrada
+                estadia.idAcomodacao = reservaAux.idAcomodacao;
+                estadia.idHospede = reservaAux.idHospede;
+                estadia.status = 1; // 1 = ativa
+
+                auxH = listaHospede->prox;
                 memset(estadia.cpfHospede, 0, sizeof(estadia.cpfHospede));
                 while (auxH != NULL)
                 {
@@ -395,64 +399,62 @@ void interfaceEstadias(ListaEstadia *listaEstad, ListaHospede *listaHospede, Lis
                     }
                     auxH = auxH->prox;
                 }
-            }
 
-            // Converte as datas time_t da reserva para string DD/MM/AAAA
-            {
-                struct tm *tmPtr;
                 tmPtr = localtime(&reservaAux.dataEntrada);
                 strftime(estadia.dataCheckIn, sizeof(estadia.dataCheckIn), "%d/%m/%Y", tmPtr);
                 tmPtr = localtime(&reservaAux.dataSaida);
                 strftime(estadia.dataCheckOutPlanejado, sizeof(estadia.dataCheckOutPlanejado), "%d/%m/%Y", tmPtr);
-            }
-            memset(estadia.dataSaidaReal, 0, sizeof(estadia.dataSaidaReal));
 
-            // calcular valorDiariasTotal antes de usar
-            buscarAcomodacao(&listaAcomod, &acomodAux, estadia.idAcomodacao, NULL);
-            buscarCategoria(&listaCat, &catAux, acomodAux.idCategoria, NULL);
-            dias = calcularDiferencaDias(estadia.dataCheckIn, estadia.dataCheckOutPlanejado);
-            valorDiariasTotal = dias * catAux.valorDiaria;
+                memset(estadia.dataSaidaReal, 0, sizeof(estadia.dataSaidaReal));
 
-            printf("\nReserva %d localizada com sucesso!\n", estadia.idReserva);
-            printf("Acomodacao: %d\n", estadia.idAcomodacao);
-            printf("Diaria: R$ %.2f\n", catAux.valorDiaria);
-            printf("Dias previstos: %d\n", dias);
-            printf("Valor total das diarias: R$ %.2f\n\n", valorDiariasTotal);
+                // calcular valorDiariasTotal antes de usar
+                buscarAcomodacao(&listaAcomod, &acomodAux, estadia.idAcomodacao, &auxListAcomod);
+                buscarCategoria(&listaCat, &catAux, acomodAux.idCategoria, &auxListCat);
+                dias = calcularDiferencaDias(estadia.dataCheckIn, estadia.dataCheckOutPlanejado);
+                valorDiariasTotal = dias * catAux.valorDiaria;
 
-            printf("Deseja realizar o pagamento das diarias agora no check-in?\n");
-            printf("1 - Sim (pagar antecipado)\n");
-            printf("2 - Nao (pagar no Check-out)\n");
-            printf("=> ");
-            scanf("%d", &opcaoPagamento);
-            fflush(stdin);
+                printf("\nReserva %d localizada com sucesso!\n", estadia.idReserva);
+                printf("Acomodacao: %d\n", estadia.idAcomodacao);
+                printf("Diaria: R$ %.2f\n", catAux.valorDiaria);
+                printf("Dias previstos: %d\n", dias);
+                printf("Valor total das diarias: R$ %.2f\n\n", valorDiariasTotal);
 
-            if (opcaoPagamento == 1)
-            {
-                estadia.valorTotalPago = valorDiariasTotal;
-                registroCaixa.valor = valorDiariasTotal;
-                buscarHospede(&listaHospede, &hospedeAux, estadia.cpfHospede, &posHospede);
-                sprintf(registroCaixa.descricao, "Pagamento antecipado de diarias - Hospede: %s", hospedeAux.nome);
-                registroCaixa.data = time(NULL);
-                registroCaixa.tipo = ENTRADA;
-                registrarEntradaCaixa(&historicoCaixa, registroCaixa);
-                printf("\n[CAIXA] Pagamento de R$ %.2f recebido!\n", valorDiariasTotal);
-            }
-            else
-            {
-                estadia.valorTotalPago = 0.0; // fica pendente para a saida
+                printf("Deseja realizar o pagamento das diarias agora no check-in?\n");
+                printf("1 - Sim (pagar antecipado)\n");
+                printf("2 - Nao (pagar no Check-out)\n");
+                printf("=> ");
+                scanf("%d", &opcaoPagamento);
+                fflush(stdin);
+
+                if (opcaoPagamento == 1)
+                {
+                    estadia.valorTotalPago = valorDiariasTotal;
+                    registroCaixa.valor = valorDiariasTotal;
+                    buscarHospede(&listaHospede, &hospedeAux, estadia.cpfHospede, &posHospede);
+                    sprintf(registroCaixa.descricao, "Pagamento antecipado de diarias - Hospede: %s", hospedeAux.nome);
+                    registroCaixa.data = time(NULL);
+                    registroCaixa.tipo = ENTRADA;
+                    registrarEntradaCaixa(&historicoCaixa, registroCaixa);
+                    printf("\n[CAIXA] Pagamento de R$ %.2f recebido!\n", valorDiariasTotal);
+                }
+                else
+                {
+                    estadia.valorTotalPago = 0.0; // fica pendente para a saida
+                }
+
+                estadia.id = escolheIdEstadia(listaEstad);
+                if (inserirEstadia(&listaEstad, estadia) == 0)
+                {
+                    removerReserva(posReserva);
+                    printf("\nCheck-in realizado com sucesso! Id da Estadia: %d\n", estadia.id);
+                }
+                else
+                {
+                    printf("\nErro ao alocar memoria para a estadia!\n");
+                }
+                pausarTela();
             }
 
-            estadia.id = escolheIdEstadia(listaEstad);
-            if (inserirEstadia(&listaEstad, estadia) == 0)
-            {
-                removerReserva(posReserva);
-                printf("\nCheck-in realizado com sucesso! Id da Estadia: %d\n", estadia.id);
-            }
-            else
-            {
-                printf("\nErro ao alocar memoria para a estadia!\n");
-            }
-            pausarTela();
             break;
 
         case 2: // ----------------- EFETUAR CHECK-OUT -----------------
@@ -471,8 +473,8 @@ void interfaceEstadias(ListaEstadia *listaEstad, ListaHospede *listaHospede, Lis
                 // Recalcula os dias de estadia reais ate a data de hoje
                 dias = calcularDiferencaDias(estadia.dataCheckIn, estadia.dataSaidaReal);
 
-                buscarAcomodacao(&listaAcomod, &acomodAux, estadia.idAcomodacao, NULL);
-                buscarCategoria(&listaCat, &catAux, acomodAux.idCategoria, NULL);
+                buscarAcomodacao(&listaAcomod, &acomodAux, estadia.idAcomodacao, &auxListAcomod);
+                buscarCategoria(&listaCat, &catAux, acomodAux.idCategoria, &auxListCat);
 
                 float totalDiariasReais = dias * catAux.valorDiaria;
                 consumoFrigobar = obterTotalConsumoHospede(estadia.id);

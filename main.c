@@ -294,7 +294,7 @@ int main()
         case 3: // TRANSACOES ===========================================================
             do{
                 system("cls");
-                printf("Cadastro e gestao de hospedes\n");
+                printf("----- TRANSACOES -----\n");
                 printf("1 - Check-in e Check-out\n");
                 printf("2 - Vendas (Sa¡da de produtos)\n");
                 printf("3 - Compras (Entrada de produtos industrializados)\n");
@@ -336,7 +336,7 @@ int main()
                     break;
                 }
             }while(res != 0);
-
+            res = 1;
             break;
         case 4: // FEEDBACK =============================================================
 
