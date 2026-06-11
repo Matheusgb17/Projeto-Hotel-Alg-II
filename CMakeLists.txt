@@ -1,6 +1,6 @@
 # Para executar pelo prompt:
 
-# gcc main.c service/hospedes.c service/categorias.c service/hotel.c service/operadores.c service/produtos.c service/fornecedores.c service/utils.c service/acomodacoes.c service/reservas.c -I bib -o output/marismar-plaza.exe
+#gcc main.c service/acomodacoes.c service/categorias.c service/compras.c service/contas.c service/controleDeCaixa.c service/estadias.c service/fornecedores.c service/hospedes.c service/hotel.c service/operadores.c service/produtos.c service/reservas.c service/utils.c service/vendas.c  -I bib -o output/marismar-plaza.exe
 # ./output/marismar-plaza.exe
 
 cmake_minimum_required(VERSION 3.20)
