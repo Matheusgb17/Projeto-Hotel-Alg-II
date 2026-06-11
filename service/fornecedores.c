@@ -262,13 +262,14 @@ void liberaListaFornecedores(ListaFornecedor *lista)
 
 void imprimeDadosFornecedor(TipoFornecedor fornecedor)
 {
-    printf("Id               : %d\n", fornecedor.id);
-    printf("Nome             : %s\n", fornecedor.nome_fantasia);
-    printf("Razao social     : %s\n", fornecedor.razao_social);
-    printf("CNPJ             : %s\n", fornecedor.cnpj);
-    printf("Endereco         : %s\n", fornecedor.endereco_completo);
-    printf("Telefone         : %s\n", fornecedor.telefone);
-    printf("E-mail           : %s\n", fornecedor.email);
+    printf("Id                  : %d\n", fornecedor.id);
+    printf("Nome                : %s\n", fornecedor.nome_fantasia);
+    printf("Inscricao estadual  : %s\n", fornecedor.inscricao_estadual);
+    printf("Razao social        : %s\n", fornecedor.razao_social);
+    printf("CNPJ                : %s\n", fornecedor.cnpj);
+    printf("Endereco            : %s\n", fornecedor.endereco_completo);
+    printf("Telefone            : %s\n", fornecedor.telefone);
+    printf("E-mail              : %s\n", fornecedor.email);
     printf("-----------------------------\n");
     return;
 }

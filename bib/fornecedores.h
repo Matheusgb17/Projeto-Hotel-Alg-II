@@ -8,7 +8,7 @@ typedef struct tipoFornecedor {
     char inscricao_estadual[100];
     char cnpj[12];
     char endereco_completo[200];
-    char telefone[12];
+    char telefone[16];
     char email[100];
 } TipoFornecedor;
 
