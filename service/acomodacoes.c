@@ -251,12 +251,86 @@ void liberaListaAcomodacoes(ListaAcomodacao *lista)
     return;
 }
 
+int relatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int codMin, int codMax, FiltroBusca filtro, int opcaoDestino, FILE *arquivoCSV)
+{
+    ListaAcomodacao *auxAcom = listaAcom->prox;
+    int encontrouAlgum = 0;
+
+    TipoCategoria categoriaTemp;
+    ListaCategoria *posCat;
+    ListaReservas *auxRes;
+    int conflito;
+
+    while (auxAcom != NULL)
+    {
+        buscarCategoria(&listaCat, &categoriaTemp, auxAcom->acomodacao.idCategoria, &posCat);
+
+        //Filtros:
+
+        //Filtrar por faixa de cÃ³digo
+        if (auxAcom->acomodacao.id < codMin || auxAcom->acomodacao.id > codMax) {
+            auxAcom = auxAcom->prox;
+            continue;
+        }
+
+        //Filtrar por Categoria
+        if (filtro.idCategoria != 0 && auxAcom->acomodacao.idCategoria != filtro.idCategoria) {
+            auxAcom = auxAcom->prox;
+            continue;
+        }
+
+        //Filtrar por data
+        conflito = 0;
+        auxRes = listaRes->prox;
+        while (auxRes != NULL) {
+            if (auxRes->reserva.idAcomodacao == auxAcom->acomodacao.id) {
+                if (filtro.dataEntrada < auxRes->reserva.dataSaida &&
+                    filtro.dataSaida > auxRes->reserva.dataEntrada) {
+                    conflito = 1;
+                    break;
+                }
+            }
+            auxRes = auxRes->prox;
+        }
+
+        if (conflito == 1) {
+            auxAcom = auxAcom->prox;
+            continue;
+        }
+
+        //EmissÃ£o do relatÃ³rio
+        encontrouAlgum = 1;
+
+        if (opcaoDestino == 1)
+        {
+            imprimeAcomodacao(auxAcom->acomodacao, categoriaTemp);
+        }
+        else if (opcaoDestino == 2 && arquivoCSV != NULL)
+        {
+            //CSV:
+            fprintf(arquivoCSV, "%d;%s;%s;%.2f;%d;%d\n",
+                    auxAcom->acomodacao.id,
+                    auxAcom->acomodacao.descricao,
+                    auxAcom->acomodacao.facilidades,
+                    categoriaTemp.valorDiaria,
+                    categoriaTemp.capacidadeAdultos,
+                    categoriaTemp.capacidadeCriancas);
+        }
+        auxAcom = auxAcom->prox;
+    }
+
+    if (encontrouAlgum == 0 && opcaoDestino == 1) {
+        printf("Nenhuma acomodacao atende aos criterios dos filtros.\n");
+    }
+
+    return encontrouAlgum;
+}
+
 void imprimeAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria)
 {
     printf("ID                  : %d\n", acomodacao.id);
     printf("Descricao           : %s\n", acomodacao.descricao);
     printf("Facilidades         : %s\n", acomodacao.facilidades);
-    printf("Descricao           : %s\n", categoria.descricao);
     printf("Valor diaria        : R$%.2f\n", categoria.valorDiaria);
     printf("Capacidade adultos  : %d\n", categoria.capacidadeAdultos);
     printf("Capacidade criancas : %d\n", categoria.capacidadeCriancas);
@@ -387,7 +461,7 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat)
                 printf("ID                  : %d\n", acomodacao.id);
                 printf("Descricao           : %s\n", acomodacao.descricao);
                 printf("Facilidades         : %s\n", acomodacao.facilidades);
-                printf("Descri‡Æo           : %s\n", catAux.descricao);
+                printf("Descriï¿½ï¿½o           : %s\n", catAux.descricao);
                 printf("Valor diaria        : R$%.2f\n", catAux.valorDiaria);
                 printf("Capacidade adultos  : %d\n", catAux.capacidadeAdultos);
                 printf("Capacidade criancas : %d\n\n", catAux.capacidadeCriancas);

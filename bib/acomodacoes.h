@@ -2,6 +2,7 @@
 #define ACOMODACOES_H
 
 #include "categorias.h"
+#include "reservas.h"
 
 typedef struct tipoAcomodacao {
     int id;
@@ -115,5 +116,21 @@ void imprimeAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria);
  * @param listaCat Ponteiro para a lista de categorias.
  */
 void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat);
+
+
+/**
+ * Relatório de acomodações na tela ou em formato CSV
+ * @param listaAcom Ponteiro para a lista de acomodações.
+ * @param listaCat Ponteiro para a lista de categorias.
+ * @param listaRes Ponteiro para a lista de reservas.
+ * @param codMin Codigo inicial da listagem.
+ * @param codMax Codigo final da listagem.
+ * @param filtro
+ * @param opcaoDestino
+ * @param arquivoCSV
+ * @return
+ */
+int relatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int codMin, int codMax, FiltroBusca filtro, int opcaoDestino, FILE *arquivoCSV);
+
 
 #endif // ACOMODACOES_H
