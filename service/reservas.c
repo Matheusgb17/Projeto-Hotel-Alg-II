@@ -221,8 +221,6 @@ void listarReservas(ListaReservas *lista)
         printf("-----------------------------\n");
         lista = lista->prox;
     }
-
-    system("pause");
     return;
 }
 

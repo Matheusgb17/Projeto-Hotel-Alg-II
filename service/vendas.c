@@ -415,4 +415,3 @@ void interfaceVendas(ListaVendas *listaVendas, ListaProduto *listaProdutos, List
         }
     } while (res != 0);
 }
-

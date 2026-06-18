@@ -230,7 +230,6 @@ void salvarDadosHistoricoCaixaTxt(ListaHistoricoCaixa *lista, char *nome_arquivo
                 fprintf(arquivo, "        <descricao>%s</descricao>\n", aux->registro.descricao);
                 fprintf(arquivo, "        <data>%lld</data>\n", (long long)aux->registro.data);
                 fprintf(arquivo, "    </registro>\n");
-                printf("\nimprimiu!~\n\n");
             }
             aux = aux->prox;
         }

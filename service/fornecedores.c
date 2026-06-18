@@ -456,7 +456,6 @@ void interfaceFornecedor(ListaFornecedor *listaFornecedor)
             }
             break;
 
-        // Apagar fornecedor
         case 4:
             printf("Digite o CNPJ do fornecedor que deseja apagar: ");
             scanf(" %[^\n]", fornecedor.cnpj);
