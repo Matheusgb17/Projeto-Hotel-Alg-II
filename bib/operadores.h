@@ -15,47 +15,47 @@ typedef struct listaOperadores{
 } ListaOperadores;
 
 /**
- * Percorre a lista por completo para descobrir a quantidade de posi‡äes e definir o pr¢ximo ID.
- * @param lista Ponteiro para a lista que ser  percorrida.
- * @return int Retorna a quantidade de indiv¡duos inseridos mais 1 (novo ID).
+ * Percorre a lista por completo para descobrir a quantidade de posiï¿½ï¿½es e definir o prï¿½ximo ID.
+ * @param lista Ponteiro para a lista que serï¿½ percorrida.
+ * @return int Retorna a quantidade de indivï¿½duos inseridos mais 1 (novo ID).
  */
 int escolheIdOperador(ListaOperadores *lista);
 
 /**
- * Aloca mem¢ria e inicializa o n¢ sentinela (cabecalho) da lista de operadores.
- * @return ListaOperadores* Ponteiro para a lista inicializada com ID 0 e pr¢ximo nulo.
+ * Aloca memria e inicializa o n sentinela (cabecalho) da lista de operadores.
+ * @return ListaOperadores* Ponteiro para a lista inicializada com ID 0 e prximo nulo.
  */
 ListaOperadores *iniciaListaOperadores();
 
 /**
  * Insere um novo operador no final da lista encadeada.
- * @param lista Ponteiro para o ponteiro da lista (para permitir altera‡Æo direta).
+ * @param lista Ponteiro para o ponteiro da lista (para permitir alteraï¿½ï¿½o direta).
  * @param operador Estrutura contendo os dados do operador a ser inserido.
- * @return int Retorna 0 para sucesso ou 1 caso ocorra falha na aloca‡Æo.
+ * @return int Retorna 0 para sucesso ou 1 caso ocorra falha na alocaï¿½ï¿½o.
  */
 int inserirOperador(ListaOperadores **lista, TipoOperador operador);
 
 /**
- * Localiza um operador na lista atrav‚s do n£mero de ID.
+ * Localiza um operador na lista atravï¿½s do nï¿½mero de ID.
  * @param lista Ponteiro para o ponteiro da lista de busca.
  * @param operador Ponteiro para armazenar os dados do operador encontrado.
- * @param user Vetor contendo o Usu rio a ser buscado na lista.
- * @param pos Ponteiro para armazenar o endere‡o do n¢ encontrado na lista.
- * @return int Retorna 0 se encontrado ou 1 caso a lista esteja vazia ou o ID nÆo exista.
+ * @param user Vetor contendo o Usuï¿½rio a ser buscado na lista.
+ * @param pos Ponteiro para armazenar o endereï¿½o do nï¿½ encontrado na lista.
+ * @return int Retorna 0 se encontrado ou 1 caso a lista esteja vazia ou o ID nï¿½o exista.
  */
 int buscarOperador(ListaOperadores **lista, TipoOperador *operador, char *user, ListaOperadores **pos);
 
 /**
- * Sobrescreve os dados de um operador em uma posi‡Æo espec¡fica da lista.
- * @param pos Ponteiro para o n¢ da lista que ser  alterado.
+ * Sobrescreve os dados de um operador em uma posiï¿½ï¿½o especï¿½fica da lista.
+ * @param pos Ponteiro para o nï¿½ da lista que serï¿½ alterado.
  * @param operador Estrutura com os novos dados a serem gravados.
  * @return void
  */
 void alterarOperador(ListaOperadores *pos, TipoOperador operador);
 
 /**
- * Realiza a exclusÆo l¢gica de um operador definindo seu ID como 0.
- * @param pos Ponteiro para o n¢ da lista que ter  o operador "apagado".
+ * Realiza a exclusï¿½o lï¿½gica de um operador definindo seu ID como 0.
+ * @param pos Ponteiro para o nï¿½ da lista que terï¿½ o operador "apagado".
  * @return void
  */
 void apagarOperador(ListaOperadores *pos);
@@ -68,37 +68,37 @@ void apagarOperador(ListaOperadores *pos);
 void listarOperadores(ListaOperadores *lista);
 
 /**
- * Fun‡Æo para salvar os dados dos operadores em um arquivo bin rio.
+ * Funï¿½ï¿½o para salvar os dados dos operadores em um arquivo binï¿½rio.
  * @param lista Ponteiro para a lista de operadores a ser salva.
- * @param nome_arquivo String contendo o nome do arquivo bin rio onde os dados serÆo salvos.
+ * @param nome_arquivo String contendo o nome do arquivo binï¿½rio onde os dados serï¿½o salvos.
  * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
  */
 int salvarDadosOperadoresBin(ListaOperadores *lista, char *nome_arquivo);
 
 /**
- * Fun‡Æo para resgatar os dados dos operadores a partir de um arquivo bin rio.
- * @param nome_arquivo String contendo o nome do arquivo bin rio a ser lido.
+ * Funï¿½ï¿½o para resgatar os dados dos operadores a partir de um arquivo binï¿½rio.
+ * @param nome_arquivo String contendo o nome do arquivo binï¿½rio a ser lido.
  * @return ListaOperadores* Ponteiro para a lista preenchida com os dados resgatados.
  */
 ListaOperadores *resgataDadosOperadoresBin(char *nome_arquivo);
 
 /**
- * Fun‡Æo para salvar os dados dos operadores em um arquivo texto.
+ * Funï¿½ï¿½o para salvar os dados dos operadores em um arquivo texto.
  * @param lista Ponteiro para a lista de operadores a ser salva.
- * @param nome_arquivo String contendo o nome do arquivo de texto onde os dados serÆo salvos.
+ * @param nome_arquivo String contendo o nome do arquivo de texto onde os dados serï¿½o salvos.
  * @return int Retorna 0 para sucesso ou 1 caso ocorra falha ao acessar o arquivo.
  */
 int salvarDadosOperadoresTxt(ListaOperadores *lista, char *nome_arquivo);
 
 /**
- * Fun‡Æo para resgatar os dados dos operadores a partir de um arquivo de texto.
+ * Funï¿½ï¿½o para resgatar os dados dos operadores a partir de um arquivo de texto.
  * @param nome_arquivo String contendo o nome do arquivo de texto a ser lido.
  * @return ListaOperadores* Ponteiro para a lista preenchida com os dados resgatados.
  */
 void liberaListaOperadores(ListaOperadores *lista);
 
 /**
- * Fun‡Æo para resgatar os dados dos operadores a partir de um arquivo de texto.
+ * Funï¿½ï¿½o para resgatar os dados dos operadores a partir de um arquivo de texto.
  * @param nome_arquivo String contendo o nome do arquivo de texto a ser lido.
  * @return ListaOperadores* Ponteiro para a lista preenchida com os dados resgatados.
  */
@@ -112,7 +112,7 @@ ListaOperadores *resgataDadosOperadoresTxt(char *nome_arquivo);
 void imprimeDadosOperador(TipoOperador operador);
 
 /**
- * Fun‡Æo que exibe e gerencia o menu de itera‡Æo com o usu rio para o m¢dulo de Operadores
+ * Funï¿½ï¿½o que exibe e gerencia o menu de iteraï¿½ï¿½o com o usuï¿½rio para o mï¿½dulo de Operadores
  * @param listaOperadores Ponteiro para a lista de operadores a ser manipulada.
  * @return void
  */

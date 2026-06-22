@@ -115,7 +115,7 @@ int salvarDadosCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
     if (arquivo == NULL)
     {
         printf("Erro ao abrir o arquivo!\n");
-        system("pause");
+        pausarTela();
         return 1;
     }
 
@@ -123,7 +123,7 @@ int salvarDadosCategoriasTxt(ListaCategoria *lista, char *nome_arquivo)
     {
         ListaCategoria *aux = lista->prox;
 
-        fprintf(arquivo, "<tabela=>categorias>\n");
+        fprintf(arquivo, "<tabela=categorias>\n");
         while (aux != NULL)
         {
             fprintf(arquivo, "    <registro>\n");
@@ -181,7 +181,7 @@ ListaCategoria *carregarCategoriasBin(char *nome_arquivo)
         res = inserirCategoria(&lista, categoria);
 
     if (res == 1)
-        printf("Erro ao carregar categorias do arquivo binÿrio!\n");
+        printf("Erro ao carregar categorias do arquivo binï¿½rio!\n");
 
     fclose(arquivo);
     return lista;

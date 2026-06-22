@@ -28,7 +28,7 @@ int escolheIdReserva(ListaReservas *lista)
 
 int adicionarReserva(ListaReservas **lista, TipoReserva novaReserva)
 {
-    // garantir que nÆo havera sombreamento de reservas
+    // garantir que nï¿½o havera sombreamento de reservas
     ListaReservas *aux, *novo = malloc(sizeof(ListaReservas));
     if (novo)
     {
@@ -64,10 +64,10 @@ int validarSombreamento(ListaReservas *listaRes, int idAcomodacao, time_t entrad
 
 int listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, FiltroBusca filtro)
 {
-    // 1. DECLARA€ÇO DE TODAS AS VARIµVEIS NO INÖCIO
+    // 1. DECLARAï¿½ï¿½O DE TODAS AS VARIï¿½VEIS NO INï¿½CIO
     ListaAcomodacao *auxAcom;
     TipoCategoria categoriaTemp;
-    ListaCategoria *posCat; // Vari vel para receber a posi‡Æo da categoria na busca
+    ListaCategoria *posCat; // Variï¿½vel para receber a posiï¿½ï¿½o da categoria na busca
     int encontrouAlgum;
     int conflito;
     int temTodasFacilidades;
@@ -76,7 +76,7 @@ int listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *lis
     char faclidadesFiltro[200];
     char *facilidade;
 
-    // 2. INICIALIZA€ÇO
+    // 2. INICIALIZAï¿½ï¿½O
     auxAcom = listaAcom->prox;
     encontrouAlgum = 0;
 
@@ -140,7 +140,7 @@ int listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *lis
 
             while (facilidade != NULL)
             {
-                // Remove espa‡o em branco no in¡cio da fatia
+                // Remove espaï¿½o em branco no inï¿½cio da fatia
                 while (*facilidade == ' ')
                     facilidade++;
 
@@ -159,7 +159,7 @@ int listarAcomodacoesParaReserva(ListaAcomodacao *listaAcom, ListaCategoria *lis
             }
         }
 
-        // Exibi‡Æo detalhada para o operador com os dados mesclados
+        // Exibiï¿½ï¿½o detalhada para o operador com os dados mesclados
         printf("ID                  : %d\n", auxAcom->acomodacao.id);
         printf("Descricao           : %s\n", auxAcom->acomodacao.descricao);
         printf("Facilidades         : %s\n", auxAcom->acomodacao.facilidades);
@@ -214,10 +214,10 @@ void listarReservas(ListaReservas *lista)
         }
 
         printf("ID               : %d\n", lista->reserva.id);
-        printf("ID do H¢spede    : %d\n", lista->reserva.idHospede);
-        printf("ID da Acomoda‡Æo : %d\n", lista->reserva.idAcomodacao);
+        printf("ID do Hï¿½spede    : %d\n", lista->reserva.idHospede);
+        printf("ID da Acomodaï¿½ï¿½o : %d\n", lista->reserva.idAcomodacao);
         printf("Data de Entrada  : %s", ctime(&lista->reserva.dataEntrada));
-        printf("Data de Sa¡da    : %s", ctime(&lista->reserva.dataSaida));
+        printf("Data de Saï¿½da    : %s", ctime(&lista->reserva.dataSaida));
         printf("-----------------------------\n");
         lista = lista->prox;
     }
@@ -236,10 +236,10 @@ void listarReservasPorAcomodacao(ListaReservas *lista, int idAcomodacao)
         if (aux->reserva.idAcomodacao == idAcomodacao)
         {
             printf("ID               : %d\n", aux->reserva.id);
-            printf("ID do H¢spede    : %d\n", aux->reserva.idHospede);
-            printf("ID da Acomoda‡Æo : %d\n", aux->reserva.idAcomodacao);
+            printf("ID do Hï¿½spede    : %d\n", aux->reserva.idHospede);
+            printf("ID da Acomodaï¿½ï¿½o : %d\n", aux->reserva.idAcomodacao);
             printf("Data de Entrada  : %s", ctime(&aux->reserva.dataEntrada));
-            printf("Data de Sa¡da    : %s", ctime(&aux->reserva.dataSaida));
+            printf("Data de Saï¿½da    : %s", ctime(&aux->reserva.dataSaida));
             printf("-----------------------------\n");
             encontrou = 1;
         }
@@ -248,7 +248,7 @@ void listarReservasPorAcomodacao(ListaReservas *lista, int idAcomodacao)
 
     if (!encontrou)
     {
-        printf("Nenhuma reserva encontrada para a acomoda‡Æo ID %d.\n", idAcomodacao);
+        printf("Nenhuma reserva encontrada para a acomodaï¿½ï¿½o ID %d.\n", idAcomodacao);
     }
 
     system("pause");
@@ -265,10 +265,10 @@ void listarReservasPorHospede(ListaReservas *lista, int idHospede)
         if (aux->reserva.idHospede == idHospede)
         {
             printf("ID               : %d\n", aux->reserva.id);
-            printf("ID do H¢spede    : %d\n", aux->reserva.idHospede);
-            printf("ID da Acomoda‡Æo : %d\n", aux->reserva.idAcomodacao);
+            printf("ID do Hï¿½spede    : %d\n", aux->reserva.idHospede);
+            printf("ID da Acomodaï¿½ï¿½o : %d\n", aux->reserva.idAcomodacao);
             printf("Data de Entrada  : %s\n", ctime(&aux->reserva.dataEntrada));
-            printf("Data de Sa¡da    : %s\n", ctime(&aux->reserva.dataSaida));
+            printf("Data de Saï¿½da    : %s\n", ctime(&aux->reserva.dataSaida));
             printf("-----------------------------\n");
             encontrou = 1;
         }
@@ -277,7 +277,7 @@ void listarReservasPorHospede(ListaReservas *lista, int idHospede)
 
     if (!encontrou)
     {
-        printf("Nenhuma reserva encontrada para o h¢spede ID %d.\n", idHospede);
+        printf("Nenhuma reserva encontrada para o hï¿½spede ID %d.\n", idHospede);
     }
 
     system("pause");
@@ -348,7 +348,6 @@ ListaReservas *resgataDadosReservasBin(char *nome_arquivo)
 int salvarDadosReservasTxt(ListaReservas *lista, char *nome_arquivo)
 {
     FILE *arquivo;
-    ListaReservas *aux;
 
     arquivo = fopen(nome_arquivo, "w");
 
@@ -359,6 +358,7 @@ int salvarDadosReservasTxt(ListaReservas *lista, char *nome_arquivo)
 
     if (lista->prox != NULL)
     {
+        ListaReservas *aux;
         aux = lista->prox;
 
         fprintf(arquivo, "<tabela=reservas>\n");
@@ -415,7 +415,7 @@ ListaReservas *resgataDadosReservasTxt(char *nome_arquivo)
         sscanf(linha, " <idHospede>%d", &reserva.idHospede);
         sscanf(linha, " <idAcomodacao>%d", &reserva.idAcomodacao);
 
-        // Lˆ como long long e converte de volta para o formato de tempo nativo do C
+        // Lï¿½ como long long e converte de volta para o formato de tempo nativo do C
         if (sscanf(linha, " <dataEntrada>%lld", &tempEntrada) == 1)
         {
             reserva.dataEntrada = (time_t)tempEntrada;
@@ -465,13 +465,13 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
     do
     {
         system("cls");
-        printf("\nM¢dulo de Reservas ---\n");
+        printf("\nMï¿½dulo de Reservas ---\n");
         printf("1 - Adicionar reserva (Com Busca)\n");
         printf("2 - Cancelar reserva\n");
         printf("3 - Listar reservas\n");
-        printf("4 - Filtrar Acomoda‡äes Dispon¡veis\n");
-        printf("5 - Verificar reservas por acomoda‡Æo\n");
-        printf("6 - Verificar reservas por h¢spede\n");
+        printf("4 - Filtrar Acomodaï¿½ï¿½es Disponï¿½veis\n");
+        printf("5 - Verificar reservas por acomodaï¿½ï¿½o\n");
+        printf("6 - Verificar reservas por hï¿½spede\n");
         printf("0 - Sair\n");
         printf("=> ");
         scanf("%d", &res);
@@ -493,7 +493,7 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
 
             while (1)
             {
-                // Coleta Data de Sa¡da
+                // Coleta Data de Saï¿½da
                 printf("Data de Saida (DD/MM/AAAA): ");
                 scanf("%d/%d/%d", &dia, &mes, &ano);
                 fflush(stdin);
@@ -504,7 +504,7 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
 
                 if (filtro.dataSaida <= filtro.dataEntrada)
                 {
-                    printf("Data de sa¡da deve ser posterior … data de entrada. Tente novamente.\n");
+                    printf("Data de saï¿½da deve ser posterior ï¿½ data de entrada. Tente novamente.\n");
                     pausarTela();
                 }
                 else
@@ -581,7 +581,7 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
                             pausarTela();
                         }
                     }
-                    novaReserva.id = escolheIdReserva(listaRes); // Chama a fun‡Æo para gerar ID incremental
+                    novaReserva.id = escolheIdReserva(listaRes); // Chama a funï¿½ï¿½o para gerar ID incremental
                     novaReserva.idHospede = idHospede;
                     novaReserva.idAcomodacao = idEscolhido;
                     novaReserva.dataEntrada = filtro.dataEntrada;
@@ -628,7 +628,7 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             break;
         case 4:
             system("cls");
-            printf("--- Filtro de Acomoda‡äes Dispon¡veis ---\n\n");
+            printf("--- Filtro de Acomodaï¿½ï¿½es Disponï¿½veis ---\n\n");
 
             // Coleta Data de Entrada
             printf("Data de Entrada (DD/MM/AAAA): ");
@@ -639,7 +639,7 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             dataEntrada_tm.tm_year = ano - 1900;
             filtro.dataEntrada = mktime(&dataEntrada_tm);
 
-            // Coleta Data de Sa¡da
+            // Coleta Data de Saï¿½da
             printf("Data de Saida (DD/MM/AAAA): ");
             scanf("%d/%d/%d", &dia, &mes, &ano);
             fflush(stdin);
@@ -672,12 +672,12 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
             scanf("%d", &idBusca);
             fflush(stdin);
             system("cls");
-            printf("--- Reservas para Acomoda‡Æo ID %d ---\n\n", idBusca);
+            printf("--- Reservas para Acomodaï¿½ï¿½o ID %d ---\n\n", idBusca);
             listarReservasPorAcomodacao(listaRes, idBusca);
             pausarTela();
             break;
         case 6:
-            printf("Digite o cpf do h¢spede para listar suas reservas: ");
+            printf("Digite o cpf do hï¿½spede para listar suas reservas: ");
             scanf("%s", hospedeTemp.cpf);
             fflush(stdin);
 
@@ -686,12 +686,12 @@ void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, List
                 idBusca = hospedeTemp.id;
 
                 system("cls");
-                printf("--- Reservas para H¢spede ID %d ---\n\n", idBusca);
+                printf("--- Reservas para Hï¿½spede ID %d ---\n\n", idBusca);
                 listarReservasPorHospede(listaRes, idBusca);
             }
             else
             {
-                printf("H¢spede nÆo encontrado!\n");
+                printf("Hï¿½spede nï¿½o encontrado!\n");
                 pausarTela();
                 system("pause");
             }

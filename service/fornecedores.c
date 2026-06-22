@@ -191,7 +191,7 @@ int salvarDadosFornecedoresTxt(ListaFornecedor *lista, char *nome_arquivo)
         fprintf(arq, "<tabela=fornecedor>\n");
         while (aux != NULL)
         {
-            fprintf(arq, "        <registro>\n");
+            fprintf(arq, "    <registro>\n");
             fprintf(arq, "        <codigo>%d</codigo>\n", aux->Fornecedor.id);
             fprintf(arq, "        <nome_fantasia>%s</nome_fantasia>\n", aux->Fornecedor.nome_fantasia);
             fprintf(arq, "        <razao_social>%s</razao_social>\n", aux->Fornecedor.razao_social);
@@ -200,7 +200,7 @@ int salvarDadosFornecedoresTxt(ListaFornecedor *lista, char *nome_arquivo)
             fprintf(arq, "        <endereco_completo>%s</endereco_completo>\n", aux->Fornecedor.endereco_completo);
             fprintf(arq, "        <telefone>%s</telefone>\n", aux->Fornecedor.telefone);
             fprintf(arq, "        <email>%s</email>\n", aux->Fornecedor.email);
-            fprintf(arq, "        </registro>\n");
+            fprintf(arq, "    </registro>\n");
             aux = aux->prox;
         }
         fprintf(arq, "</tabela>\n");

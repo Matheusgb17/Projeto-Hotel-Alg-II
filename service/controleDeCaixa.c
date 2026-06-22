@@ -156,12 +156,15 @@ ListaHistoricoCaixa *resgataDadosHistoricoCaixaTxt(char *nome_arquivo)
 {
     ListaHistoricoCaixa *lista = iniciaListaHistoricoCaixa();
     TipoHistoricoCaixa registro;
+
+    FILE *arquivo = fopen(nome_arquivo, "r");
+
+    if (arquivo == NULL)
+        return lista;
+        
     char linha[256];
     long long tempData;
 
-    FILE *arquivo = fopen(nome_arquivo, "r");
-    if (arquivo == NULL)
-        return lista;
     while (fgets(linha, sizeof(linha), arquivo))
     {
         if (strstr(linha, "<registro>") != NULL)
@@ -178,7 +181,7 @@ ListaHistoricoCaixa *resgataDadosHistoricoCaixaTxt(char *nome_arquivo)
 
         sscanf(linha, " <tipo>%d", &registro.tipo);
         sscanf(linha, " <valor>%f", &registro.valor);
-        sscanf(linha, " <descricao>%[^\n]", registro.descricao);
+        sscanf(linha, " <descricao>%[^<]", registro.descricao);
 
         if (sscanf(linha, " <data>%lld", &tempData) == 1)
         {
@@ -230,7 +233,6 @@ void salvarDadosHistoricoCaixaTxt(ListaHistoricoCaixa *lista, char *nome_arquivo
                 fprintf(arquivo, "        <descricao>%s</descricao>\n", aux->registro.descricao);
                 fprintf(arquivo, "        <data>%lld</data>\n", (long long)aux->registro.data);
                 fprintf(arquivo, "    </registro>\n");
-                printf("\nimprimiu!~\n\n");
             }
             aux = aux->prox;
         }

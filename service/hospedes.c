@@ -139,7 +139,7 @@ ListaHospede *resgataDadosHospedesBin(char *nome_arquivo)
         res = inserirHospede(&lista, hospede);
 
     if (res == 1)
-        exibeMensagemErro("Erro ao carregar hospedes do arquivo bin�rio!");
+        exibeMensagemErro("Erro ao carregar hospedes do arquivo binario!");
 
     fclose(arquivo);
     return lista;
@@ -236,9 +236,9 @@ void liberaListaHospedes(ListaHospede *lista)
 
 void imprimeDadosHospede(TipoHospede hospede)
 {
-    printf("ID H�spede      : %d\n", hospede.id);
+    printf("ID Hospede      : %d\n", hospede.id);
     printf("nome            : %s\n", hospede.nome);
-    printf("endere�o        : %s\n", hospede.endereco);
+    printf("endereco        : %s\n", hospede.endereco);
     printf("cpf             : %s\n", hospede.cpf);
     printf("telefone        : %s\n", hospede.telefone);
     printf("sexo            : %c\n", hospede.sexo);
@@ -256,11 +256,11 @@ void interfaceHospedes(ListaHospede *listaHospedes)
     TipoHospede hospede;
     int res = 0;
 
-    // Cadastro e Gest�o de Hospedes
+    // Cadastro e Gestao de Hospedes
     do
     {
         limparTela();
-        printf("Cadastro e gest�o de Hospedes!\n");
+        printf("Cadastro e gestao de Hospedes!\n");
         printf("1 - Inserir hospede\n");
         printf("2 - Buscar hospede\n");
         printf("3 - Alterar hospede\n");
@@ -280,7 +280,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
             scanf(" %[^\n]", hospede.nome);
             fflush(stdin);
 
-            printf("Insira o endere�o: ");
+            printf("Insira o endereco: ");
             scanf(" %[^\n]", hospede.endereco);
             fflush(stdin);
 
@@ -318,7 +318,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                 }
                 else
                 {
-                    printf("Op��o inv�lida");
+                    printf("Opcao invalida");
                     pausarTela();
                     fflush(stdin);
                 }
@@ -364,7 +364,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                 printf("\nHospede encontrado!! -------------\n");
                 printf("ID              : %d\n", hospede.id);
                 printf("nome            : %s\n", hospede.nome);
-                printf("endere�o        : %s\n", hospede.endereco);
+                printf("endereco        : %s\n", hospede.endereco);
                 printf("cpf             : %s\n", hospede.cpf);
                 printf("telefone        : %s\n", hospede.telefone);
                 printf("sexo            : %c\n", hospede.sexo);
@@ -376,7 +376,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
             }
             else
             {
-                printf("\nHospede n�o encontrado!\n");
+                printf("\nHospede nao encontrado!\n");
                 pausarTela();
             }
 
@@ -396,7 +396,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                     printf("Digite o campo que deseja alterar: \n\n");
                     printf("ID (fixo)           : %d\n", hospede.id);
                     printf("1 - nome            : %s\n", hospede.nome);
-                    printf("2 - endere�o        : %s\n", hospede.endereco);
+                    printf("2 - endereco        : %s\n", hospede.endereco);
                     printf("3 - cpf             : %s\n", hospede.cpf);
                     printf("4 - telefone        : %s\n", hospede.telefone);
                     printf("5 - sexo            : %c\n", hospede.sexo);
@@ -422,7 +422,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                         fflush(stdin);
                         break;
                     case 2:
-                        printf("Insira o novo endere�o: ");
+                        printf("Insira o novo endereco: ");
                         scanf(" %[^\n]", hospede.endereco);
                         fflush(stdin);
                         break;
@@ -463,7 +463,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                             }
                             else
                             {
-                                printf("Op��o inv�lida");
+                                printf("Opcao invalida");
                                 pausarTela();
                                 fflush(stdin);
                             }
@@ -489,7 +489,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
                         break;
 
                     default:
-                        printf("Escolha um valor v�lido...\n");
+                        printf("Escolha um valor valido...\n");
                         pausarTela();
                         break;
                     }
@@ -497,7 +497,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
             }
             else
             {
-                printf("\nHospede n�o encontrado!\n");
+                printf("\nHospede nao encontrado!\n");
                 pausarTela();
             }
 
@@ -533,7 +533,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
             }
             else
             {
-                printf("\nHospede n�o encontrado!\n\n");
+                printf("\nHospede nao encontrado!\n\n");
                 pausarTela();
             }
             break;
@@ -548,7 +548,7 @@ void interfaceHospedes(ListaHospede *listaHospedes)
         default:
             if (res != 0)
             {
-                printf("Op��o inv�lida!\n");
+                printf("Opcao invalida!\n");
                 pausarTela();
                 fflush(stdin);
             }

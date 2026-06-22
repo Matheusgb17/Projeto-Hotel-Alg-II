@@ -26,6 +26,8 @@
 #include "bib/contas.h"
 #include "bib/controleDeCaixa.h"
 
+#include "bib/importacaoExportacao.h"
+
 #define HotelBIN "./data/bin/hotel.dat"
 #define HotelTXT "./data/txt/hotel.txt"
 
@@ -240,7 +242,7 @@ int main()
         case 1: // CADASTRO E GESTAO ====================================================
             do
             {
-                system("cls");
+                limparTela();
                 printf("Cadastro e gestao de hospedes\n");
                 printf("1 - Dados do Hotel\n");
                 printf("2 - Hospedes\n");
@@ -281,7 +283,7 @@ int main()
                     if (res != 0)
                     {
                         printf("Selecione uma opcao valida!");
-                        system("pause");
+                        pausarTela();
                     }
                     break;
                 }
@@ -293,10 +295,10 @@ int main()
             break;
         case 3: // TRANSACOES ===========================================================
             do{
-                system("cls");
+                limparTela();
                 printf("----- TRANSACOES -----\n");
                 printf("1 - Check-in e Check-out\n");
-                printf("2 - Vendas (Sa¡da de produtos)\n");
+                printf("2 - Vendas (Saï¿½da de produtos)\n");
                 printf("3 - Compras (Entrada de produtos industrializados)\n");
                 printf("4 - Controle de Caixa\n");
                 printf("5 - Contas a Pagar\n");
@@ -331,7 +333,7 @@ int main()
                     if (res != 0)
                     {
                         printf("Selecione uma opcao valida!");
-                        system("pause");
+                        pausarTela();
                     }
                     break;
                 }
@@ -342,13 +344,48 @@ int main()
 
             break;
         case 5: // IMPORTACAO/EXPORTACAO DE DADOS =======================================
+            printf("Importacao e exportacao de dados\n");
+            printf("1 - Importar dados de arquivo (o arquivo deve se chamar data.txt e estar no caminho ./data/import/)\n");
+            printf("2 - Exportar dados para arquivo\n");
+            printf("0 - Voltar para o Menu principal\n");
+            printf("=> ");
+            scanf("%d", &res);
+            fflush(stdin);
 
+            switch (res)
+            {
+            case 1:
+                res = importarDados("./data/import/data.txt", &listaAcomodacao, &listaCategoria, &listaNotasFiscais, &listaContasPagar, &listaContasReceber, &historicoCaixa, &listaEstadias, &listaFornecedor, &listaHospedes, dadosHotel, &listaOperadores, &listaProduto, &listaReservas, &listaVendas);
+                if(res == 0)
+                    printf("Dados importados com sucesso!\n");
+                else
+                    printf("Erro ao importar dados!\n");
+                pausarTela();
+                break;
+            case 2:
+                res = exportarDados("./data/export/exportacao.txt", listaAcomodacao, listaCategoria, listaNotasFiscais, listaContasPagar, listaContasReceber, historicoCaixa, listaEstadias, listaFornecedor, listaHospedes, *dadosHotel, listaOperadores, listaProduto, listaReservas, listaVendas);
+
+                if(res == 0)
+                    printf("Dados exportados com sucesso!\n");
+                else
+                    printf("Erro ao exportar dados!\n");
+                pausarTela();
+                break;
+            default:
+                if (res != 0)
+                {
+                    printf("Escolha uma opcao valida!\n");
+                    pausarTela();
+                }
+                break;
+            }
+            res = 1;
             break;
         default: // SAIR DO SISTEMA =====================================================
             if (res != 0)
             {
                 printf("Escolha um valor valido!\n");
-                system("pause");
+                pausarTela();
             }
             else
             {

@@ -111,7 +111,11 @@ int salvarDadosContasTxt(ListaContas *lista, char *nome_arquivo)
 {
     FILE *arquivo = fopen(nome_arquivo, "w");
     if (arquivo == NULL)
+    {
+        exibeMensagemErro("Erro ao abrir arquivo...");
+        pausarTela();
         return 1;
+    }
 
     if (lista->prox != NULL)
     {
@@ -119,17 +123,15 @@ int salvarDadosContasTxt(ListaContas *lista, char *nome_arquivo)
         fprintf(arquivo, "<tabela=contas>\n");
         while (aux != NULL)
         {
-            if (aux->conta.id != 0)
-            {
-                fprintf(arquivo, "    <registro>\n");
-                fprintf(arquivo, "        <codigo>%d</codigo>\n", aux->conta.id);
-                fprintf(arquivo, "        <idNota>%d</idNota>\n", aux->conta.idNota);
-                fprintf(arquivo, "        <valorParcela>%.2f</valorParcela>\n", aux->conta.valorParcela);
-                fprintf(arquivo, "        <numeroParcela>%d</numeroParcela>\n", aux->conta.numeroParcela);
-                fprintf(arquivo, "        <dataVencimento>%s</dataVencimento>\n", aux->conta.dataVencimento);
-                fprintf(arquivo, "        <statusPago>%d</statusPago>\n", aux->conta.statusPago);
-                fprintf(arquivo, "    </registro>\n");
-            }
+
+            fprintf(arquivo, "    <registro>\n");
+            fprintf(arquivo, "        <codigo>%d</codigo>\n", aux->conta.id);
+            fprintf(arquivo, "        <idNota>%d</idNota>\n", aux->conta.idNota);
+            fprintf(arquivo, "        <valorParcela>%.2f</valorParcela>\n", aux->conta.valorParcela);
+            fprintf(arquivo, "        <numeroParcela>%d</numeroParcela>\n", aux->conta.numeroParcela);
+            fprintf(arquivo, "        <dataVencimento>%s</dataVencimento>\n", aux->conta.dataVencimento);
+            fprintf(arquivo, "        <statusPago>%d</statusPago>\n", aux->conta.statusPago);
+            fprintf(arquivo, "    </registro>\n");
             aux = aux->prox;
         }
         fprintf(arquivo, "</tabela>\n");
@@ -168,7 +170,7 @@ ListaContas *resgataDadosContasTxt(char *nome_arquivo)
         sscanf(linha, " <idNota>%d", &conta.idNota);
         sscanf(linha, " <valorParcela>%f", &conta.valorParcela);
         sscanf(linha, " <numeroParcela>%d", &conta.numeroParcela);
-        sscanf(linha, " <dataVencimento>%10s", conta.dataVencimento);
+        sscanf(linha, " <dataVencimento>%[^<]", conta.dataVencimento);
         sscanf(linha, " <statusPago>%d", &conta.statusPago);
     }
     fclose(arquivo);
@@ -184,10 +186,7 @@ int salvarDadosContasBin(ListaContas *lista, char *nome_arquivo)
     ListaContas *aux = lista->prox;
     while (aux != NULL)
     {
-        if (aux->conta.id != 0)
-        {
-            fwrite(&(aux->conta), sizeof(TipoConta), 1, arquivo);
-        }
+        fwrite(&(aux->conta), sizeof(TipoConta), 1, arquivo);
         aux = aux->prox;
     }
     fclose(arquivo);
