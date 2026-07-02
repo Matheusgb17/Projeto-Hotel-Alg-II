@@ -250,6 +250,47 @@ void liberaListaHistoricoCaixa(ListaHistoricoCaixa *lista)
     }
 }
 
+int relatorioMovimentacaoDeCaixa(FiltroControleCaixa filtro, ListaHistoricoCaixa *lista, char *nome_arquivo, int opcaoDestino)
+{
+    FILE *arquivoCSV = fopen(nome_arquivo, "w");
+    int encontrouAlgum = 0;
+
+    ListaHistoricoCaixa *aux = lista->prox;
+
+    int conflito;
+
+    while (aux != NULL)
+    {
+        if(aux->registro.data < filtro.dataInicio || aux->registro.data > filtro.dataFim) {
+            continue;
+        }
+
+        //Emissão do relatório
+        encontrouAlgum = 1;
+
+        if (opcaoDestino == 1)
+        {
+            imprimeMovimentacaoCaixa(aux->registro);
+        }
+        else if (opcaoDestino == 2 && arquivoCSV != NULL)
+        {
+            //CSV:
+            fprintf(arquivoCSV, "%lld;%s;%s;%.2f\n",
+                    (long long)aux->registro.data,
+                    aux->registro.descricao,
+                    aux->registro.tipo == ENTRADA ? "Entrada" : "Saída",
+                    aux->registro.valor);
+        }
+        aux = aux->prox;
+    }
+
+    if (encontrouAlgum == 0 && opcaoDestino == 1) {
+        exibeMensagemAviso("Nenhuma movimentação atende aos critérios dos filtros.\n");
+    }
+
+    return encontrouAlgum;
+}
+
 void interfaceControleDeCaixa(ListaHistoricoCaixa *historicoCaixa)
 {
     int res = 0, op;

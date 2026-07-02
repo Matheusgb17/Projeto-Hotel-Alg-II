@@ -19,6 +19,11 @@ typedef struct listaHistoricoCaixa {
     struct listaHistoricoCaixa *prox;
 } ListaHistoricoCaixa;
 
+typedef struct {
+    time_t dataInicio;
+    time_t dataFim;
+} FiltroControleCaixa;
+
 /**
  * Função para inicializar a lista do histórico de movimentações do caixa
  * @return Ponteiro para a lista de histórico de caixa alocada e inicializada

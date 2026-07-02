@@ -334,6 +334,51 @@ void liberaListaContas(ListaContas *lista)
     }
 }
 
+/*
+int relatorioContaPagar(FiltroContaPagar filtro, ListaContas *lista, char *nome_arquivo, int opcaoDestino)
+{
+    FILE *arquivoCSV = fopen(nome_arquivo, "w");
+    int encontrouAlgum = 0;
+
+    ListaContas *aux = lista->prox;
+
+    int conflito;
+
+    while (aux != NULL)
+    {
+        if(aux->conta.dataVencimento < filtro.dataInicio || aux->conta.dataVencimento > filtro.dataFim) {
+            continue;
+        }
+
+        //Emissão do relatório
+        encontrouAlgum = 1;
+
+        if (opcaoDestino == 1)
+        {
+            imprimeConta(aux->conta);
+        }
+        else if (opcaoDestino == 2 && arquivoCSV != NULL)
+        {
+            //CSV:
+            fprintf(arquivoCSV, "%lld;%s;%s;%.2f\n",
+                    aux->conta.id,
+                    aux->conta.idNota,
+                    aux->conta.valorParcela == ENTRADA ? "Entrada" : "Saída",
+                    aux->conta.numeroParcela,
+                    aux->conta.valorParcela
+                );
+        }
+        aux = aux->prox;
+    }
+
+    if (encontrouAlgum == 0 && opcaoDestino == 1) {
+        exibeMensagemAviso("Nenhuma movimentação atende aos critérios dos filtros.\n");
+    }
+
+    return encontrouAlgum;
+}
+*/
+
 void interfaceContasPagar(ListaContas **listaContasPagar, ListaHistoricoCaixa **historicoCaixa)
 {
     int res = 0, idBusca;

@@ -17,6 +17,19 @@ typedef struct listaContas {
     struct listaContas *prox;
 } ListaContas;
 
+typedef struct {
+    int idInicio;
+    int idFim;
+    time_t data;
+} FiltroContaReceber;
+
+typedef struct {
+    int idInicio;
+    int idFim;
+    time_t dataInicio;
+    time_t dataFim;
+} FiltroContaPagar;
+
 /**
  * Função para inicializar a lista de contas
  * @return Ponteiro para a lista de contas alocada e inicializada
