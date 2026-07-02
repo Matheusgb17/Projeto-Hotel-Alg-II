@@ -24,7 +24,7 @@ typedef struct tipoNotaFiscal {
     float valorTotalNota;
     int qtdItensDiferentes;
     time_t dataEmissao;
-    ItemCompra itens[50]; // Suporta até 50 produtos diferentes por nota
+    ItemCompra itens[50];
 } TipoNotaFiscal;
 
 // Estrutura do nó da lista encadeada de notas fiscais

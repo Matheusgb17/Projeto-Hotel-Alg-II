@@ -442,6 +442,158 @@ void liberaListaReservas(ListaReservas *lista)
     }
 }
 
+void imprimeDadosReserva(ListaReservas reservas, char *dataEntrada, char* dataSaida) {
+    printf("ID Reserva     : %d\n", reservas.reserva.id);
+    printf("ID Hospede     : %d\n", reservas.reserva.idHospede);
+    printf("Id Acomodacao  : %d\n", reservas.reserva.idAcomodacao);
+    printf("Data entrada   : %s\n", dataEntrada);
+    printf("Data saida     : %s\n", dataSaida);
+    printf("-----------------------------------\n");
+}
+
+void interfaceRelatorioReservas(ListaReservas *listaRes, int opcaoDestino) {
+    int idHospede = 0;
+    int idAcomodacao = 0;
+    int filtrarData = 0;
+    int dia, mes, ano;
+
+    struct tm tm_entrada = {0};
+    struct tm tm_saida = {0};
+    time_t filtroEntrada = 0;
+    time_t filtroSaida = 0;
+
+    FILE *arquivoCSV = NULL;
+    char caminhoArquivo[150];
+
+    system("cls");
+    printf("--- Filtros: Relatorio de Reservas ---\n");
+
+    printf("Filtrar por ID do Hospede (0 para listar todos): ");
+    scanf("%d", &idHospede);
+    fflush(stdin);
+
+    printf("Filtrar por ID da Acomodacao (0 para listar todas): ");
+    scanf("%d", &idAcomodacao);
+    fflush(stdin);
+
+    printf("Deseja filtrar por periodo reservado? (1-Sim / 0-Nao): ");
+    scanf("%d", &filtrarData);
+    fflush(stdin);
+
+    if (filtrarData == 1) {
+        printf("Buscar reservas a partir da Data (DD/MM/AAAA): ");
+        scanf("%d/%d/%d", &dia, &mes, &ano);
+        fflush(stdin);
+        tm_entrada.tm_mday = dia;
+        tm_entrada.tm_mon = mes - 1;
+        tm_entrada.tm_year = ano - 1900;
+        filtroEntrada = mktime(&tm_entrada);
+
+        printf("Buscar reservas ate a Data (DD/MM/AAAA): ");
+        scanf("%d/%d/%d", &dia, &mes, &ano);
+        fflush(stdin);
+        tm_saida.tm_mday = dia;
+        tm_saida.tm_mon = mes - 1;
+        tm_saida.tm_year = ano - 1900;
+        filtroSaida = mktime(&tm_saida);
+    }
+
+    //CSV
+    if (opcaoDestino == 2) {
+        printf("\nDigite o nome ou caminho do arquivo CSV (ex: reservas.csv): ");
+        scanf("%[^\n]", caminhoArquivo);
+        fflush(stdin);
+
+        arquivoCSV = fopen(caminhoArquivo, "w");
+        if (arquivoCSV == NULL) {
+            printf("Erro ao criar o arquivo CSV!\n");
+            system("pause");
+            return;
+        }
+        // Cabeçalho do CSV
+        fprintf(arquivoCSV, "ID_Reserva;ID_Hospede;ID_Acomodacao;Data_Entrada;Data_Saida\n");
+    }
+
+    printf("\nGerando relatorio...\n\n");
+
+    relatorioReservas(listaRes, idHospede, idAcomodacao, filtroEntrada, filtroSaida, opcaoDestino, arquivoCSV);
+
+    if (opcaoDestino == 2 && arquivoCSV != NULL) {
+        fclose(arquivoCSV);
+        printf("\nRelatorio salvo com sucesso em: %s\n", caminhoArquivo);
+    }
+
+    system("pause");
+}
+
+int relatorioReservas(ListaReservas *listaRes, int idHospede, int idAcomodacao, time_t filtroEntrada, time_t filtroSaida, int opcaoDestino, FILE *arquivoCSV) {
+    if (listaRes == NULL) return 0;
+
+    ListaReservas *aux = listaRes->prox;
+    int encontrouAlgum = 0;
+
+    char strEntrada[100];
+    char strSaida[100];
+
+    while (aux != NULL) {
+        if (aux->reserva.id == 0) {
+            aux = aux->prox;
+            continue;
+        }
+
+        //Filtro de Hóspede
+        if (idHospede > 0 && aux->reserva.idHospede != idHospede) {
+            aux = aux->prox;
+            continue;
+        }
+
+        //Filtro de Acomodação
+        if (idAcomodacao > 0 && aux->reserva.idAcomodacao != idAcomodacao) {
+            aux = aux->prox;
+            continue;
+        }
+
+        //Filtro de Período
+        if (filtroEntrada != 0 && filtroSaida != 0) {
+
+            if (aux->reserva.dataSaida < filtroEntrada || aux->reserva.dataEntrada > filtroSaida) {
+                aux = aux->prox;
+                continue;
+            }
+        }
+
+        encontrouAlgum = 1;
+
+        //formata as datas p string
+        strcpy(strEntrada, ctime(&aux->reserva.dataEntrada));
+        strEntrada[strcspn(strEntrada, "\n")] = 0;
+
+        strcpy(strSaida, ctime(&aux->reserva.dataSaida));
+        strSaida[strcspn(strSaida, "\n")] = 0;
+
+        if (opcaoDestino == 1) { //Tela
+            imprimeDadosReserva(*aux, strEntrada, strSaida);
+        }
+        else if (opcaoDestino == 2 && arquivoCSV != NULL) { // CSV
+            fprintf(arquivoCSV, "%d;%d;%d;%s;%s\n",
+                    aux->reserva.id,
+                    aux->reserva.idHospede,
+                    aux->reserva.idAcomodacao,
+                    strEntrada,
+                    strSaida);
+        }
+
+        aux = aux->prox;
+    }
+
+    if (encontrouAlgum == 0 && opcaoDestino == 1) {
+        printf("Nenhuma reserva atende aos criterios dos filtros.\n");
+    }
+
+    return encontrouAlgum;
+}
+
+
 void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaHospede *listaHospedes)
 {
     TipoReserva reservaBusca;

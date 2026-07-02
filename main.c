@@ -74,7 +74,7 @@
 
 int main()
 {
-    int res = 0, modo;
+    int res = 0, modo, opcaoDestino;
 
     TipoHotel *dadosHotel;
     ListaHospede *listaHospedes;
@@ -296,7 +296,7 @@ int main()
                 system("cls");
                 printf("----- TRANSACOES -----\n");
                 printf("1 - Check-in e Check-out\n");
-                printf("2 - Vendas (Sa¡da de produtos)\n");
+                printf("2 - Vendas (Saï¿½da de produtos)\n");
                 printf("3 - Compras (Entrada de produtos industrializados)\n");
                 printf("4 - Controle de Caixa\n");
                 printf("5 - Contas a Pagar\n");
@@ -339,7 +339,81 @@ int main()
             res = 1;
             break;
         case 4: // FEEDBACK =============================================================
+                do{
+                    system("cls");
+                    printf("----- FEEDBACKS -----\n");
+                    printf("1  - Listagem de Hospedes\n");
+                    printf("2  - Listagem de Acomodacoes\n");
+                    printf("3  - Listagem de Reservas\n");
+                    printf("4  - Listagem de Movimentacao de Acomodacoes\n");
+                    printf("5  - Listagem de Produtos de Consumo\n");
+                    printf("6  - Produtos em Estoque Minimo\n");
+                    printf("7  - Vendas\n");
+                    printf("8  - Contas a Receber\n");
+                    printf("9  - Contas a Pagar\n");
+                    printf("10 - Movimentacao de Caixa\n");
+                    printf("0 - Voltar para o Menu principal\n");
+                    printf("=> ");
 
+                    scanf("%d", &res);
+                    fflush(stdin);
+
+                    if (res >= 1 && res <= 10) {
+                        do {
+                            printf("\n==================================\n");
+                            printf("       DESTINO DO RELATÃ“RIO       \n");
+                            printf("==================================\n");
+                            printf("1 - Imprimir em Tela\n");
+                            printf("2 - Gerar Arquivo CSV\n");
+                            printf("Escolha uma opcao: ");
+                            scanf("%d", &opcaoDestino);
+
+                            if (opcaoDestino < 1 || opcaoDestino > 2) {
+                                printf("Opcao invalida! Tente novamente.\n");
+                            }
+                        } while (opcaoDestino < 1 || opcaoDestino > 2);
+                    }
+
+                    switch (res) {
+                        case 1:
+                            //relatorio_hospedes(opcaoDestino);
+                            break;
+                        case 2:
+                            interfaceRelatorioAcomodacoes(listaAcomodacao, listaCategoria, listaReservas, opcaoDestino);
+                            break;
+                        case 3:
+                            interfaceRelatorioReservas(listaReservas, opcaoDestino);
+                            break;
+                        case 4:
+                            interfaceRelatorioMovAcomodacoes(listaAcomodacao, listaCategoria, listaReservas, opcaoDestino);
+                            break;
+                        case 5:
+                            //relatorio_produtos(tipo_saida);
+                            break;
+                        case 6:
+                            //relatorio_estoque_minimo(tipo_saida);
+                            break;
+                        case 7:
+                            //relatorio_vendas(tipo_saida);
+                            break;
+                        case 8:
+                            //relatorio_contas_receber(tipo_saida);
+                            break;
+                        case 9:
+                            //relatorio_contas_pagar(tipo_saida);
+                            break;
+                        case 10:
+                            //relatorio_movimentacao_caixa(tipo_saida);
+                            break;
+                        case 0:
+                            printf("\nSaindo do Modulo de Feedback...\n");
+                            break;
+                        default:
+                            printf("\nOpcao invalida! Digite um numero de 0 a 10.\n");
+                            break;
+                    }
+                }while(res != 0);
+                res = 1;
             break;
         case 5: // IMPORTACAO/EXPORTACAO DE DADOS =======================================
 

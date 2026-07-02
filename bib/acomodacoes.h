@@ -132,5 +132,52 @@ void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat)
  */
 int relatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int codMin, int codMax, FiltroBusca filtro, int opcaoDestino, FILE *arquivoCSV);
 
+/**
+ * Função que emite o relatório de acomodações na tela ou em formato CSV.
+ * @param listaAcom Ponteiro para a lista de acomodações.
+ * @param listaCat Ponteiro para a lista de categorias.
+ * @param listaRes Ponteiro para a lista de reservas (utilizado no filtro de datas).
+ * @param codMin Código inicial da listagem (0 para ignorar).
+ * @param codMax Código final da listagem (0 para ignorar).
+ * @param filtro Estrutura FiltroBusca contendo categoria e/ou período desejado.
+ * @param opcaoDestino Define o destino da saída (1 para Tela, 2 para Arquivo CSV).
+ * @param arquivoCSV Ponteiro para o arquivo onde os dados serão salvos (se opcaoDestino for 2).
+ * @return int Retorna 1 se encontrou registros, 0 se nenhum registro atendeu aos critérios.
+ */
+int relatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int codMin, int codMax, FiltroBusca filtro, int opcaoDestino, FILE *arquivoCSV);
+
+/**
+ * Função de interface que gerencia os filtros e a criação do arquivo para o relatório de movimentação.
+ * @param listaAcom Ponteiro para a lista de acomodações.
+ * @param listaCat Ponteiro para a lista de categorias.
+ * @param listaRes Ponteiro para a lista de reservas.
+ * @param opcaoDestino Define o destino da saída (1 para Tela, 2 para Arquivo CSV).
+ * @return void
+ */
+void interfaceRelatorioMovAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int opcaoDestino);
+
+/**
+ * Função que faz o cálculo, varre as listas e gera a saída de movimentação de acomodações em tela ou CSV.
+ * @param listaAcom Ponteiro para a lista de acomodações.
+ * @param listaCat Ponteiro para a lista de categorias.
+ * @param listaRes Ponteiro para a lista de reservas.
+ * @param idAcomFiltro O ID da acomodação para filtro (0 para ignorar).
+ * @param minDiarias Quantidade mínima de diárias ocupadas para filtro.
+ * @param minRendimento Valor mínimo de rendimento gerado em reais (R$) para filtro.
+ * @param opcaoDestino Define o destino da saída (1 para Tela, 2 para Arquivo CSV).
+ * @param arquivoCSV Ponteiro para o arquivo onde os dados serão salvos (se opcaoDestino for 2).
+ * @return int Retorna 1 se encontrou registros, 0 se nenhum registro atendeu aos critérios.
+ */
+int relatorioMovimentacaoAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int idAcomFiltro, int minDiarias, float minRendimento, int opcaoDestino, FILE *arquivoCSV);
+
+/**
+ * Função de interface para capturar os filtros e chamar o relatório de listagem de acomodações.
+ * @param listaAcom Ponteiro para a lista de acomodações.
+ * @param listaCat Ponteiro para a lista de categorias.
+ * @param listaRes Ponteiro para a lista de reservas.
+ * @param opcaoDestino Define o destino da saída (1 para Tela, 2 para Arquivo CSV).
+ * @return void
+ */
+void interfaceRelatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int opcaoDestino);
 
 #endif // ACOMODACOES_H

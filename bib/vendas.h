@@ -19,13 +19,13 @@ typedef struct itemVenda {
 // Estrutura principal que guarda os dados de uma venda
 typedef struct tipoVenda {
     int id;
-    int idHospede;          // 0 se for venda no balcão/cliente não cadastrado
+    int idHospede;
     int formaPagamento;     // 1 - A vista, 2 - Anotado/Fiado
     int statusPagamento;    // 1 - Pago, 0 - Pendente
     int qtdItens;
     float valorTotal;
     time_t dataVenda;
-    ItemVenda itens[50];    // Suporta até 50 produtos diferentes por venda
+    ItemVenda itens[50];
 } TipoVenda;
 
 // Estrutura do nó da lista encadeada de vendas

@@ -156,4 +156,25 @@ void liberaListaReservas(ListaReservas *lista);
  */
 void interfaceReservas(ListaReservas *listaRes, ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaHospede *listaHospedes);
 
+/**
+ * Função de interface para capturar os filtros e chamar o relatório de reservas.
+ * @param listaRes Ponteiro para a lista de reservas.
+ * @param opcaoDestino Define o destino da saída (1 para Tela, 2 para Arquivo CSV).
+ * @return void
+ */
+void interfaceRelatorioReservas(ListaReservas *listaRes, int opcaoDestino);
+
+/**
+ * Função que emite o relatório de reservas na tela ou em formato CSV com base nos filtros fornecidos.
+ * @param listaRes Ponteiro para a lista de reservas.
+ * @param idHospede O ID do hóspede para filtro (0 para ignorar).
+ * @param idAcomodacao O ID da acomodação para filtro (0 para ignorar).
+ * @param filtroEntrada Data de início do período a ser filtrado (em formato time_t, 0 para ignorar).
+ * @param filtroSaida Data de fim do período a ser filtrado (em formato time_t, 0 para ignorar).
+ * @param opcaoDestino Define o destino da saída (1 para Tela, 2 para Arquivo CSV).
+ * @param arquivoCSV Ponteiro para o arquivo CSV aberto (necessário se opcaoDestino for 2).
+ * @return int Retorna 1 se encontrou registros, 0 se nenhum registro atendeu aos critérios.
+ */
+int relatorioReservas(ListaReservas *listaRes, int idHospede, int idAcomodacao, time_t filtroEntrada, time_t filtroSaida, int opcaoDestino, FILE *arquivoCSV);
+
 #endif // RESERVAS_H

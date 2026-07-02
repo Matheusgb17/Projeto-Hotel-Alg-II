@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../bib/acomodacoes.h"
+
+#include "estadias.h"
 #include "../bib/categorias.h"
 #include "../bib/utils.h"
 
@@ -48,7 +51,6 @@ int buscarAcomodacao(ListaAcomodacao **lista, TipoAcomodacao *acomodacao, int id
 
     while (aux != NULL)
     {
-        // printf("DEBUG: Comparando ID digitado (%d) com ID no no (%d)\n", id, aux->acomodacao.id);
         if (aux->acomodacao.id == id)
         {
             *acomodacao = aux->acomodacao;
@@ -251,6 +253,84 @@ void liberaListaAcomodacoes(ListaAcomodacao *lista)
     return;
 }
 
+void interfaceRelatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int opcaoDestino) {
+    int codMin = 0, codMax = 0;
+    int filtrarData = 0, dia, mes, ano;
+    FiltroBusca filtro;
+    FILE *arquivoCSV = NULL;
+    char caminhoArquivo[150];
+    struct tm tm_entrada = {0};
+    struct tm tm_saida = {0};
+
+    // Zera todos os campos do filtro por segurança
+    memset(&filtro, 0, sizeof(FiltroBusca));
+
+    system("cls");
+    printf("--- Filtros: Listagem de Acomodacoes ---\n");
+
+    printf("Codigo inicial (0 para listar desde o primeiro): ");
+    scanf("%d", &codMin);
+    fflush(stdin);
+
+    printf("Codigo final (0 para listar ate o ultimo): ");
+    scanf("%d", &codMax);
+    fflush(stdin);
+
+    printf("ID da Categoria (0 para listar todas): ");
+    scanf("%d", &filtro.idCategoria);
+    fflush(stdin);
+
+    printf("Deseja buscar acomodacoes disponiveis em um periodo? (1-Sim / 0-Nao): ");
+    scanf("%d", &filtrarData);
+    fflush(stdin);
+
+    if (filtrarData == 1) {
+        printf("Data de Entrada (DD/MM/AAAA): ");
+        scanf("%d/%d/%d", &dia, &mes, &ano);
+        fflush(stdin);
+        tm_entrada.tm_mday = dia;
+        tm_entrada.tm_mon = mes - 1;
+        tm_entrada.tm_year = ano - 1900;
+        filtro.dataEntrada = mktime(&tm_entrada);
+
+        printf("Data de Saida (DD/MM/AAAA): ");
+        scanf("%d/%d/%d", &dia, &mes, &ano);
+        fflush(stdin);
+        tm_saida.tm_mday = dia;
+        tm_saida.tm_mon = mes - 1;
+        tm_saida.tm_year = ano - 1900;
+        filtro.dataSaida = mktime(&tm_saida);
+    }
+
+    // Preparação do arquivo CSV, caso o operador tenha escolhido a opção 2
+    if (opcaoDestino == 2) {
+        printf("\nDigite o nome/caminho do arquivo CSV (ex: relatorio_acomodacoes.csv): ");
+        scanf("%[^\n]", caminhoArquivo);
+        fflush(stdin);
+
+        arquivoCSV = fopen(caminhoArquivo, "w");
+        if (arquivoCSV == NULL) {
+            printf("Erro ao criar o arquivo CSV!\n");
+            system("pause");
+            return;
+        }
+        // Cabeçalho do CSV
+        fprintf(arquivoCSV, "ID_Acomodacao;Descricao;Facilidades;Valor_Diaria;Cap_Adultos;Cap_Criancas\n");
+    }
+
+    printf("\nGerando relatorio...\n\n");
+
+    // Chama a função principal passando todos os filtros coletados
+    relatorioAcomodacoes(listaAcom, listaCat, listaRes, codMin, codMax, filtro, opcaoDestino, arquivoCSV);
+
+    if (opcaoDestino == 2 && arquivoCSV != NULL) {
+        fclose(arquivoCSV);
+        printf("\nRelatorio salvo com sucesso em: %s\n", caminhoArquivo);
+    }
+
+    system("pause");
+}
+
 int relatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int codMin, int codMax, FiltroBusca filtro, int opcaoDestino, FILE *arquivoCSV)
 {
     ListaAcomodacao *auxAcom = listaAcom->prox;
@@ -265,10 +345,11 @@ int relatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, L
     {
         buscarCategoria(&listaCat, &categoriaTemp, auxAcom->acomodacao.idCategoria, &posCat);
 
-        //Filtros:
+        //FILTROS
 
         //Filtrar por faixa de código
-        if (auxAcom->acomodacao.id < codMin || auxAcom->acomodacao.id > codMax) {
+        if ((codMin > 0 && auxAcom->acomodacao.id < codMin) ||
+            (codMax > 0 && auxAcom->acomodacao.id > codMax)) {
             auxAcom = auxAcom->prox;
             continue;
         }
@@ -279,26 +360,31 @@ int relatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, L
             continue;
         }
 
-        //Filtrar por data
-        conflito = 0;
-        auxRes = listaRes->prox;
-        while (auxRes != NULL) {
-            if (auxRes->reserva.idAcomodacao == auxAcom->acomodacao.id) {
-                if (filtro.dataEntrada < auxRes->reserva.dataSaida &&
-                    filtro.dataSaida > auxRes->reserva.dataEntrada) {
-                    conflito = 1;
-                    break;
+        //Filtrar por data disponível
+        if (filtro.dataEntrada != 0 && filtro.dataSaida != 0) {
+            conflito = 0;
+
+            if (listaRes != NULL) {
+                auxRes = listaRes->prox;
+                while (auxRes != NULL) {
+                    if (auxRes->reserva.idAcomodacao == auxAcom->acomodacao.id) {
+
+                        if (filtro.dataEntrada < auxRes->reserva.dataSaida &&
+                            filtro.dataSaida > auxRes->reserva.dataEntrada) {
+                            conflito = 1;
+                            break;
+                        }
+                    }
+                    auxRes = auxRes->prox;
                 }
             }
-            auxRes = auxRes->prox;
+
+            if (conflito == 1) {
+                auxAcom = auxAcom->prox;
+                continue;
+            }
         }
 
-        if (conflito == 1) {
-            auxAcom = auxAcom->prox;
-            continue;
-        }
-
-        //Emissão do relatório
         encontrouAlgum = 1;
 
         if (opcaoDestino == 1)
@@ -326,6 +412,136 @@ int relatorioAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, L
     return encontrouAlgum;
 }
 
+
+void imprimeDadosDiaria(ListaAcomodacao acomodacoes, int totalDiarias, float rendimentoTotal) {
+    printf("ID Acomodacao       : %d\n", acomodacoes.acomodacao.id);
+    printf("Descricao           : %s\n", acomodacoes.acomodacao.descricao);
+    printf("Diarias Ocupadas    : %d\n", totalDiarias);
+    printf("Rendimento Total    : R$%.2f\n", rendimentoTotal);
+    printf("-----------------------------------\n");
+}
+
+int relatorioMovimentacaoAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int idAcomFiltro, int minDiarias, float minRendimento, int opcaoDestino, FILE *arquivoCSV) {
+    ListaAcomodacao *auxAcom = listaAcom->prox;
+    int encontrouAlgum = 0;
+
+    TipoCategoria categoriaTemp;
+    ListaCategoria *posCat;
+    ListaReservas *auxRes;
+
+    while (auxAcom != NULL) {
+
+        //Filtros:
+
+        //Filtrar por dados da acomodação por id:
+        if (idAcomFiltro != 0 && auxAcom->acomodacao.id != idAcomFiltro) {
+            auxAcom = auxAcom->prox;
+            continue;
+        }
+
+        buscarCategoria(&listaCat, &categoriaTemp, auxAcom->acomodacao.idCategoria, &posCat);
+
+        int totalDiarias = 0;
+        float rendimentoTotal = 0.0;
+        auxRes = listaRes->prox;
+        while (auxRes != NULL) {
+            if (auxRes->reserva.idAcomodacao == auxAcom->acomodacao.id) {
+
+                int dias = (int)(difftime(auxRes->reserva.dataSaida, auxRes->reserva.dataEntrada) / 86400.0);
+
+                if (dias == 0) {
+                    dias = 1;
+                }
+
+                totalDiarias += dias;
+                rendimentoTotal += (dias * categoriaTemp.valorDiaria);
+            }
+            auxRes = auxRes->prox;
+        }
+
+        //Quantas diárias estiveram ocupadas:
+        if (totalDiarias < minDiarias) {
+            auxAcom = auxAcom->prox;
+            continue;
+        }
+
+        //Quanto rendeu em hospedagem:
+        if (rendimentoTotal < minRendimento) {
+            auxAcom = auxAcom->prox;
+            continue;
+        }
+
+        encontrouAlgum = 1;
+
+        if (opcaoDestino == 1) {
+            imprimeDadosDiaria(*auxAcom, totalDiarias, rendimentoTotal);
+        }
+        else if (opcaoDestino == 2 && arquivoCSV != NULL) {
+            fprintf(arquivoCSV, "%d;%s;%d;%.2f\n",
+                    auxAcom->acomodacao.id,
+                    auxAcom->acomodacao.descricao,
+                    totalDiarias,
+                    rendimentoTotal);
+        }
+
+        auxAcom = auxAcom->prox;
+    }
+
+    if (encontrouAlgum == 0 && opcaoDestino == 1) {
+        printf("Nenhuma movimentacao atende aos criterios dos filtros.\n");
+    }
+
+    return encontrouAlgum;
+}
+
+void interfaceRelatorioMovAcomodacoes(ListaAcomodacao *listaAcom, ListaCategoria *listaCat, ListaReservas *listaRes, int opcaoDestino) {
+    int idAcomFiltro = 0;
+    int minDiarias = 0;
+    float minRendimento = 0.0;
+    FILE *arquivoCSV = NULL;
+    char caminhoArquivo[150];
+
+    system("cls");
+    printf("--- Filtros: Movimentacao de Acomodacoes ---\n");
+    printf("Digite o ID da acomodacao (ou 0 para todas): ");
+    scanf("%d", &idAcomFiltro);
+
+    printf("Quantidade minima de diarias ocupadas (ou 0 para ignorar): ");
+    scanf("%d", &minDiarias);
+
+    printf("Rendimento minimo gerado (R$) (ou 0 para ignorar): ");
+    scanf("%f", &minRendimento);
+    fflush(stdin);
+
+    //CSV
+    if (opcaoDestino == 2) {
+        printf("Digite o nome/caminho do arquivo CSV (ex: relatorio_movimentacao.csv): ");
+        scanf("%[^\n]", caminhoArquivo);
+        fflush(stdin);
+
+        arquivoCSV = fopen(caminhoArquivo, "w");
+        if (arquivoCSV == NULL) {
+            printf("Erro ao criar o arquivo CSV!\n");
+            pausarTela();
+            return;
+        }
+        //cabeçalho CSV
+        fprintf(arquivoCSV, "ID_Acomodacao;Descricao;Total_Diarias_Ocupadas;Rendimento_Total\n");
+    }
+
+    printf("\nGerando relatorio...\n\n");
+
+    relatorioMovimentacaoAcomodacoes(listaAcom, listaCat, listaRes, idAcomFiltro, minDiarias, minRendimento, opcaoDestino, arquivoCSV);
+
+    if (opcaoDestino == 2 && arquivoCSV != NULL) {
+        fclose(arquivoCSV);
+        printf("\nRelatorio salvo com sucesso em: %s\n", caminhoArquivo);
+    }
+
+    pausarTela();
+}
+
+
 void imprimeAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria)
 {
     printf("ID                  : %d\n", acomodacao.id);
@@ -336,6 +552,7 @@ void imprimeAcomodacao(TipoAcomodacao acomodacao, TipoCategoria categoria)
     printf("Capacidade criancas : %d\n", categoria.capacidadeCriancas);
     printf("-----------------------------------\n");
 }
+
 
 void interfaceAcomodacao(ListaAcomodacao *listaAcomod, ListaCategoria *listaCat)
 {
