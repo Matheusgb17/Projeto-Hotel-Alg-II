@@ -234,6 +234,60 @@ void liberaListaHospedes(ListaHospede *lista)
     return;
 }
 
+int gerarRelatorioHospedes(ListaHospede *lista, int codigoInicio, int codigoFim, char sexoFiltro, int exportarParaArquivo, char *caminhoArquivo)
+{
+    FILE *fp = NULL;
+    int contHospedes = 0;
+
+    if (exportarParaArquivo)
+    {
+        fp = fopen(caminhoArquivo, "w");
+        if (fp == NULL) return 1;
+
+        // cabeçalho do arquivo csv
+        fprintf(fp, "Codigo;Nome;CPF;Telefone;E-mail;Sexo;Estado Civil;Data Nascimento\n");
+    }
+
+    ListaHospede *aux = lista;
+    if (aux != NULL && aux->Hospedes.id == 0) aux = aux->prox; // Pula cabeçalho se houver
+
+    while (aux != NULL)
+    {
+        // filtro de codigo
+        int atendeCodigo = (aux->Hospedes.id >= codigoInicio && aux->Hospedes.id <= codigoFim);
+        // filtro de sexo
+        int atendeSexo = (sexoFiltro == 'T' || aux->Hospedes.sexo == sexoFiltro);
+
+        if (atendeCodigo && atendeSexo && aux->Hospedes.id != 0)
+        {
+            contHospedes++;
+            if (exportarParaArquivo)
+            {
+                // linha formatada em csv
+                fprintf(fp, "%d;%s;%s;%s;%s;%c;%s;%s\n",
+                        aux->Hospedes.id, aux->Hospedes.nome, aux->Hospedes.cpf,
+                        aux->Hospedes.telefone, aux->Hospedes.email, aux->Hospedes.sexo,
+                        aux->Hospedes.estado_civil, aux->Hospedes.data_nasc);
+            }
+            else
+            {
+                imprimeDadosHospede(aux->Hospedes);
+            }
+        }
+        aux = aux->prox;
+    }
+
+    if (exportarParaArquivo) fclose(fp);
+
+    if (contHospedes == 0)
+    {
+        if (exportarParaArquivo) remove(caminhoArquivo);
+        return 2;
+    }
+    return 0;
+}
+
+
 void imprimeDadosHospede(TipoHospede hospede)
 {
     printf("ID Hospede      : %d\n", hospede.id);

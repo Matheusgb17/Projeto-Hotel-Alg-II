@@ -342,7 +342,6 @@ int main()
             break;
         case 4: // FEEDBACK =============================================================
 
-            break;
         case 5: // IMPORTACAO/EXPORTACAO DE DADOS =======================================
             printf("Importacao e exportacao de dados\n");
             printf("1 - Importar dados de arquivo (o arquivo deve se chamar data.txt e estar no caminho ./data/import/)\n");

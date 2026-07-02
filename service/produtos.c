@@ -261,6 +261,83 @@ void liberaListaProdutos(ListaProduto *lista)
     }
 }
 
+int gerarRelatorioProdutos(ListaProduto *lista, int codigoInicio, int codigoFim, int exportarParaArquivo, char *caminhoArquivo)
+{
+    FILE *fp = NULL;
+
+    if (exportarParaArquivo)
+    {
+        fp = fopen(caminhoArquivo, "w");
+        if (fp == NULL) return 1;
+
+        // cabeçalho
+        fprintf(fp, "Codigo;Descricao;Estoque;Estoque Minimo;Preco Custo;Preco Venda\n");
+    }
+
+    ListaProduto *aux = lista;
+    if (aux != NULL && aux->Produto.id == 0) aux = aux->prox; // pula cabeçalho se houver
+
+    while (aux != NULL)
+    {
+        // filtro de códigos
+        if (aux->Produto.id >= codigoInicio && aux->Produto.id <= codigoFim && aux->Produto.id != 0)
+        {
+            if (exportarParaArquivo)
+            {
+                fprintf(fp, "%d;%s;%d;%d;%.2f;%.2f\n",
+                        aux->Produto.id, aux->Produto.descricao, aux->Produto.estoque,
+                        aux->Produto.estoque_minimo, aux->Produto.preco_custo, aux->Produto.preco_venda);
+            }
+            else
+            {
+                imprimeDadosProduto(aux->Produto);
+            }
+        }
+        aux = aux->prox;
+    }
+
+    if (exportarParaArquivo) fclose(fp);
+    return 0;
+}
+
+int gerarRelatorioEstoqueMinimo(ListaProduto *lista, int codigoInicio, int codigoFim, int exportarParaArquivo, char *caminhoArquivo)
+{
+    FILE *fp = NULL;
+
+    if (exportarParaArquivo)
+    {
+        fp = fopen(caminhoArquivo, "w");
+        if (fp == NULL) return 1;
+
+        fprintf(fp, "Codigo;Descricao;Estoque Atual;Estoque Minimo;Preco Venda\n");
+    }
+
+    ListaProduto *aux = lista;
+    if (aux != NULL && aux->Produto.id == 0) aux = aux->prox;
+
+    while (aux != NULL)
+    {
+        int atendeCodigo = (aux->Produto.id >= codigoInicio && aux->Produto.id <= codigoFim);
+
+        // estoque atual for menor ou igual ao estoque mínimo
+        int atendeEstoqueMinimo = (aux->Produto.estoque <= aux->Produto.estoque_minimo);
+
+        if (atendeCodigo && atendeEstoqueMinimo && aux->Produto.id != 0)
+        {
+            if (exportarParaArquivo)
+            {
+                fprintf(fp, "%d;%s;%d;%d;%.2f\n",
+                        aux->Produto.id, aux->Produto.descricao, aux->Produto.estoque,
+                        aux->Produto.estoque_minimo, aux->Produto.preco_venda);
+            }
+        }
+        aux = aux->prox;
+    }
+
+    if (exportarParaArquivo) fclose(fp);
+    return 0;
+}
+
 void imprimeDadosProduto(TipoProduto produto)
 {
     printf("ID                     : %d\n", produto.id);

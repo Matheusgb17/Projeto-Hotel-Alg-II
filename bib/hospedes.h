@@ -117,6 +117,8 @@ void liberaListaHospedes(ListaHospede *lista);
  */
 void imprimeDadosHospede(TipoHospede hospede);
 
+int gerarRelatorioHospedes(ListaHospede *lista, int codigoInicio, int codigoFim, char sexoFiltro, int exportarParaArquivo, char *caminhoArquivo);
+
 /**
  * Interface para gest�o de h�spedes, permitindo cadastro, consulta, altera��o e exclus�o de dados.
  * @param modo Inteiro representando o modo de armazenamento (TXT, BIN ou MEM).

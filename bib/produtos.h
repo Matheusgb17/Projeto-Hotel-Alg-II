@@ -120,6 +120,9 @@ void liberaListaProdutos(ListaProduto *lista);
  */
 void imprimeDadosProduto(TipoProduto produto);
 
+int gerarRelatorioProdutos(ListaProduto *lista, int codigoInicio, int codigoFim, int exportarParaArquivo, char *caminhoArquivo);
+
+int gerarRelatorioEstoqueMinimo(ListaProduto *lista, int codigoInicio, int codigoFim, int exportarParaArquivo, char *caminhoArquivo);
 
 /**
  * Interface interativa via terminal para gestao de produtos (CRUD).
@@ -128,5 +131,6 @@ void imprimeDadosProduto(TipoProduto produto);
  * @return void
  */
 void interfaceProduto(ListaProduto *listaProduto);
+
 
 #endif // PRODUTOS_H
